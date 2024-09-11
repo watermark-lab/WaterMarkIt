@@ -25,7 +25,7 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>io.github.olegcheban</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.0.0</version>
+    <version>v1.0.7</version>
 </dependency>
 ```
 ### Usage
