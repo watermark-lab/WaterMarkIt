@@ -1,4 +1,4 @@
-[![mvn](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
+[![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
 
 # WaterMarkIt
 
@@ -82,22 +82,14 @@ public class WatermarkExample {
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Additional Resources
 
-### Documentation
+### Libraries
 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
-
-### Tools
-
-- **Maven**: [Apache Maven](https://maven.apache.org/) - Build automation tool used for managing project dependencies.
-
-### Other Libraries
-
 - **commons-logging**: [Apache Commons Logging](https://commons.apache.org/proper/commons-logging/) - A simple logging facade for Java.
 
-## TODO
+### TODO
 
 - **Compression Feature**: Implement compression to reduce the file size of watermarked documents (PDF).
 - **Overlay Watermarking Method**: Develop an overlay watermarking method for PDFs that is less resource-consuming and creates removable watermarks.
