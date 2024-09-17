@@ -1,5 +1,7 @@
 package com.markit.services;
 
+import com.markit.services.impl.WatermarkMethod;
+
 import java.awt.*;
 import java.io.IOException;
 
@@ -20,7 +22,8 @@ public interface WatermarkPdfService {
      * @param watermarkColor   The color of the watermark.
      * @param dpi              The resolution in dots per inch (DPI) at which the watermark will be applied.
      * @param trademark        Add a trademark symbol
+     * @param method           The method for adding a watermark.
      * @return A byte array representing the watermarked PDF file.
      */
-    byte[] watermark(byte[] sourceImageBytes, Boolean isAsyncMode, String watermarkText, Color watermarkColor, float dpi, Boolean trademark) throws IOException;
+    byte[] watermark(byte[] sourceImageBytes, Boolean isAsyncMode, String watermarkText, Color watermarkColor, float dpi, Boolean trademark, WatermarkMethod method) throws IOException;
 }

@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>A lightweight Java library for adding unremovable watermarks to various file types, including PDFs and images</description>
+    <description>A lightweight Java library for adding watermarks to various file types, including PDFs and images</description>
     <url>https://watermarkit.com</url>
 
     <licenses>

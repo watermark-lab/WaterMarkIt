@@ -1,6 +1,7 @@
 package com.markit.services;
 
 
+import com.markit.services.impl.WatermarkMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -8,15 +9,15 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * Interface for adding watermarks to pdf page.
+ * An interface for adding watermarks to a PDF page. ({@link WatermarkMethod#DRAW method}
  *
  * @author Oleg Cheban
  * @since 1.0
  */
-public interface PdfWatermarker {
+public interface PdfWatermarkDrawService {
 
     /**
-     * Adds a text watermark to a specific page of a PDF document.
+     * Draw a text watermark to a specific page of a PDF document.
      *
      * @param document      The PDF document to which the watermark will be applied.
      * @param pdfRenderer   The renderer used to render the PDF page for watermarking.

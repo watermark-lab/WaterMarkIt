@@ -1,6 +1,6 @@
 package com.markit.services.impl;
 
-import com.markit.services.PdfWatermarker;
+import com.markit.services.PdfWatermarkDrawService;
 import com.markit.services.ImageWatermarker;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -13,15 +13,16 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Oleg Cheban
  * @since 1.0
  */
-public class DefaultPdfWatermarker implements PdfWatermarker {
+public class DefaultPdfWatermarkDrawService implements PdfWatermarkDrawService {
     private final ImageWatermarker imageWatermarker;
 
-    public DefaultPdfWatermarker(ImageWatermarker imageWatermarker) {
+    public DefaultPdfWatermarkDrawService(ImageWatermarker imageWatermarker) {
         this.imageWatermarker = imageWatermarker;
     }
 

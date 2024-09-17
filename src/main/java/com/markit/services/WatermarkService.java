@@ -2,6 +2,7 @@ package com.markit.services;
 
 import com.markit.services.impl.FileType;
 import com.markit.services.impl.WatermarkAPI;
+import com.markit.services.impl.WatermarkMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
@@ -33,6 +34,14 @@ public interface WatermarkService {
      * @see FileType
      */
     WatermarkService fileType(FileType fileType);
+
+    /**
+     * Defines the method for adding a watermark.
+     *
+     * @param watermarkMethod
+     * @see WatermarkMethod
+     */
+    WatermarkService watermarkMethod(WatermarkMethod watermarkMethod);
 
     /**
      * Sets the text to be used as the watermark.
@@ -68,14 +77,14 @@ public interface WatermarkService {
      *
      * @param imageWatermarker The service for watermarking images.
      */
-    WatermarkService setWatermarkImage(ImageWatermarker imageWatermarker);
+    WatermarkService setImageWatermarker(ImageWatermarker imageWatermarker);
 
     /**
      * Sets the service used to watermark PDF page.
      *
-     * @param pdfWatermarker The service for watermarking PDF documents.
+     * @param pdfWatermarkDrawService The service for watermarking PDF documents.
      */
-    WatermarkService setWatermarkPdf(PdfWatermarker pdfWatermarker);
+    WatermarkService setPdfWatermarkDrawService(PdfWatermarkDrawService pdfWatermarkDrawService);
 
     /**
      * Sets the service used to watermark PDF files.

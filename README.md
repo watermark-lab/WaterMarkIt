@@ -43,7 +43,7 @@ import java.util.concurrent.Executors;
 
 public class WatermarkExample {
     public static void main(String[] args) throws IOException {
-        WatermarkService watermarkService = 
+        var watermarkService = 
                 WatermarkService.create(
                     Executors.newFixedThreadPool(
                             Runtime.getRuntime().availableProcessors()
@@ -65,6 +65,16 @@ public class WatermarkExample {
         document.close();
     }
 }
+```
+You can override any services. For instance, instead of using DefaultImageWatermarker, you can implement your own service.
+```java
+// Overriding the default image watermarking behavior
+WatermarkService.create()
+    .setImageWatermarker(
+        (sourceImageBytes, fileType, watermarkText, watermarkColor, trademark) -> {
+            // Custom logic to add a watermark to the image        
+            return sourceImageBytes;
+        });
 ```
 ### API Reference
 
@@ -92,7 +102,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### TODO
 
 - **Compression Feature**: Implement compression to reduce the file size of watermarked documents (PDF).
-- **Overlay Watermarking Method**: Develop an overlay watermarking method for PDFs that is less resource-consuming and creates removable watermarks.
 - **Logo-Based Watermark**: Create a feature to apply a watermark based on a logo file instead of just simple text.
 - **Watermark Positions**: Add functionality for different watermark positions including:
     - **CENTER**: Place the watermark in the center of the document.

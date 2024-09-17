@@ -1,10 +1,7 @@
 package com.markit.services.impl;
 
 import com.markit.exceptions.InvalidFileTypeException;
-import com.markit.services.WatermarkService;
-import com.markit.services.PdfWatermarker;
-import com.markit.services.ImageWatermarker;
-import com.markit.services.WatermarkPdfService;
+import com.markit.services.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -37,24 +34,30 @@ public class WatermarkAPI implements WatermarkService {
 
     private Executor executor;
 
+    private WatermarkMethod watermarkMethod;
+
     private ImageWatermarker imageWatermarker;
 
-    private PdfWatermarker pdfWatermarker;
+    private PdfWatermarkDrawService pdfWatermarkDrawService;
+
+    private PdfWatermarkOverlayService pdfWatermarkOverlayService;
 
     private WatermarkPdfService watermarkPdfService;
 
     public WatermarkAPI() {
         this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarker = new DefaultPdfWatermarker(this.imageWatermarker);
-        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker);
+        this.pdfWatermarkDrawService = new DefaultPdfWatermarkDrawService(this.imageWatermarker);
+        this.pdfWatermarkOverlayService = new DefaultPdfWatermarkOverlayService();
+        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarkDrawService, this.pdfWatermarkOverlayService);
     }
 
     public WatermarkAPI(Executor e) {
         this.executor = e;
         this.async = true;
         this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarker = new DefaultPdfWatermarker(this.imageWatermarker);
-        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.executor);
+        this.pdfWatermarkDrawService = new DefaultPdfWatermarkDrawService(this.imageWatermarker);
+        this.pdfWatermarkOverlayService = new DefaultPdfWatermarkOverlayService();
+        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarkDrawService, this.pdfWatermarkOverlayService, this.executor);
     }
 
     public WatermarkAPI file(byte[] fl) {
@@ -73,24 +76,30 @@ public class WatermarkAPI implements WatermarkService {
         return this;
     }
 
+    @Override
+    public WatermarkService watermarkMethod(WatermarkMethod method) {
+        this.watermarkMethod = method;
+        return this;
+    }
+
     public WatermarkAPI watermarkText(String text) {
         this.watermarkText = text;
         return this;
     }
 
-    public WatermarkAPI setWatermarkImage(ImageWatermarker s) {
+    public WatermarkAPI setImageWatermarker(ImageWatermarker s) {
         this.imageWatermarker = s;
         return this;
     }
 
-    public WatermarkAPI setWatermarkPdf(PdfWatermarker s) {
+    public WatermarkAPI setPdfWatermarkDrawService(PdfWatermarkDrawService s) {
         if (this.imageWatermarker == null) throw new RuntimeException("WatermarkImage isn't initialized");
-        this.pdfWatermarker = s;
+        this.pdfWatermarkDrawService = s;
         return this;
     }
 
     public WatermarkAPI setWatermarkPdfService(WatermarkPdfService s) {
-        if (this.pdfWatermarker == null) throw new RuntimeException("WatermarkPdf isn't initialized");
+        if (this.pdfWatermarkDrawService == null) throw new RuntimeException("WatermarkPdf isn't initialized");
         this.watermarkPdfService = s;
         return this;
     }
@@ -131,7 +140,7 @@ public class WatermarkAPI implements WatermarkService {
     }
 
     private byte[] markPDF() throws IOException {
-        return watermarkPdfService.watermark(file, async, watermarkText, watermarkColor, dpi, trademark);
+        return watermarkPdfService.watermark(file, async, watermarkText, watermarkColor, dpi, trademark, watermarkMethod);
     }
 
     private byte[] markImage() throws IOException {
