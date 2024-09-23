@@ -20,18 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WatermarkTest {
-    private static WatermarkService watermarkService;
     private PDDocument document;
-
-    @BeforeAll
-    static void initService() {
-        watermarkService =
-                WatermarkService.create(
-                        Executors.newFixedThreadPool(
-                                Runtime.getRuntime().availableProcessors()
-                        )
-                );
-    }
 
     @BeforeEach
     void initDocument() {
@@ -41,11 +30,15 @@ public class WatermarkTest {
 
     @Test
     void testDrawPdfMethod() throws IOException {
-        byte[] result = watermarkService
+        byte[] result = WatermarkService.create(
+                        Executors.newFixedThreadPool(
+                                Runtime.getRuntime().availableProcessors()
+                        )
+                )
                 .file(document)
                 .fileType(FileType.PDF)
                 .watermarkMethod(DRAW)
-                .watermarkText("NASA")
+                .watermarkText("Sample Watermark")
                 .trademark()
                 .color(new Color(255, 0, 0))
                 .dpi(150f)
@@ -53,29 +46,28 @@ public class WatermarkTest {
 
         assertNotNull(result, "The resulting byte array should not be null");
         assertTrue(result.length > 0, "The resulting byte array should not be empty");
-
         document.close();
     }
 
     @Test
     void testOverlayPdfMethod() throws IOException {
-        byte[] result = watermarkService
-                .file(document)
-                .fileType(FileType.PDF)
-                .watermarkMethod(OVERLAY)
-                .watermarkText("NASA")
-                .trademark()
-                .color(new Color(255, 0, 0))
-                .apply();
+        //Overlay mode isn't resource-consuming, so a thread pool isn't necessary here.
+        byte[] result =
+                WatermarkService.create()
+                    .file(document)
+                    .fileType(FileType.PDF)
+                    .watermarkMethod(OVERLAY)
+                    .watermarkText("Sample Watermark")
+                    .color(new Color(255, 0, 0))
+                    .apply();
 
         assertNotNull(result, "The resulting byte array should not be null");
         assertTrue(result.length > 0, "The resulting byte array should not be empty");
-
         document.close();
     }
 
-    private void outputFile(byte[] result) throws IOException {
-        File outputFile = new File("res.pdf");
+    private void outputFile(byte[] result, String filename) throws IOException {
+        File outputFile = new File(filename);
         Files.write(outputFile.toPath(), result);
     }
 }
