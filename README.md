@@ -17,11 +17,11 @@ A lightweight Java library for adding unremovable watermarks to various file typ
 ### Prerequisites
 
 - Java 11 or higher
-- Maven
+- Maven or Gradle
 
 ### Installation
 
-Add the following dependency to your `pom.xml`:
+**For Maven**, add the following dependency to your `pom.xml`:
 
 ```xml
 <dependency>
@@ -30,6 +30,12 @@ Add the following dependency to your `pom.xml`:
     <version>1.0.8</version>
 </dependency>
 ```
+
+**For Gradle**, add the following to your `build.gradle`:
+```kotlin
+implementation 'io.github.olegcheban:WaterMarkIt:1.0.8'
+```
+
 ### Usage
 
 Here’s a quick example of how to use the WaterMarkIt library:
