@@ -11,94 +11,76 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 /**
- * Fluent API Watermark Service for applying watermarks to different file types.
+ * Watermark Service for applying watermarks to different file types.
  *
  * @author Oleg Cheban
  * @since 1.0
  */
 public interface WatermarkService {
+    interface File {
+        /**
+         * Sets the source file to be watermarked.
+         *
+         * @param fileBytes The byte array representing the source file.
+         * @param fileType The type of the file
+         * @see FileType
+         */
+        Watermark file(byte[] fileBytes, FileType fileType);
+        Watermark file(PDDocument document, FileType fileType) throws IOException;
+    }
 
-    /**
-     * Sets the source file to be watermarked.
-     *
-     * @param sourceImageBytes The byte array representing the source file.
-     * @return The current instance of {@code WatermarkService} for fluent API chaining.
-     */
-    WatermarkService file(byte[] sourceImageBytes);
-    WatermarkService file(PDDocument pdDocument) throws IOException;
+    interface Watermark {
 
-    /**
-     * Specifies the type of file being processed (e.g., PDF, image).
-     *
-     * @param fileType The type of the file.
-     * @see FileType
-     */
-    WatermarkService fileType(FileType fileType);
+        /**
+         * Sets the text to be used as the watermark.
+         *
+         * @param text The text to be used as the watermark.
+         */
+        Watermark watermarkText(String text);
 
-    /**
-     * Defines the method for adding a watermark.
-     *
-     * @param watermarkMethod
-     * @see WatermarkMethod
-     */
-    WatermarkService watermarkMethod(WatermarkMethod watermarkMethod);
+        /**
+         * Defines the method for adding a watermark.
+         *
+         * @param watermarkMethod
+         * @see WatermarkMethod
+         */
+        Watermark watermarkMethod(WatermarkMethod watermarkMethod);
 
-    /**
-     * Sets the text to be used as the watermark.
-     *
-     * @param watermarkText The text to be used as the watermark.
-     */
-    WatermarkService watermarkText(String watermarkText);
+        /**
+         * Sets the color of the watermark.
+         * @param color
+         * @see Color
+         */
+        Watermark color(Color color);
 
-    /**
-     * Specifies the resolution for the watermark.
-     *
-     * @param dpi The resolution in DPI.
-     */
-    WatermarkService dpi(float dpi);
+        /**
+         * Specifies the resolution for the watermark.
+         *
+         * @param dpi The resolution in DPI.
+         */
+        Watermark dpi(float dpi);
 
-    /**
-     * Apply sync mode (multipage PDF)
-     */
-    WatermarkService sync();
+        /**
+         * Add a trademark symbol
+         */
+        Watermark trademark();
 
-    /**
-     * Sets the color of the watermark.
-     */
-    WatermarkService color(Color color);
+        /**
+         * Apply sync mode
+         */
+        Watermark sync();
 
-    /**
-     * Add a trademark symbol
-     */
-    WatermarkService trademark();
+        /**
+         * Applies the watermark to the specified file and returns the result.
+         *
+         * @return A byte array representing the watermarked file.
+         */
+        byte[] apply() throws IOException;
+    }
 
-    /**
-     * Sets the service used to watermark images.
-     *
-     * @param imageWatermarker The service for watermarking images.
-     */
-    WatermarkService setImageWatermarker(ImageWatermarker imageWatermarker);
-
-    /**
-     * Sets the service used to watermark PDF page.
-     *
-     * @param pdfWatermarkDrawService The service for watermarking PDF documents.
-     */
-    WatermarkService setPdfWatermarkDrawService(PdfWatermarkDrawService pdfWatermarkDrawService);
-
-    /**
-     * Sets the service used to watermark PDF files.
-     *
-     * @param watermarkPdfService The service for watermarking PDF files.
-     */
-    WatermarkService setWatermarkPdfService(WatermarkPdfService watermarkPdfService);
-
-    /**
-     * Applies the watermark to the specified file and returns the result.
-     *
-     * @return A byte array representing the watermarked file.
-     */
-    byte[] apply() throws IOException;
+    static File create() {
+        return new WatermarkAPI();
+    }
 
     /**
      * Creates a new instance of {@code WatermarkService} with a specified {@code Executor}.
@@ -107,18 +89,26 @@ public interface WatermarkService {
      * @return A new instance of {@code WatermarkService}.
      * @throws NullPointerException If {@code executor} is {@code null}.
      */
-    static WatermarkService create(Executor executor) {
+    static File create(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
         return new WatermarkAPI(executor);
     }
 
-    /**
-     * Creates a new instance of {@code WatermarkService} with default settings.
-     *
-     * @return A new instance of {@code WatermarkService}.
-     */
-    static WatermarkService create() {
-        return new WatermarkAPI();
+    static File create(Executor exr, ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
+        nullCheck(i, d, o, s);
+        Objects.requireNonNull(exr, "Executor is required");
+        return new WatermarkAPI(exr, i, d, o, s);
+    }
+
+    static File create(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
+        nullCheck(i, d, o, s);
+        return new WatermarkAPI(i, d, o, s);
+    }
+
+    static void nullCheck(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s){
+        Objects.requireNonNull(i, "ImageWatermarker is required");
+        Objects.requireNonNull(d, "PdfWatermarkDrawService is required");
+        Objects.requireNonNull(o, "PdfWatermarkOverlayService is required");
+        Objects.requireNonNull(s, "WatermarkPdfService is required");
     }
 }
-

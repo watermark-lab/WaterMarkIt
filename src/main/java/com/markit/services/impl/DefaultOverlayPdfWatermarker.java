@@ -1,6 +1,6 @@
 package com.markit.services.impl;
 
-import com.markit.services.PdfWatermarkOverlayService;
+import com.markit.services.OverlayPdfWatermarker;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -18,7 +18,7 @@ import java.io.InputStream;
  * @since 1.0
  */
 @SuppressWarnings("deprecation")
-public class DefaultPdfWatermarkOverlayService implements PdfWatermarkOverlayService {
+public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
     @Override
     public void watermark(PDDocument document, int pageIndex, String watermarkText, Color watermarkColor, Boolean trademark) throws IOException {
         PDPage page = document.getPage(pageIndex);

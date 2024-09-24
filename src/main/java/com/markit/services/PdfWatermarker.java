@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author Oleg Cheban
  * @since 1.0
  */
-public interface PdfWatermarkDrawService {
+public interface PdfWatermarker {
 
     /**
      * Draw a text watermark to a specific page of a PDF document.

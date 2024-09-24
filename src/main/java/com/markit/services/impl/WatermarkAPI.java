@@ -15,118 +15,105 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class WatermarkAPI implements WatermarkService {
+public class WatermarkAPI implements WatermarkService.File, WatermarkService.Watermark {
     private static final Log logger = LogFactory.getLog(WatermarkAPI.class);
-
     private byte[] file;
-
     private FileType fileType;
-
     private String watermarkText;
-
-    private Color watermarkColor = new Color(22, 112, 203);
-
-    private float dpi = 150;
-
-    private Boolean async = false;
-
-    private Boolean trademark = false;
-
+    private Color color = Color.RED;
+    private float dpi = 150f;
+    private boolean trademark = false;
     private Executor executor;
-
+    private boolean async = false;
     private WatermarkMethod watermarkMethod;
-
     private ImageWatermarker imageWatermarker;
-
-    private PdfWatermarkDrawService pdfWatermarkDrawService;
-
-    private PdfWatermarkOverlayService pdfWatermarkOverlayService;
-
+    private PdfWatermarker pdfWatermarker;
+    private OverlayPdfWatermarker overlayPdfWatermarker;
     private WatermarkPdfService watermarkPdfService;
 
     public WatermarkAPI() {
         this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarkDrawService = new DefaultPdfWatermarkDrawService(this.imageWatermarker);
-        this.pdfWatermarkOverlayService = new DefaultPdfWatermarkOverlayService();
-        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarkDrawService, this.pdfWatermarkOverlayService);
+        this.pdfWatermarker = new DefaultPdfWatermarker(this.imageWatermarker);
+        this.overlayPdfWatermarker = new DefaultOverlayPdfWatermarker();
+        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker);
     }
 
-    public WatermarkAPI(Executor e) {
-        this.executor = e;
+    public WatermarkAPI(Executor executor) {
+        this.executor = executor;
         this.async = true;
         this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarkDrawService = new DefaultPdfWatermarkDrawService(this.imageWatermarker);
-        this.pdfWatermarkOverlayService = new DefaultPdfWatermarkOverlayService();
-        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarkDrawService, this.pdfWatermarkOverlayService, this.executor);
+        this.pdfWatermarker = new DefaultPdfWatermarker(this.imageWatermarker);
+        this.overlayPdfWatermarker = new DefaultOverlayPdfWatermarker();
+        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, this.executor);
     }
 
-    public WatermarkAPI file(byte[] fl) {
-        this.file = fl;
+    public WatermarkAPI(Executor executor, ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
+        this.executor = executor;
+        this.async = true;
+        this.imageWatermarker = w;
+        this.pdfWatermarker = d;
+        this.overlayPdfWatermarker = o;
+        this.watermarkPdfService = s;
+    }
+
+    public WatermarkAPI(ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
+        this.imageWatermarker = w;
+        this.pdfWatermarker = d;
+        this.overlayPdfWatermarker = o;
+        this.watermarkPdfService = s;
+    }
+
+    @Override
+    public WatermarkService.Watermark file(PDDocument document, FileType ft) throws IOException {
+        this.file = convertPDDocumentToByteArray(document);
+        this.fileType = ft;
         return this;
     }
 
     @Override
-    public WatermarkService file(PDDocument pdDocument) throws IOException {
-        this.file = convertPDDocumentToByteArray(pdDocument);
-        return this;
-    }
-
-    public WatermarkAPI fileType(FileType ct) {
-        this.fileType = ct;
+    public WatermarkService.Watermark file(byte[] f, FileType ft) {
+        this.file = f;
+        this.fileType = ft;
         return this;
     }
 
     @Override
-    public WatermarkService watermarkMethod(WatermarkMethod method) {
-        this.watermarkMethod = method;
-        return this;
-    }
-
-    public WatermarkAPI watermarkText(String text) {
+    public WatermarkService.Watermark watermarkText(String text) {
         this.watermarkText = text;
         return this;
     }
 
-    public WatermarkAPI setImageWatermarker(ImageWatermarker s) {
-        this.imageWatermarker = s;
+    @Override
+    public WatermarkService.Watermark watermarkMethod(WatermarkMethod method) {
+        this.watermarkMethod = method;
         return this;
     }
 
-    public WatermarkAPI setPdfWatermarkDrawService(PdfWatermarkDrawService s) {
-        if (this.imageWatermarker == null) throw new RuntimeException("WatermarkImage isn't initialized");
-        this.pdfWatermarkDrawService = s;
+    @Override
+    public WatermarkService.Watermark color(Color c) {
+        this.color = c;
         return this;
     }
 
-    public WatermarkAPI setWatermarkPdfService(WatermarkPdfService s) {
-        if (this.pdfWatermarkDrawService == null) throw new RuntimeException("WatermarkPdf isn't initialized");
-        this.watermarkPdfService = s;
-        return this;
-    }
-
-    public WatermarkAPI dpi(float d) {
+    @Override
+    public WatermarkService.Watermark dpi(float d) {
         this.dpi = d;
         return this;
     }
 
     @Override
-    public WatermarkService sync() {
+    public WatermarkService.Watermark trademark() {
+        this.trademark = true;
+        return this;
+    }
+
+    @Override
+    public WatermarkService.Watermark sync() {
         this.async = false;
         return this;
     }
 
     @Override
-    public WatermarkService color(Color c) {
-        this.watermarkColor = c;
-        return this;
-    }
-
-    @Override
-    public WatermarkService trademark() {
-        this.trademark = true;
-        return this;
-    }
-
     public byte[] apply() throws IOException {
         switch (fileType){
             case PDF: return markPDF();
@@ -140,12 +127,13 @@ public class WatermarkAPI implements WatermarkService {
     }
 
     private byte[] markPDF() throws IOException {
-        return watermarkPdfService.watermark(file, async, watermarkText, watermarkColor, dpi, trademark, watermarkMethod);
+        return watermarkPdfService.watermark(file, async, watermarkText, color, dpi, trademark, watermarkMethod);
     }
 
     private byte[] markImage() throws IOException {
-        return imageWatermarker.watermark(file, fileType, watermarkText, watermarkColor, trademark);
+        return imageWatermarker.watermark(file, fileType, watermarkText, color, trademark);
     }
+
 
     private byte[] convertPDDocumentToByteArray(PDDocument document) throws IOException {
         try (var baos = new ByteArrayOutputStream()) {

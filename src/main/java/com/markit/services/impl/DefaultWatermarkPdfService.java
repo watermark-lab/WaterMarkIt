@@ -3,8 +3,8 @@ package com.markit.services.impl;
 import com.markit.exceptions.AsyncWatermarkPdfException;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
-import com.markit.services.PdfWatermarkDrawService;
-import com.markit.services.PdfWatermarkOverlayService;
+import com.markit.services.PdfWatermarker;
+import com.markit.services.OverlayPdfWatermarker;
 import com.markit.services.WatermarkPdfService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,18 +26,18 @@ import java.util.concurrent.Executor;
  */
 public class DefaultWatermarkPdfService implements WatermarkPdfService {
     private static final Log logger = LogFactory.getLog(DefaultWatermarkPdfService.class);
-    private final Optional<PdfWatermarkDrawService> drawService;
-    private final Optional<PdfWatermarkOverlayService> overlayService;
+    private final Optional<PdfWatermarker> drawService;
+    private final Optional<OverlayPdfWatermarker> overlayService;
     private final Optional<Executor> executorService;
 
-    public DefaultWatermarkPdfService(PdfWatermarkDrawService pdfWatermarkDrawService, PdfWatermarkOverlayService overlayService, Executor es) {
-        this.drawService = Optional.ofNullable(pdfWatermarkDrawService);
+    public DefaultWatermarkPdfService(PdfWatermarker pdfWatermarker, OverlayPdfWatermarker overlayService, Executor es) {
+        this.drawService = Optional.ofNullable(pdfWatermarker);
         this.overlayService = Optional.ofNullable(overlayService);
         this.executorService = Optional.ofNullable(es);
     }
 
-    public DefaultWatermarkPdfService(PdfWatermarkDrawService pdfWatermarkDrawService, PdfWatermarkOverlayService overlayService) {
-        this.drawService = Optional.ofNullable(pdfWatermarkDrawService);
+    public DefaultWatermarkPdfService(PdfWatermarker pdfWatermarker, OverlayPdfWatermarker overlayService) {
+        this.drawService = Optional.ofNullable(pdfWatermarker);
         this.overlayService = Optional.ofNullable(overlayService);
         this.executorService = Optional.empty();
     }

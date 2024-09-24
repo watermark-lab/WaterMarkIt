@@ -1,6 +1,6 @@
 package com.markit;
 
-import com.markit.services.WatermarkService;
+import com.markit.services.*;
 import com.markit.services.impl.FileType;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -30,38 +30,40 @@ public class WatermarkTest {
     @Test
     void testDrawPdfMethod() throws IOException {
         byte[] result = WatermarkService.create(
-                        Executors.newFixedThreadPool(
+                            Executors.newFixedThreadPool(
                                 Runtime.getRuntime().availableProcessors()
-                        )
+                            )
                 )
-                .file(document)
-                .fileType(FileType.PDF)
-                .watermarkMethod(DRAW)
+                .file(document, FileType.PDF)
                 .watermarkText("Sample Watermark")
+                .watermarkMethod(DRAW)
                 .trademark()
-                .color(new Color(255, 0, 0))
+                .color(Color.BLUE)
                 .dpi(150f)
                 .apply();
 
+
         assertNotNull(result, "The resulting byte array should not be null");
         assertTrue(result.length > 0, "The resulting byte array should not be empty");
+        outputFile(result, "res1.pdf");
         document.close();
     }
 
     @Test
     void testOverlayPdfMethod() throws IOException {
-        //Overlay mode isn't resource-consuming, so a thread pool isn't necessary here.
         byte[] result =
-                WatermarkService.create()
-                    .file(document)
-                    .fileType(FileType.PDF)
-                    .watermarkMethod(OVERLAY)
-                    .watermarkText("Sample Watermark")
-                    .color(new Color(255, 0, 0))
-                    .apply();
+                WatermarkService
+                //Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
+                .create()
+                .file(document, FileType.PDF)
+                .watermarkText("Sample Watermark")
+                .watermarkMethod(OVERLAY)
+                .color(Color.GREEN)
+                .apply();
 
         assertNotNull(result, "The resulting byte array should not be null");
         assertTrue(result.length > 0, "The resulting byte array should not be empty");
+        outputFile(result, "res2.pdf");
         document.close();
     }
 

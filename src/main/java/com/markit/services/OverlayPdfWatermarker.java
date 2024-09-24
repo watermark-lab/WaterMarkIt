@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Oleg Cheban
  * @since 1.0
  */
-public interface PdfWatermarkOverlayService {
+public interface OverlayPdfWatermarker {
     /**
      * Overlay a text watermark to a specific page of a PDF document.
      *

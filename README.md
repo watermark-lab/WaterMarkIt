@@ -41,46 +41,37 @@ implementation 'io.github.olegcheban:WaterMarkIt:1.0.8'
 Here’s a quick example of how to use the WaterMarkIt library:
 
 ```java
-import io.github.olegcheban.WatermarkService;
-import com.markit.services.impl.FileType;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import java.io.IOException;
-import java.util.concurrent.Executors;
+var watermarkService =
+        WatermarkService.create(
+                Executors.newFixedThreadPool(
+                        Runtime.getRuntime().availableProcessors()
+                )
+        );
 
-public class WatermarkExample {
-    public static void main(String[] args) throws IOException {
-        var watermarkService = 
-                WatermarkService.create(
-                    Executors.newFixedThreadPool(
-                            Runtime.getRuntime().availableProcessors()
-                    )
-                );
-
-        PDDocument document = new PDDocument();
-        document.addPage(new PDPage());
-
-        byte[] result = watermarkService
-                .file(document)
-                .fileType(FileType.PDF)
+try (var document = new PDDocument()) {
+    document.addPage(new PDPage());
+    byte[] result = 
+            watermarkService
+                .file(document, FileType.PDF)
                 .watermarkText("Sample Watermark")
-                .color(new Color(255, 0, 0))                
+                .color(Color.BLUE)
                 .trademark()
                 .dpi(150f)
                 .apply();
-
-        document.close();
-    }
 }
 ```
 You can override any services. For instance, instead of using DefaultImageWatermarker, you can implement your own service.
 ```java
 // Overriding the default image watermarking behavior
-WatermarkService.create()
-    .setImageWatermarker(
+WatermarkService.create(
         (sourceImageBytes, fileType, watermarkText, watermarkColor, trademark) -> {
-            // Custom logic to add a watermark to the image        
+            // Custom logic to add a watermark to the image
             return sourceImageBytes;
-        });
+        }, 
+        new DefaultPdfWatermarker(),
+        new DefaultOverlayPdfWatermarker(),
+        new DefaultWatermarkPdfService()
+);
 ```
 ### API Reference
 
