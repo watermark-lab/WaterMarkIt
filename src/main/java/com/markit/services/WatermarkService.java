@@ -1,7 +1,7 @@
 package com.markit.services;
 
 import com.markit.services.impl.FileType;
-import com.markit.services.impl.WatermarkAPI;
+import com.markit.services.impl.WatermarkServiceImpl;
 import com.markit.services.impl.WatermarkMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -79,7 +79,7 @@ public interface WatermarkService {
     }
 
     static File create() {
-        return new WatermarkAPI();
+        return new WatermarkServiceImpl();
     }
 
     /**
@@ -91,18 +91,18 @@ public interface WatermarkService {
      */
     static File create(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new WatermarkAPI(executor);
+        return new WatermarkServiceImpl(executor);
     }
 
     static File create(Executor exr, ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
         nullCheck(i, d, o, s);
         Objects.requireNonNull(exr, "Executor is required");
-        return new WatermarkAPI(exr, i, d, o, s);
+        return new WatermarkServiceImpl(exr, i, d, o, s);
     }
 
     static File create(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
         nullCheck(i, d, o, s);
-        return new WatermarkAPI(i, d, o, s);
+        return new WatermarkServiceImpl(i, d, o, s);
     }
 
     static void nullCheck(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s){

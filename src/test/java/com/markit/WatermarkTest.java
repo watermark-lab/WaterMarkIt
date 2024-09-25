@@ -45,7 +45,6 @@ public class WatermarkTest {
 
         assertNotNull(result, "The resulting byte array should not be null");
         assertTrue(result.length > 0, "The resulting byte array should not be empty");
-        outputFile(result, "res1.pdf");
         document.close();
     }
 
@@ -63,7 +62,6 @@ public class WatermarkTest {
 
         assertNotNull(result, "The resulting byte array should not be null");
         assertTrue(result.length > 0, "The resulting byte array should not be empty");
-        outputFile(result, "res2.pdf");
         document.close();
     }
 

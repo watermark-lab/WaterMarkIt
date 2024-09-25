@@ -15,8 +15,8 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class WatermarkAPI implements WatermarkService.File, WatermarkService.Watermark {
-    private static final Log logger = LogFactory.getLog(WatermarkAPI.class);
+public class WatermarkServiceImpl implements WatermarkService.File, WatermarkService.Watermark {
+    private static final Log logger = LogFactory.getLog(WatermarkServiceImpl.class);
     private byte[] file;
     private FileType fileType;
     private String watermarkText;
@@ -31,14 +31,14 @@ public class WatermarkAPI implements WatermarkService.File, WatermarkService.Wat
     private OverlayPdfWatermarker overlayPdfWatermarker;
     private WatermarkPdfService watermarkPdfService;
 
-    public WatermarkAPI() {
+    public WatermarkServiceImpl() {
         this.imageWatermarker = new DefaultImageWatermarker();
         this.pdfWatermarker = new DefaultPdfWatermarker(this.imageWatermarker);
         this.overlayPdfWatermarker = new DefaultOverlayPdfWatermarker();
         this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker);
     }
 
-    public WatermarkAPI(Executor executor) {
+    public WatermarkServiceImpl(Executor executor) {
         this.executor = executor;
         this.async = true;
         this.imageWatermarker = new DefaultImageWatermarker();
@@ -47,7 +47,7 @@ public class WatermarkAPI implements WatermarkService.File, WatermarkService.Wat
         this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, this.executor);
     }
 
-    public WatermarkAPI(Executor executor, ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
+    public WatermarkServiceImpl(Executor executor, ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
         this.executor = executor;
         this.async = true;
         this.imageWatermarker = w;
@@ -56,7 +56,7 @@ public class WatermarkAPI implements WatermarkService.File, WatermarkService.Wat
         this.watermarkPdfService = s;
     }
 
-    public WatermarkAPI(ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
+    public WatermarkServiceImpl(ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
         this.imageWatermarker = w;
         this.pdfWatermarker = d;
         this.overlayPdfWatermarker = o;
