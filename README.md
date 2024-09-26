@@ -1,5 +1,5 @@
 [![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
-[![javadoc](https://javadoc.io/badge2/io.github.olegcheban/WaterMarkIt/javadoc.svg)](https://javadoc.io/doc/io.github.olegcheban/WaterMarkIt)
+[![javadoc](https://javadoc.io/badge2/io.github.olegcheban/WaterMarkIt/javadoc.svg)](https://javadoc.io/doc/io.github.olegcheban/WaterMarkIt/latest/com/markit/services/WatermarkService.html)
 # WaterMarkIt
 
 A lightweight Java library for adding unremovable watermarks to various file types, including PDFs and images. WaterMarkIt was developed to address the challenge of creating watermarks that cannot be easily removed, providing a robust solution for document and image protection.
@@ -87,3 +87,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ### TODO
 - **Logo-Based Watermark**: Create a feature to apply a watermark based on a logo file instead of just simple text.
+- **New watermark position**: Implement TILED position (a watermark is repeated to cover the page). 
+- **Fonts, opacity, rotation**: Customising fonts, add opacity, rotation.
