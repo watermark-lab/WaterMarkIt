@@ -18,8 +18,8 @@ public interface OverlayPdfWatermarker {
      *
      * @param document      The PDF document to which the watermark will be applied.
      * @param pageIndex     The index of the page to be watermarked (zero-based).
-     * @param watermarkText The text that will be used as the watermark on the specified page.
+     * @param text The text that will be used as the watermark on the specified page.
      * @param trademark     Add a trademark symbol.
      */
-    void watermark(PDDocument document, int pageIndex, String watermarkText, Color watermarkColor, Boolean trademark) throws IOException;
+    void watermark(PDDocument document, int pageIndex, String text, Color color, boolean trademark) throws IOException;
 }

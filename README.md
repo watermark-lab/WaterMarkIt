@@ -6,10 +6,9 @@ A lightweight Java library for adding unremovable watermarks to various file typ
 
 ## Features
 
-- **Fluent API**: Provides a user-friendly way to configure and apply watermarks.
-- **Unremovable Watermarks**: Designed to create watermarks that cannot be easily removed, ensuring the protection of your documents and images.
-- **Support for Multiple File Types**: Includes support for PDF and image files.
-- **Customizable Watermarks**: Add text, color, and trademarks with customizable DPI settings.
+- **DLS**: Provides a user-friendly way to configure and apply watermarks.
+- **Unremovable Watermarks**: Designed to watermark PDF files in a way that the watermark cannot be removed.
+- **Customizable Watermarks**: Add text, color, size, position and trademarks with customizable DPI settings.
 - **Asynchronous Operations**: Use an `Executor` for asynchronous watermarking.
 
 ## Getting Started
@@ -53,7 +52,10 @@ try (var document = new PDDocument()) {
     byte[] result = 
             watermarkService
                 .file(document, FileType.PDF)
-                .watermarkText("Sample Watermark")
+                .text("Sample Watermark")
+                .textSize(50)
+                .position(WatermarkPosition.CENTER)
+                .method(WatermarkMethod.DRAW)    
                 .color(Color.BLUE)
                 .trademark()
                 .dpi(150f)
@@ -97,10 +99,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **commons-logging**: [Apache Commons Logging](https://commons.apache.org/proper/commons-logging/) - A simple logging facade for Java.
 
 ### TODO
-
-- **Compression Feature**: Implement compression to reduce the file size of watermarked documents (PDF).
 - **Logo-Based Watermark**: Create a feature to apply a watermark based on a logo file instead of just simple text.
-- **Watermark Positions**: Add functionality for different watermark positions including:
-    - **CENTER**: Place the watermark in the center of the document.
-    - **CORNER**: Place the watermark in one of the corners.
-    - **FILLED**: Watermark fills the entire area.

@@ -20,7 +20,7 @@ import java.io.InputStream;
 @SuppressWarnings("deprecation")
 public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
     @Override
-    public void watermark(PDDocument document, int pageIndex, String watermarkText, Color watermarkColor, Boolean trademark) throws IOException {
+    public void watermark(PDDocument document, int pageIndex, String text, Color color, boolean trademark) throws IOException {
         PDPage page = document.getPage(pageIndex);
         PDRectangle mediaBox = page.getMediaBox();
         float pageWidth = mediaBox.getWidth();
@@ -34,7 +34,7 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
             if (rotation != 0) {
                 contentStream.transform(getRotationMatrix(rotation, pageWidth, pageHeight));
             }
-            overlayCentralWatermark(contentStream, watermarkText, pageWidth, pageHeight, loadAreal(document), rotation, trademark);
+            overlayWatermark(contentStream, text, color, pageWidth, pageHeight, loadAreal(document), rotation, trademark);
             if (rotation != 0) {
                 contentStream.restoreGraphicsState();
             }
@@ -48,13 +48,12 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
         return PDType0Font.load(document, arialFont);
     }
 
-    private void overlayCentralWatermark(PDPageContentStream contentStream, String watermarkText, float pageWidth, float pageHeight, PDType0Font font, int rotation, Boolean trademark) throws IOException {
+    private void overlayWatermark(PDPageContentStream contentStream, String text, Color color, float pageWidth, float pageHeight, PDType0Font font, int rotation, boolean trademark) throws IOException {
         final int fontSize = 50;
-
         contentStream.beginText();
         contentStream.setFont(font, fontSize);
-        contentStream.setNonStrokingColor(57, 148, 246);
-        float textWidth = font.getStringWidth(watermarkText) / 1000 * fontSize;
+        contentStream.setNonStrokingColor(color);
+        float textWidth = font.getStringWidth(text) / 1000 * fontSize;
         float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
         float xCenter = (pageWidth - textWidth) / 2;
         float yCenter = (pageHeight - textHeight) / 2;
@@ -65,15 +64,15 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
         }
 
         contentStream.setTextTranslation(xCenter, yCenter);
-        contentStream.showText(watermarkText);
+        contentStream.showText(text);
         contentStream.endText();
 
         if (trademark){
-            overlayTrademark(contentStream, textWidth, textHeight, xCenter, yCenter, font);
+            overlayTrademark(contentStream, textWidth, textHeight, xCenter, yCenter, font, color);
         }
     }
 
-    private void overlayTrademark(PDPageContentStream contentStream, float textWidth, float textHeight, float xCenter, float yCenter, PDType0Font font) throws IOException {
+    private void overlayTrademark(PDPageContentStream contentStream, float textWidth, float textHeight, float xCenter, float yCenter, PDType0Font font, Color color) throws IOException {
         final String registeredTrademark = "®";
         final int registeredTrademarkFontSize = 20;
 
@@ -81,7 +80,7 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
         float symbolOffsetY = yCenter + textHeight / 2 + 15;
         contentStream.beginText();
         contentStream.setFont(font, registeredTrademarkFontSize);
-        contentStream.setNonStrokingColor(57, 148, 246);
+        contentStream.setNonStrokingColor(color);
         contentStream.setTextTranslation(symbolOffsetX, symbolOffsetY);
         contentStream.showText(registeredTrademark);
         contentStream.endText();

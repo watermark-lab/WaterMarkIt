@@ -43,7 +43,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     }
 
     @Override
-    public byte[] watermark(byte[] sourceImageBytes, Boolean isAsyncMode, String watermarkText, Color watermarkColor, float dpi, Boolean trademark, WatermarkMethod method) throws IOException {
+    public byte[] watermark(byte[] sourceImageBytes, boolean isAsyncMode, String text, int textSize, Color color, float dpi, boolean trademark, WatermarkMethod method, WatermarkPosition position) throws IOException {
         if (!drawService.isPresent() || !overlayService.isPresent()){
             logger.error("Incorrect configuration. An empty service");
             throw new WatermarkPdfServiceNotFoundException();
@@ -51,40 +51,40 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
 
         switch (method){
             case OVERLAY:
-                return overlay(sourceImageBytes, watermarkText, watermarkColor, trademark);
+                return overlay(sourceImageBytes, text, color, trademark);
             case DRAW:
-                return draw(sourceImageBytes, isAsyncMode, watermarkText, watermarkColor, dpi, trademark);
+                return draw(sourceImageBytes, isAsyncMode, text, textSize, color, dpi, trademark, position);
             default:
                 throw new RuntimeException("watermark method is undefined");
         }
     }
 
-    private byte[] overlay(byte[] sourceImageBytes, String watermarkText, Color watermarkColor, Boolean trademark) throws IOException {
+    private byte[] overlay(byte[] sourceImageBytes, String text, Color color, boolean trademark) throws IOException {
         try(PDDocument document = PDDocument.load(sourceImageBytes)) {
             int numberOfPages = document.getNumberOfPages();
             for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-                overlayService.get().watermark(document, pageIndex, watermarkText, watermarkColor, trademark);
+                overlayService.get().watermark(document, pageIndex, text, color, trademark);
             }
             removeSecurity(document);
             return convertPDDocumentToByteArray(document);
         }
     }
 
-    private byte[] draw(byte[] sourceImageBytes, Boolean isAsyncMode, String watermarkText, Color watermarkColor, float dpi, Boolean trademark) throws IOException {
+    private byte[] draw(byte[] sourceImageBytes, boolean isAsyncMode, String text, int textSize, Color color, float dpi, boolean trademark, WatermarkPosition position) throws IOException {
         try(PDDocument document = PDDocument.load(sourceImageBytes)) {
             PDFRenderer pdfRenderer = new PDFRenderer(document);
             int numberOfPages = document.getNumberOfPages();
             if (isAsyncMode) {
-                async(document, pdfRenderer, numberOfPages, watermarkText, watermarkColor, dpi, trademark);
+                async(document, pdfRenderer, numberOfPages, text, textSize, color, dpi, trademark, position);
             } else {
-                sync(document, pdfRenderer, numberOfPages, watermarkText, watermarkColor, dpi, trademark);
+                sync(document, pdfRenderer, numberOfPages, text, textSize, color, dpi, trademark, position);
             }
             removeSecurity(document);
             return convertPDDocumentToByteArray(document);
         }
     }
 
-    private void async(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, String watermarkText, Color watermarkColor, float dpi, Boolean trademark){
+    private void async(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, String watermarkText, int textSize, Color watermarkColor, float dpi, boolean trademark, WatermarkPosition position){
         if (!executorService.isPresent()){
             logger.error("An empty executor");
             throw new ExecutorNotFoundException();
@@ -97,7 +97,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
                 CompletableFuture.runAsync(
                         () -> {
                             try {
-                                drawService.get().watermark(document, pdfRenderer, finalPageIndex, dpi, watermarkText, watermarkColor, trademark);
+                                drawService.get().watermark(document, pdfRenderer, finalPageIndex, dpi, watermarkText, textSize, watermarkColor, trademark, position);
                             } catch (IOException e) {
                                 logger.error(
                                         String.format(
@@ -114,9 +114,9 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         allOf.join();
     }
 
-    private void sync(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, String watermarkText, Color watermarkColor, float dpi, Boolean trademark) throws IOException {
+    private void sync(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, String text, int textSize, Color color, float dpi, boolean trademark, WatermarkPosition position) throws IOException {
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            drawService.get().watermark(document, pdfRenderer, pageIndex, dpi, watermarkText, watermarkColor, trademark);
+            drawService.get().watermark(document, pdfRenderer, pageIndex, dpi, text, textSize, color, trademark, position);
         }
     }
 

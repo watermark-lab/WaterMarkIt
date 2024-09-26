@@ -26,12 +26,12 @@ public class DefaultPdfWatermarker implements PdfWatermarker {
     }
 
     @Override
-    public void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, float dpi, String watermarkText, Color watermarkColor, Boolean trademark) throws IOException {
+    public void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, float dpi, String text, int textSize, Color color, boolean trademark, WatermarkPosition watermarkPosition) throws IOException {
         var page = document.getPage(pageIndex);
         var image = pdfRenderer.renderImageWithDPI(pageIndex, dpi);
         var baos = new ByteArrayOutputStream();
         ImageIO.write(image, FileType.JPEG.name(), baos);
-        var watermarkedImageBytes = imageWatermarker.watermark(baos.toByteArray(), FileType.JPEG, watermarkText, watermarkColor, trademark);
+        var watermarkedImageBytes = imageWatermarker.watermark(baos.toByteArray(), FileType.JPEG, text, textSize, color, trademark, watermarkPosition);
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");
         replaceImageInPDF(
                 document,

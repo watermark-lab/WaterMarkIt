@@ -1,6 +1,7 @@
 package com.markit.services;
 
 import com.markit.services.impl.FileType;
+import com.markit.services.impl.WatermarkPosition;
 import com.markit.services.impl.WatermarkServiceImpl;
 import com.markit.services.impl.WatermarkMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -36,7 +37,14 @@ public interface WatermarkService {
          *
          * @param text The text to be used as the watermark.
          */
-        Watermark watermarkText(String text);
+        Watermark text(String text);
+
+        /**
+         * Sets the size of watermark text.
+         *
+         * @param size
+         */
+        Watermark textSize(int size);
 
         /**
          * Defines the method for adding a watermark.
@@ -44,7 +52,15 @@ public interface WatermarkService {
          * @param watermarkMethod
          * @see WatermarkMethod
          */
-        Watermark watermarkMethod(WatermarkMethod watermarkMethod);
+        Watermark method(WatermarkMethod watermarkMethod);
+
+        /**
+         * Defines the position of watermark.
+         *
+         * @param watermarkPosition
+         * @see WatermarkPosition
+         */
+        Watermark position(WatermarkPosition watermarkPosition);
 
         /**
          * Sets the color of the watermark.

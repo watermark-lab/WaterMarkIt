@@ -18,7 +18,14 @@ import java.io.IOException;
  */
 public class DefaultImageWatermarker implements ImageWatermarker {
     @Override
-    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, String watermarkText, Color watermarkColor, Boolean trademark) throws IOException {
+    public byte[] watermark(
+            byte[] sourceImageBytes,
+            FileType fileType,
+            String text,
+            int textSize,
+            Color color,
+            boolean trademark,
+            WatermarkPosition position) throws IOException {
         if (isByteArrayEmpty(sourceImageBytes)){
             return sourceImageBytes;
         }
@@ -26,8 +33,8 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         var g2d = sourceImage.createGraphics();
         int imageWidth = sourceImage.getWidth();
         int imageHeight = sourceImage.getHeight();
-        int baseFontSize = calculateFontSize(imageWidth, imageHeight);
-        drawWatermark(g2d, sourceImage, baseFontSize, watermarkText, watermarkColor, trademark);
+        int baseFontSize = calculateFontSize(textSize, imageWidth, imageHeight);
+        drawWatermark(g2d, sourceImage, baseFontSize, text, color, trademark, position);
         g2d.dispose();
         return convertToByteArray(sourceImage, fileType);
     }
@@ -40,11 +47,12 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         return ImageIO.read(new ByteArrayInputStream(imageBytes));
     }
 
-    private int calculateFontSize(int imageWidth, int imageHeight) {
+    private int calculateFontSize(int textSize, int imageWidth, int imageHeight) {
+        if (textSize > 0) return textSize;
         return Math.min(imageWidth, imageHeight) / 10;
     }
 
-    private void drawWatermark(Graphics2D g2d, BufferedImage image, int baseFontSize, String watermarkText, Color watermarkColor, Boolean trademark) {
+    private void drawWatermark(Graphics2D g2d, BufferedImage image, int baseFontSize, String watermarkText, Color watermarkColor, boolean trademark, WatermarkPosition position) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
         var baseFont = new Font("Arial", Font.BOLD, baseFontSize);
         g2d.setComposite(alphaChannel);
@@ -53,12 +61,21 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         FontRenderContext frc = g2d.getFontRenderContext();
         TextLayout layout = new TextLayout(watermarkText, baseFont, frc);
         Rectangle2D rect = layout.getBounds();
-        int centerX = (image.getWidth() - (int) (rect.getWidth())) / 2;
-        int centerY = image.getHeight() / 2;
-        layout.draw(g2d, centerX, centerY);
-
+        var coordinates = defineXY(position, image.getWidth(), image.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
+        layout.draw(g2d, coordinates.getX(), coordinates.getY());
         if (trademark){
-            drawTrademark(g2d, baseFont, baseFontSize, rect, centerX, centerY);
+            drawTrademark(g2d, baseFont, baseFontSize, rect, coordinates.getX(), coordinates.getY());
+        }
+    }
+
+    private WatermarkCoordinates.Coordinates defineXY(WatermarkPosition position, int iw, int ih, int ww, int wh){
+        var c = new WatermarkCoordinates(iw, ih, ww, wh);
+        switch (position){
+            case TOP_LEFT: return c.topLeft();
+            case TOP_RIGHT: return c.topRight();
+            case BOTTOM_LEFT: return c.bottomLeft();
+            case BOTTOM_RIGHT: return c.bottomRight();
+            default: return c.center();
         }
     }
 

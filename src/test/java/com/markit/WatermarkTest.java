@@ -2,6 +2,8 @@ package com.markit;
 
 import com.markit.services.*;
 import com.markit.services.impl.FileType;
+import com.markit.services.impl.WatermarkMethod;
+import com.markit.services.impl.WatermarkPosition;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.concurrent.Executors;
 
-import static com.markit.services.impl.WatermarkMethod.DRAW;
 import static com.markit.services.impl.WatermarkMethod.OVERLAY;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,8 +36,10 @@ public class WatermarkTest {
                             )
                 )
                 .file(document, FileType.PDF)
-                .watermarkText("Sample Watermark")
-                .watermarkMethod(DRAW)
+                .text("Sample Watermark")
+                .textSize(50)
+                .position(WatermarkPosition.TOP_LEFT)
+                .method(WatermarkMethod.DRAW)
                 .trademark()
                 .color(Color.BLUE)
                 .dpi(150f)
@@ -51,12 +54,11 @@ public class WatermarkTest {
     @Test
     void testOverlayPdfMethod() throws IOException {
         byte[] result =
-                WatermarkService
-                //Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
-                .create()
+                WatermarkService.create()
                 .file(document, FileType.PDF)
-                .watermarkText("Sample Watermark")
-                .watermarkMethod(OVERLAY)
+                .text("Sample Watermark")
+                .method(OVERLAY) //Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
+                .trademark()
                 .color(Color.GREEN)
                 .apply();
 
