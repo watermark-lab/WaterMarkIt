@@ -75,22 +75,9 @@ WatermarkService.create(
         new DefaultWatermarkPdfService()
 );
 ```
-### API Reference
-
-- WatermarkService.create(): Creates a new instance of WatermarkService.
-- file(byte[] sourceImageBytes): Sets the source file to be watermarked.
-- file(PDDocument pdDocument): Sets the source PDF document to be watermarked.
-- fileType(FileType fileType): Specifies the type of the file (e.g., PDF, image).
-- watermarkText(String watermarkText): Sets the text for the watermark.
-- dpi(float dpi): Specifies the resolution of the watermark.
-- color(Color color): Sets the color of the watermark.
-- trademark(): Adds a trademark symbol to the watermark.
-- apply(): Applies the watermark and returns the watermarked file as a byte array.
-
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
-
 
 ### Libraries
 
