@@ -89,3 +89,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Logo-Based Watermark**: Create a feature to apply a watermark based on a logo file instead of just simple text.
 - **New watermark position**: Implement TILED position (a watermark is repeated to cover the page). 
 - **Fonts, opacity, rotation**: Customising fonts, add opacity, rotation.
+- **Handing java.io.File in constructor**: Add File type

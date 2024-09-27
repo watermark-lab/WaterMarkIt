@@ -1,7 +1,7 @@
-package com.markit.services;
+package com.markit.pdf;
 
-import com.markit.services.impl.WatermarkMethod;
-import com.markit.services.impl.WatermarkPosition;
+import com.markit.api.WatermarkMethod;
+import com.markit.api.WatermarkPosition;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 

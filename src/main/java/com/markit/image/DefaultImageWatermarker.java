@@ -1,6 +1,9 @@
-package com.markit.services.impl;
+package com.markit.image;
 
-import com.markit.services.ImageWatermarker;
+import com.markit.api.FileType;
+import com.markit.pdf.DrawMethodPositionCoordinates;
+import com.markit.api.WatermarkPositionCoordinates;
+import com.markit.api.WatermarkPosition;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -68,14 +71,16 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         }
     }
 
-    private WatermarkCoordinates.Coordinates defineXY(WatermarkPosition position, int iw, int ih, int ww, int wh){
-        var c = new WatermarkCoordinates(iw, ih, ww, wh);
+    private WatermarkPositionCoordinates.Coordinates defineXY(WatermarkPosition position, int iw, int ih, int ww, int wh){
+        var c = new DrawMethodPositionCoordinates(iw, ih, ww, wh);
         switch (position){
+            case CENTER: return c.center();
             case TOP_LEFT: return c.topLeft();
             case TOP_RIGHT: return c.topRight();
             case BOTTOM_LEFT: return c.bottomLeft();
             case BOTTOM_RIGHT: return c.bottomRight();
-            default: return c.center();
+            default:
+                throw new RuntimeException("undefined position");
         }
     }
 

@@ -1,11 +1,10 @@
-package com.markit.services.impl;
+package com.markit.pdf;
 
 import com.markit.exceptions.AsyncWatermarkPdfException;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
-import com.markit.services.PdfWatermarker;
-import com.markit.services.OverlayPdfWatermarker;
-import com.markit.services.WatermarkPdfService;
+import com.markit.api.WatermarkMethod;
+import com.markit.api.WatermarkPosition;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -51,7 +50,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
 
         switch (method){
             case OVERLAY:
-                return overlay(sourceImageBytes, text, color, trademark);
+                return overlay(sourceImageBytes, text, textSize, color, trademark, position);
             case DRAW:
                 return draw(sourceImageBytes, isAsyncMode, text, textSize, color, dpi, trademark, position);
             default:
@@ -59,11 +58,11 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         }
     }
 
-    private byte[] overlay(byte[] sourceImageBytes, String text, Color color, boolean trademark) throws IOException {
+    private byte[] overlay(byte[] sourceImageBytes, String text, int textSize, Color color, boolean trademark, WatermarkPosition position) throws IOException {
         try(PDDocument document = PDDocument.load(sourceImageBytes)) {
             int numberOfPages = document.getNumberOfPages();
             for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-                overlayService.get().watermark(document, pageIndex, text, color, trademark);
+                overlayService.get().watermark(document, pageIndex, text, textSize, color, position, trademark);
             }
             removeSecurity(document);
             return convertPDDocumentToByteArray(document);

@@ -1,7 +1,7 @@
-package com.markit.services;
+package com.markit.image;
 
-import com.markit.services.impl.FileType;
-import com.markit.services.impl.WatermarkPosition;
+import com.markit.api.FileType;
+import com.markit.api.WatermarkPosition;
 
 import java.awt.*;
 import java.io.IOException;

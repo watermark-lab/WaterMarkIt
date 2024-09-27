@@ -1,9 +1,9 @@
-package com.markit.services;
+package com.markit.api;
 
-import com.markit.services.impl.FileType;
-import com.markit.services.impl.WatermarkPosition;
-import com.markit.services.impl.WatermarkServiceImpl;
-import com.markit.services.impl.WatermarkMethod;
+import com.markit.image.ImageWatermarker;
+import com.markit.pdf.OverlayPdfWatermarker;
+import com.markit.pdf.PdfWatermarker;
+import com.markit.pdf.WatermarkPdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;

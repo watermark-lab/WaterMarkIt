@@ -1,7 +1,9 @@
-package com.markit.services.impl;
+package com.markit.api;
 
 import com.markit.exceptions.InvalidFileTypeException;
-import com.markit.services.*;
+import com.markit.image.DefaultImageWatermarker;
+import com.markit.image.ImageWatermarker;
+import com.markit.pdf.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -35,8 +37,8 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
 
     public WatermarkServiceImpl() {
         this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarker = new DefaultPdfWatermarker(this.imageWatermarker);
-        this.overlayPdfWatermarker = new DefaultOverlayPdfWatermarker();
+        this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
+        this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
         this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker);
     }
 
@@ -44,8 +46,8 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
         this.executor = executor;
         this.async = true;
         this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarker = new DefaultPdfWatermarker(this.imageWatermarker);
-        this.overlayPdfWatermarker = new DefaultOverlayPdfWatermarker();
+        this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
+        this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
         this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, this.executor);
     }
 
