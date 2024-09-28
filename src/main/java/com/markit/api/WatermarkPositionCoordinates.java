@@ -12,7 +12,7 @@ public interface WatermarkPositionCoordinates {
     Coordinates bottomLeft();
     Coordinates bottomRight();
 
-    final class Coordinates{
+    final class Coordinates {
         private final int x;
         private final int y;
 
