@@ -6,7 +6,7 @@ A lightweight Java library for adding unremovable watermarks to various file typ
 
 ## Features
 
-- **DLS**: Provides a user-friendly way to configure and apply watermarks.
+- **DSL**: Provides a user-friendly way to configure and apply watermarks.
 - **Unremovable Watermarks**: Designed to watermark PDF files in a way that the watermark cannot be removed.
 - **Customizable Watermarks**: Add text, color, size, position and trademarks with customizable DPI settings.
 - **Asynchronous Operations**: Use an `Executor` for asynchronous watermarking.
