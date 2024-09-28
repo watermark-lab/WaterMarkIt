@@ -26,7 +26,7 @@ A lightweight Java library for adding unremovable watermarks to various file typ
 <dependency>
     <groupId>io.github.olegcheban</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.0.8</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
