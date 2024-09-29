@@ -32,7 +32,7 @@ A lightweight Java library for adding unremovable watermarks to various file typ
 
 **For Gradle**, add the following to your `build.gradle`:
 ```kotlin
-implementation 'io.github.olegcheban:WaterMarkIt:1.0.8'
+implementation 'io.github.olegcheban:WaterMarkIt:1.1.0'
 ```
 
 ### Usage
