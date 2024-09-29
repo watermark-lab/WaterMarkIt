@@ -2,7 +2,7 @@
 [![javadoc](https://javadoc.io/badge2/io.github.olegcheban/WaterMarkIt/javadoc.svg)](https://javadoc.io/doc/io.github.olegcheban/WaterMarkIt/latest/com/markit/services/WatermarkService.html)
 # WaterMarkIt
 
-A lightweight Java library for adding unremovable watermarks to various file types, including PDFs and images. WaterMarkIt was developed to address the challenge of creating watermarks that cannot be easily removed, providing a robust solution for document and image protection.
+A lightweight Java library for adding watermarks to various file types, including PDFs and images. WaterMarkIt was developed to address the challenge of creating watermarks that cannot be easily removed, providing a robust solution for document and image protection.
 
 ## Features
 
