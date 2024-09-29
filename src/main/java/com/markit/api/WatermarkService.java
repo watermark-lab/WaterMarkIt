@@ -7,6 +7,7 @@ import com.markit.pdf.WatermarkPdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -27,7 +28,8 @@ public interface WatermarkService {
          * @see FileType
          */
         Watermark file(byte[] fileBytes, FileType fileType);
-        Watermark file(PDDocument document, FileType fileType) throws IOException;
+        Watermark file(java.io.File file, FileType fileType);
+        Watermark file(PDDocument document, FileType fileType);
     }
 
     interface Watermark {

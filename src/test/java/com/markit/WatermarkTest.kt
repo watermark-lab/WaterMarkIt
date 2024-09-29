@@ -50,7 +50,7 @@ class WatermarkTest {
                 .position(WatermarkPosition.TOP_LEFT)
                 .method(WatermarkMethod.DRAW)
                 .trademark()
-                .color(Color.BLUE)
+                .color(Color.RED)
                 .dpi(150f)
                 .apply()
 
@@ -72,7 +72,7 @@ class WatermarkTest {
                 .method(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
                 .position(WatermarkPosition.TOP_RIGHT)
                 .trademark()
-                .color(Color.BLUE)
+                .color(Color.YELLOW)
                 .apply()
 
         // Then
@@ -114,7 +114,7 @@ class WatermarkTest {
                 .method(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
                 .position(WatermarkPosition.BOTTOM_LEFT)
                 .trademark()
-                .color(Color.BLUE)
+                .color(Color.GREEN)
                 .apply()
 
         // Then

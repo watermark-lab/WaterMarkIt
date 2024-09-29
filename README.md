@@ -84,9 +84,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
 - **commons-logging**: [Apache Commons Logging](https://commons.apache.org/proper/commons-logging/) - A simple logging facade for Java.
-
-### TODO
-- **Logo-Based Watermark**: Create a feature to apply a watermark based on a logo file instead of just simple text.
-- **New watermark position**: Implement TILED position (a watermark is repeated to cover the page). 
-- **Fonts, opacity, rotation**: Customising fonts, add opacity, rotation.
-- **Handing java.io.File in constructor**: Add File type

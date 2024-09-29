@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executor;
 
@@ -34,6 +34,8 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     private PdfWatermarker pdfWatermarker;
     private OverlayPdfWatermarker overlayPdfWatermarker;
     private WatermarkPdfService watermarkPdfService;
+
+    private WatermarkOperation watermarkOperation;
 
     public WatermarkServiceImpl() {
         this.imageWatermarker = new DefaultImageWatermarker();
@@ -68,18 +70,24 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     }
 
     @Override
-    public WatermarkService.Watermark file(PDDocument document, FileType ft) throws IOException {
-        this.file = convertPDDocumentToByteArray(document);
-        this.fileType = ft;
-        this.watermarkMethod = defineMethod(ft);
-        return this;
+    public WatermarkService.Watermark file(PDDocument document, FileType ft) {
+        return configureFile(ft, () -> watermarkPdfService.watermark(document, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition));
     }
 
     @Override
     public WatermarkService.Watermark file(byte[] f, FileType ft) {
-        this.file = f;
+        return configureFile(ft, () -> watermarkPdfService.watermark(f, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition));
+    }
+
+    @Override
+    public WatermarkService.Watermark file(File f, FileType ft) {
+        return configureFile(ft, () -> watermarkPdfService.watermark(f, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition));
+    }
+
+    private WatermarkService.Watermark configureFile(FileType ft, WatermarkOperation op) {
         this.fileType = ft;
         this.watermarkMethod = defineMethod(ft);
+        this.watermarkOperation = op;
         return this;
     }
 
@@ -144,8 +152,13 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
         }
     }
 
-    private byte[] markPDF() throws IOException {
-        return watermarkPdfService.watermark(file, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition);
+    private byte[] markPDF(){
+        try {
+            return this.watermarkOperation.applyWatermark();
+        } catch (IOException e) {
+            logger.error("Failed to watermark file", e);
+            throw  new RuntimeException("Error watermarking the file", e);
+        }
     }
 
     private byte[] markImage() throws IOException {
@@ -160,13 +173,6 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
             case BMP: return WatermarkMethod.DRAW;
             case PDF: return WatermarkMethod.OVERLAY;
             default: throw new RuntimeException("undefined method");
-        }
-    }
-
-    private byte[] convertPDDocumentToByteArray(PDDocument document) throws IOException {
-        try (var baos = new ByteArrayOutputStream()) {
-            document.save(baos);
-            return baos.toByteArray();
         }
     }
 }
