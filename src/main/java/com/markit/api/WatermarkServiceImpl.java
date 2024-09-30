@@ -1,6 +1,5 @@
 package com.markit.api;
 
-import com.markit.exceptions.InvalidFileTypeException;
 import com.markit.image.DefaultImageWatermarker;
 import com.markit.image.ImageWatermarker;
 import com.markit.pdf.*;
@@ -19,7 +18,6 @@ import java.util.concurrent.Executor;
  */
 public class WatermarkServiceImpl implements WatermarkService.File, WatermarkService.Watermark {
     private static final Log logger = LogFactory.getLog(WatermarkServiceImpl.class);
-    private byte[] file;
     private FileType fileType;
     private String watermarkText;
     private int textSize;
@@ -29,13 +27,12 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     private Executor executor;
     private boolean async;
     private WatermarkMethod watermarkMethod;
-    private WatermarkPosition watermarkPosition = WatermarkPosition.CENTER;
+    private WatermarkPosition watermarkPosition;
     private ImageWatermarker imageWatermarker;
     private PdfWatermarker pdfWatermarker;
     private OverlayPdfWatermarker overlayPdfWatermarker;
     private WatermarkPdfService watermarkPdfService;
-
-    private WatermarkOperation watermarkOperation;
+    private WatermarkHandler watermarkHandler;
 
     public WatermarkServiceImpl() {
         this.imageWatermarker = new DefaultImageWatermarker();
@@ -70,24 +67,35 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     }
 
     @Override
-    public WatermarkService.Watermark file(PDDocument document, FileType ft) {
-        return configureFile(ft, () -> watermarkPdfService.watermark(document, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition));
+    public WatermarkService.Watermark file(PDDocument document) {
+        return configureDefaultParams(FileType.PDF,
+                () -> watermarkPdfService.watermark(document, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition)
+        );
     }
 
     @Override
     public WatermarkService.Watermark file(byte[] f, FileType ft) {
-        return configureFile(ft, () -> watermarkPdfService.watermark(f, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition));
+        return configureDefaultParams(ft,
+                (ft.equals(FileType.PDF)) ?
+                        () -> watermarkPdfService.watermark(f, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition) :
+                        () -> imageWatermarker.watermark(f, fileType, watermarkText, textSize, color, trademark, watermarkPosition)
+        );
     }
 
     @Override
     public WatermarkService.Watermark file(File f, FileType ft) {
-        return configureFile(ft, () -> watermarkPdfService.watermark(f, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition));
+        return configureDefaultParams(ft,
+                (ft.equals(FileType.PDF)) ?
+                        () -> watermarkPdfService.watermark(f, async, watermarkText, textSize, color, dpi, trademark, watermarkMethod, watermarkPosition) :
+                        () -> imageWatermarker.watermark(f, fileType, watermarkText, textSize, color, trademark, watermarkPosition)
+        );
     }
 
-    private WatermarkService.Watermark configureFile(FileType ft, WatermarkOperation op) {
+    private WatermarkService.Watermark configureDefaultParams(FileType ft, WatermarkHandler h) {
         this.fileType = ft;
-        this.watermarkMethod = defineMethod(ft);
-        this.watermarkOperation = op;
+        this.watermarkMethod = defaultMethod(ft);
+        this.watermarkPosition = WatermarkPosition.CENTER;
+        this.watermarkHandler = h;
         return this;
     }
 
@@ -140,32 +148,16 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     }
 
     @Override
-    public byte[] apply() throws IOException {
-        switch (fileType){
-            case PDF: return markPDF();
-            case BMP:
-            case JPEG:
-            case PNG:
-            case TIFF: return markImage();
-            default: logger.error("undefined file type");
-                throw new InvalidFileTypeException();
-        }
-    }
-
-    private byte[] markPDF(){
+    public byte[] apply() {
         try {
-            return this.watermarkOperation.applyWatermark();
+            return this.watermarkHandler.apply();
         } catch (IOException e) {
             logger.error("Failed to watermark file", e);
-            throw  new RuntimeException("Error watermarking the file", e);
+            throw new RuntimeException("Error watermarking the file", e);
         }
     }
 
-    private byte[] markImage() throws IOException {
-        return imageWatermarker.watermark(file, fileType, watermarkText, textSize, color, trademark, watermarkPosition);
-    }
-
-    private WatermarkMethod defineMethod(FileType ft){
+    private WatermarkMethod defaultMethod(FileType ft){
         switch (ft){
             case JPEG:
             case PNG:

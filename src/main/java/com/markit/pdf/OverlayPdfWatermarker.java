@@ -17,13 +17,13 @@ public interface OverlayPdfWatermarker {
     /**
      * Overlay a text watermark to a specific page of a PDF document.
      *
-     * @param document      The PDF document to which the watermark will be applied.
-     * @param pageIndex     The index of the page to be watermarked (zero-based).
-     * @param text          The text that will be used as the watermark on the specified page.
-     * @param textSize      The size of watermark text.
-     * @param color         The color of the watermark.
-     * @param position      The position of watermark
-     * @param trademark     Add a trademark symbol.
+     * @param document The PDF document to which the watermark will be applied.
+     * @param pageIndex The index of the page to be watermarked (zero-based).
+     * @param text The text that will be used as the watermark on the specified page.
+     * @param textSize The size of watermark text.
+     * @param color The color of the watermark.
+     * @param position The position of watermark
+     * @param trademark Add a trademark symbol.
      */
     void watermark(
             PDDocument document,

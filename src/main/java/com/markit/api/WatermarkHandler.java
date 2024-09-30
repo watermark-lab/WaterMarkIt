@@ -7,6 +7,6 @@ import java.io.IOException;
  * @since 1.0
  */
 @FunctionalInterface
-public interface WatermarkOperation {
-    byte[] applyWatermark() throws IOException;
+public interface WatermarkHandler {
+    byte[] apply() throws IOException;
 }

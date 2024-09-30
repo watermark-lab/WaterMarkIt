@@ -19,15 +19,15 @@ public interface PdfWatermarker {
     /**
      * Draw a text watermark to a specific page of a PDF document.
      *
-     * @param document          The PDF document to which the watermark will be applied.
-     * @param pdfRenderer       The renderer used to render the PDF page for watermarking.
-     * @param pageIndex         The index of the page to be watermarked (zero-based).
-     * @param dpi               The resolution at which the page is rendered for watermarking.
-     * @param text              The text that will be used as the watermark on the specified page.
-     * @param textSize          The size of watermark text.
-     * @param color             The color of watermark.
-     * @param trademark         Add a trademark symbol.
-     * @param position          Position of watermark.
+     * @param document The PDF document to which the watermark will be applied.
+     * @param pdfRenderer The renderer used to render the PDF page for watermarking.
+     * @param pageIndex The index of the page to be watermarked (zero-based).
+     * @param dpi The resolution at which the page is rendered for watermarking.
+     * @param text The text that will be used as the watermark on the specified page.
+     * @param textSize The size of watermark text.
+     * @param color The color of watermark.
+     * @param trademark Add a trademark symbol.
+     * @param position Position of watermark.
      */
     void watermark(
             PDDocument document,

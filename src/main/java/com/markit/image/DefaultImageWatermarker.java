@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -21,18 +22,19 @@ import java.io.IOException;
  */
 public class DefaultImageWatermarker implements ImageWatermarker {
     @Override
-    public byte[] watermark(
-            byte[] sourceImageBytes,
-            FileType fileType,
-            String text,
-            int textSize,
-            Color color,
-            boolean trademark,
-            WatermarkPosition position) throws IOException {
+    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, String text, int textSize, Color color, boolean trademark, WatermarkPosition position) throws IOException {
         if (isByteArrayEmpty(sourceImageBytes)){
             return sourceImageBytes;
         }
-        var sourceImage = convertToBufferedImage(sourceImageBytes);
+        return watermark(convertToBufferedImage(sourceImageBytes), fileType, text, textSize, color, trademark, position);
+    }
+
+    @Override
+    public byte[] watermark(File file, FileType fileType, String text, int textSize, Color color, boolean trademark, WatermarkPosition position) throws IOException {
+        return watermark(ImageIO.read(file), fileType, text, textSize, color, trademark, position);
+    }
+
+    public byte[] watermark(BufferedImage sourceImage, FileType fileType, String text, int textSize, Color color, boolean trademark, WatermarkPosition position) throws IOException {
         var g2d = sourceImage.createGraphics();
         int imageWidth = sourceImage.getWidth();
         int imageHeight = sourceImage.getHeight();
