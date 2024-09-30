@@ -1,8 +1,8 @@
 package com.markit.pdf;
 
+import com.markit.api.WatermarkAttributes;
 import com.markit.image.ImageWatermarker;
 import com.markit.api.FileType;
-import com.markit.api.WatermarkPosition;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -10,7 +10,6 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -26,21 +25,12 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
     }
 
     @Override
-    public void watermark(
-            PDDocument document,
-            PDFRenderer pdfRenderer,
-            int pageIndex,
-            float dpi,
-            String text,
-            int textSize,
-            Color color,
-            boolean trademark,
-            WatermarkPosition position) throws IOException {
+    public void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, WatermarkAttributes attr) throws IOException {
         var page = document.getPage(pageIndex);
-        var image = pdfRenderer.renderImageWithDPI(pageIndex, dpi);
+        var image = pdfRenderer.renderImageWithDPI(pageIndex, attr.getDpi());
         var baos = new ByteArrayOutputStream();
         ImageIO.write(image, FileType.JPEG.name(), baos);
-        var watermarkedImageBytes = imageWatermarker.watermark(baos.toByteArray(), FileType.JPEG, text, textSize, color, trademark, position);
+        var watermarkedImageBytes = imageWatermarker.watermark(baos.toByteArray(), FileType.JPEG, attr);
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");
         replaceImageInPDF(
                 document,

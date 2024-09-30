@@ -1,10 +1,9 @@
 package com.markit.pdf;
 
+import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkMethod;
-import com.markit.api.WatermarkPosition;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -19,18 +18,7 @@ public interface OverlayPdfWatermarker {
      *
      * @param document The PDF document to which the watermark will be applied.
      * @param pageIndex The index of the page to be watermarked (zero-based).
-     * @param text The text that will be used as the watermark on the specified page.
-     * @param textSize The size of watermark text.
-     * @param color The color of the watermark.
-     * @param position The position of watermark
-     * @param trademark Add a trademark symbol.
+     * @param attr The attributes of watermark
      */
-    void watermark(
-            PDDocument document,
-            int pageIndex,
-            String text,
-            int textSize,
-            Color color,
-            WatermarkPosition position,
-            boolean trademark) throws IOException;
+    void watermark(PDDocument document, int pageIndex, WatermarkAttributes attr) throws IOException;
 }

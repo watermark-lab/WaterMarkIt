@@ -6,6 +6,7 @@ import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.common.PDRectangle
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.awt.Color
@@ -34,6 +35,12 @@ class WatermarkPdfTest {
         }
     }
 
+    @AfterEach
+    fun close(){
+        plainDocument.close()
+        landscapeDocument.close()
+    }
+
     @Test
     @Throws(IOException::class)
     fun `given Plain Pdf when Draw Method is Used then Make Watermarked Pdf`() {
@@ -57,7 +64,6 @@ class WatermarkPdfTest {
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
         //outputFile(result, "DrawPlainPdf.pdf")
-        plainDocument.close()
     }
 
     @Test
@@ -78,7 +84,6 @@ class WatermarkPdfTest {
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
         //outputFile(result, "OverlayPlainPdf.pdf")
-        plainDocument.close()
     }
 
     @Test
@@ -100,7 +105,6 @@ class WatermarkPdfTest {
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
         //outputFile(result, "DrawLandscapePdf.pdf")
-        landscapeDocument.close()
     }
 
     @Test
@@ -120,7 +124,6 @@ class WatermarkPdfTest {
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
         //outputFile(result, "OverlayLandscapePdf.pdf")
-        landscapeDocument.close()
     }
 
     private fun outputFile(result: ByteArray, filename: String) {
