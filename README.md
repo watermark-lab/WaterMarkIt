@@ -1,6 +1,6 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 [![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
-[![javadoc](https://javadoc.io/badge2/io.github.olegcheban/WaterMarkIt/javadoc.svg)](https://javadoc.io/doc/io.github.olegcheban/WaterMarkIt/latest/com/markit/services/WatermarkService.html)
+[![javadoc](https://img.shields.io/badge/javadoc-1.1.0-brightgreen.svg)](https://javadoc.io/doc/io.github.olegcheban/WaterMarkIt/latest/index.html)
 # WaterMarkIt
 
 A lightweight Java library for adding watermarks to various file types, including PDFs and images. WaterMarkIt was developed to address the challenge of creating watermarks that cannot be easily removed, providing a robust solution for document and image protection.
