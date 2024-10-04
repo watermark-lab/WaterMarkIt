@@ -1,9 +1,9 @@
 package com.markit.pdf;
 
 import com.markit.api.WatermarkAttributes;
+import com.markit.api.WatermarkMethod;
 import com.markit.exceptions.AsyncWatermarkPdfException;
 import com.markit.exceptions.ExecutorNotFoundException;
-import com.markit.exceptions.UnsupportedWatermarkMethodException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 /**
  * @author Oleg Cheban
@@ -42,57 +43,57 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     }
 
     @Override
-    public byte[] watermark(byte[] sourceImageBytes, boolean isAsyncMode, WatermarkAttributes attr) throws IOException {
+    public byte[] watermark(byte[] sourceImageBytes, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
         try(PDDocument document = PDDocument.load(sourceImageBytes)) {
-            return watermark(document, isAsyncMode, attr);
+            return watermark(document, isAsyncMode, attrs);
         }
     }
 
     @Override
-    public byte[] watermark(File file, boolean isAsyncMode, WatermarkAttributes attr) throws IOException {
+    public byte[] watermark(File file, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
         try(PDDocument document = PDDocument.load(file)) {
-            return watermark(document, isAsyncMode, attr);
+            return watermark(document, isAsyncMode, attrs);
         }
     }
 
     @Override
-    public byte[] watermark(PDDocument document, boolean isAsyncMode, WatermarkAttributes attr) throws IOException {
+    public byte[] watermark(PDDocument document, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
         if (drawService.isEmpty() || overlayService.isEmpty()){
             logger.error("Incorrect configuration. An empty service");
             throw new WatermarkPdfServiceNotFoundException();
         }
-
-        switch (attr.getMethod()){
-            case OVERLAY:
-                return overlay(document, attr);
-            case DRAW:
-                return draw(document, isAsyncMode, attr);
-            default: throw new UnsupportedWatermarkMethodException("Unsupported watermark method: " + attr.getMethod());
+        var drawAttrs = attrs.stream().filter(a->a.getMethod().equals(WatermarkMethod.DRAW)).collect(Collectors.toList());
+        if (!drawAttrs.isEmpty()){
+            draw(document, isAsyncMode, drawAttrs);
         }
-    }
-
-    private byte[] overlay(PDDocument document, WatermarkAttributes attr) throws IOException {
-        int numberOfPages = document.getNumberOfPages();
-        for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            overlayService.get().watermark(document, pageIndex, attr);
+        var overlayAttrs = attrs.stream().filter(a->a.getMethod().equals(WatermarkMethod.OVERLAY)).collect(Collectors.toList());
+        if (!overlayAttrs.isEmpty()) {
+            overlay(document, overlayAttrs);
         }
-        removeSecurity(document);
         return convertPDDocumentToByteArray(document);
     }
 
-    private byte[] draw(PDDocument document, boolean isAsyncMode, WatermarkAttributes attr) throws IOException {
+    private void overlay(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
+        int numberOfPages = document.getNumberOfPages();
+        for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
+            overlayService.get().watermark(document, pageIndex, attrs);
+        }
+        removeSecurity(document);
+
+    }
+
+    private void draw(PDDocument document, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
         PDFRenderer pdfRenderer = new PDFRenderer(document);
         int numberOfPages = document.getNumberOfPages();
         if (isAsyncMode) {
-            async(document, pdfRenderer, numberOfPages, attr);
+            async(document, pdfRenderer, numberOfPages, attrs);
         } else {
-            sync(document, pdfRenderer, numberOfPages, attr);
+            sync(document, pdfRenderer, numberOfPages, attrs);
         }
         removeSecurity(document);
-        return convertPDDocumentToByteArray(document);
     }
 
-    private void async(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, WatermarkAttributes attr){
+    private void async(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, List<WatermarkAttributes> attrs){
         if (executorService.isEmpty()){
             logger.error("An empty executor");
             throw new ExecutorNotFoundException();
@@ -105,7 +106,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
                 CompletableFuture.runAsync(
                         () -> {
                             try {
-                                drawService.get().watermark(document, pdfRenderer, finalPageIndex, attr);
+                                drawService.get().watermark(document, pdfRenderer, finalPageIndex, attrs);
                             } catch (IOException e) {
                                 logger.error(
                                         String.format(
@@ -122,9 +123,9 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         allOf.join();
     }
 
-    private void sync(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, WatermarkAttributes attr) throws IOException {
+    private void sync(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, List<WatermarkAttributes> attrs) throws IOException {
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            drawService.get().watermark(document, pdfRenderer, pageIndex, attr);
+            drawService.get().watermark(document, pdfRenderer, pageIndex, attrs);
         }
     }
 

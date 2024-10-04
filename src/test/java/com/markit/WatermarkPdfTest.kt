@@ -50,20 +50,27 @@ class WatermarkPdfTest {
                         Runtime.getRuntime().availableProcessors()
                 )
         )
-                .file(plainDocument)
-                .text("Sample Watermark")
-                .textSize(50)
-                .position(WatermarkPosition.CENTER)
-                .method(WatermarkMethod.DRAW)
-                .trademark()
-                .color(Color.BLACK)
-                .dpi(150f)
+            .watermark(plainDocument)
+                    .withText("Top Left Watermark")
+                    .ofSize(50)
+                    .atPosition(WatermarkPosition.TOP_LEFT)
+                    .usingMethod(WatermarkMethod.DRAW)
+                    .asTrademark()
+                    .inColor(Color.RED)
+                    .withDpi(300f)
+                .and()
+                    .withText("Center Watermark")
+                    .ofSize(50)
+                    .usingMethod(WatermarkMethod.OVERLAY)
+                    .asTrademark()
+                    .atPosition(WatermarkPosition.CENTER)
+                    .inColor(Color.BLUE)
                 .apply()
 
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "DrawPlainPdf.pdf")
+        outputFile(result, "DrawPlainPdf.pdf")
     }
 
     @Test
@@ -71,19 +78,19 @@ class WatermarkPdfTest {
     fun `given Plain Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
         val result = WatermarkService.create()
-                .file(plainDocument)
-                .text("Sample Watermark")
-                .textSize(20)
-                .method(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
-                .position(WatermarkPosition.TOP_RIGHT)
-                .trademark()
-                .color(Color.YELLOW)
+                .watermark(plainDocument)
+                .withText("Sample Watermark")
+                .ofSize(20)
+                .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
+                .atPosition(WatermarkPosition.TOP_RIGHT)
+                .asTrademark()
+                .inColor(Color.YELLOW)
                 .apply()
 
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "OverlayPlainPdf.pdf")
+        outputFile(result, "OverlayPlainPdf.pdf")
     }
 
     @Test
@@ -93,18 +100,18 @@ class WatermarkPdfTest {
         val result = WatermarkService.create(
                 Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
         )
-                .file(landscapeDocument)
-                .text("Sample Watermark")
-                .position(WatermarkPosition.CENTER)
-                .method(WatermarkMethod.DRAW)
-                .color(Color.BLUE)
-                .dpi(150f)
+                .watermark(landscapeDocument)
+                .withText("Sample Watermark")
+                .atPosition(WatermarkPosition.CENTER)
+                .usingMethod(WatermarkMethod.DRAW)
+                .inColor(Color.BLUE)
+                .withDpi(150f)
                 .apply()
 
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "DrawLandscapePdf.pdf")
+        outputFile(result, "DrawLandscapePdf.pdf")
     }
 
     @Test
@@ -112,18 +119,19 @@ class WatermarkPdfTest {
     fun `given Landscape Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
         val result = WatermarkService.create()
-                .file(landscapeDocument)
-                .text("Sample Watermark")
-                .method(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
-                .position(WatermarkPosition.BOTTOM_LEFT)
-                .trademark()
-                .color(Color.GREEN)
+                .watermark(landscapeDocument)
+                .withText("Sample Watermark")
+                .ofSize(30)
+                .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
+                .atPosition(WatermarkPosition.BOTTOM_LEFT)
+                .asTrademark()
+                .inColor(Color.GREEN)
                 .apply()
 
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "OverlayLandscapePdf.pdf")
+        outputFile(result, "OverlayLandscapePdf.pdf")
     }
 
     private fun outputFile(result: ByteArray, filename: String) {

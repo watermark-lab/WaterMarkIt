@@ -17,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Oleg Cheban
@@ -24,24 +25,26 @@ import java.io.IOException;
  */
 public class DefaultImageWatermarker implements ImageWatermarker {
     @Override
-    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, WatermarkAttributes attr) throws IOException {
+    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
         if (isByteArrayEmpty(sourceImageBytes)){
             return sourceImageBytes;
         }
-        return watermark(convertToBufferedImage(sourceImageBytes), fileType, attr);
+        return watermark(convertToBufferedImage(sourceImageBytes), fileType, attrs);
     }
 
     @Override
-    public byte[] watermark(File file, FileType fileType, WatermarkAttributes attr) throws IOException {
-        return watermark(ImageIO.read(file), fileType, attr);
+    public byte[] watermark(File file, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
+        return watermark(ImageIO.read(file), fileType, attrs);
     }
 
-    public byte[] watermark(BufferedImage sourceImage, FileType fileType, WatermarkAttributes attr) throws IOException {
+    public byte[] watermark(BufferedImage sourceImage, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
         var g2d = sourceImage.createGraphics();
         int imageWidth = sourceImage.getWidth();
         int imageHeight = sourceImage.getHeight();
-        int baseFontSize = calculateFontSize(attr.getTextSize(), imageWidth, imageHeight);
-        drawWatermark(g2d, sourceImage, baseFontSize, attr);
+        attrs.forEach(attr -> {
+            int baseFontSize = calculateFontSize(attr.getTextSize(), imageWidth, imageHeight);
+            drawWatermark(g2d, sourceImage, baseFontSize, attr);
+        });
         g2d.dispose();
         return convertToByteArray(sourceImage, fileType);
     }

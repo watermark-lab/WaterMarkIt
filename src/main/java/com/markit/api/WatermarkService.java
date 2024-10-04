@@ -26,7 +26,7 @@ public interface WatermarkService {
          * @param fileType The type of file (e.g., PDF, Image).
          * @see FileType
          */
-        Watermark file(byte[] fileBytes, FileType fileType);
+        Watermark watermark(byte[] fileBytes, FileType fileType);
 
         /**
          * Sets the source file to be watermarked using a File object.
@@ -34,14 +34,14 @@ public interface WatermarkService {
          * @param file The file to be watermarked.
          * @param fileType The type of file (e.g., PDF, Image).
          */
-        Watermark file(java.io.File file, FileType fileType);
+        Watermark watermark(java.io.File file, FileType fileType);
 
         /**
          * Sets the PDF document to be watermarked.
          *
          * @param document The PDF document to be watermarked.
          */
-        Watermark file(PDDocument document);
+        Watermark watermark(PDDocument document);
     }
 
     interface Watermark {
@@ -51,14 +51,14 @@ public interface WatermarkService {
          *
          * @param text The text for the watermark.
          */
-        Watermark text(String text);
+        Watermark withText(String text);
 
         /**
          * Sets the size of the watermark text.
          *
          * @param size The font size for the watermark text.
          */
-        Watermark textSize(int size);
+        Watermark ofSize(int size);
 
         /**
          * Defines the method for adding a watermark (default is OVERLAY).
@@ -66,7 +66,7 @@ public interface WatermarkService {
          * @param watermarkMethod The method to use for watermarking.
          * @see WatermarkMethod
          */
-        Watermark method(WatermarkMethod watermarkMethod);
+        Watermark usingMethod(WatermarkMethod watermarkMethod);
 
         /**
          * Defines the position of the watermark on the file.
@@ -74,7 +74,7 @@ public interface WatermarkService {
          * @param watermarkPosition The position to place the watermark (e.g., CENTER, CORNER).
          * @see WatermarkPosition
          */
-        Watermark position(WatermarkPosition watermarkPosition);
+        Watermark atPosition(WatermarkPosition watermarkPosition);
 
         /**
          * Sets the color of the watermark.
@@ -82,21 +82,21 @@ public interface WatermarkService {
          * @param color The color for the watermark text.
          * @see Color
          */
-        Watermark color(Color color);
+        Watermark inColor(Color color);
 
         /**
          * Specifies the resolution for the watermark in DPI.
          *
          * @param dpi The resolution in DPI.
          */
-        Watermark dpi(float dpi);
+        Watermark withDpi(float dpi);
 
         /**
          * Adds a trademark symbol to the watermark.
          *
          * @return The current instance with the trademark added.
          */
-        Watermark trademark();
+        Watermark asTrademark();
 
         /**
          * Enables synchronous mode for applying the watermark.
@@ -104,6 +104,13 @@ public interface WatermarkService {
          * @return The current instance with sync mode enabled.
          */
         Watermark sync();
+
+        /**
+         * Adds another watermark configuration to the file.
+         *
+         * @return A new instance of Watermark for configuring another watermark.
+         */
+        Watermark and();
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.

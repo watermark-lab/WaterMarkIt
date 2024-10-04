@@ -22,10 +22,10 @@ class WatermarkImageTest {
 
         // When
         val result = WatermarkService.create()
-                .file(file, FileType.JPEG)
-                .text("Sample Watermark")
-                .textSize(30)
-                .position(WatermarkPosition.CENTER)
+                .watermark(file, FileType.JPEG)
+                .withText("Sample Watermark")
+                .ofSize(30)
+                .atPosition(WatermarkPosition.CENTER)
                 .apply()
 
         // Then
@@ -33,6 +33,7 @@ class WatermarkImageTest {
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
         assertTrue(result.size > file.length(), "The resulting byte array should be bigger than initial one")
         //outputFile(result, "test.jpeg")
+        file.delete();
     }
 
     fun createJpegFile(fileName: String, width: Int = 600, height: Int = 800): File {

@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author Oleg Cheban
@@ -23,7 +24,7 @@ import java.io.InputStream;
 public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
     private final int TEXT_SIZE = 20;
     @Override
-    public void watermark(PDDocument document, int pageIndex, WatermarkAttributes attr) throws IOException {
+    public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         PDPage page = document.getPage(pageIndex);
         PDRectangle mediaBox = page.getMediaBox();
         float pageWidth = mediaBox.getWidth();
@@ -32,7 +33,13 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
             PDExtendedGraphicsState transparencyState = new PDExtendedGraphicsState();
             transparencyState.setNonStrokingAlphaConstant(0.5f);
             contentStream.setGraphicsStateParameters(transparencyState);
-            overlayWatermark(contentStream, pageWidth, pageHeight, loadAreal(document), attr);
+            attrs.forEach(attr -> {
+                try {
+                    overlayWatermark(contentStream, pageWidth, pageHeight, loadAreal(document), attr);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 

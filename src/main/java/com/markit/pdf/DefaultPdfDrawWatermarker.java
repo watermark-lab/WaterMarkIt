@@ -12,6 +12,8 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author Oleg Cheban
@@ -25,12 +27,12 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
     }
 
     @Override
-    public void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, WatermarkAttributes attr) throws IOException {
+    public void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         var page = document.getPage(pageIndex);
-        var image = pdfRenderer.renderImageWithDPI(pageIndex, attr.getDpi());
+        var image = pdfRenderer.renderImageWithDPI(pageIndex, attrs.stream().map(WatermarkAttributes::getDpi).max(Comparator.naturalOrder()).get());
         var baos = new ByteArrayOutputStream();
         ImageIO.write(image, FileType.JPEG.name(), baos);
-        var watermarkedImageBytes = imageWatermarker.watermark(baos.toByteArray(), FileType.JPEG, attr);
+        var watermarkedImageBytes = imageWatermarker.watermark(baos.toByteArray(), FileType.JPEG, attrs);
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");
         replaceImageInPDF(
                 document,
