@@ -1,12 +1,12 @@
 package com.markit.pdf;
 
-import com.markit.api.WatermarkPositionCoordinates;
+import com.markit.api.AbstractPositionCoordinates;
 
 /**
  * @author Oleg Cheban
  * @since 1.0
  */
-public class OverlayMethodPositionCoordinates implements WatermarkPositionCoordinates {
+public class OverlayMethodPositionCoordinates extends AbstractPositionCoordinates {
     private final int pageWidth;
     private final int pageHeight;
     private final int textWidth;

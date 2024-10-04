@@ -70,7 +70,7 @@ class WatermarkPdfTest {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        outputFile(result, "DrawPlainPdf.pdf")
+        //outputFile(result, "DrawPlainPdf.pdf")
     }
 
     @Test
@@ -90,7 +90,7 @@ class WatermarkPdfTest {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        outputFile(result, "OverlayPlainPdf.pdf")
+        //outputFile(result, "OverlayPlainPdf.pdf")
     }
 
     @Test
@@ -111,7 +111,7 @@ class WatermarkPdfTest {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        outputFile(result, "DrawLandscapePdf.pdf")
+        //outputFile(result, "DrawLandscapePdf.pdf")
     }
 
     @Test
@@ -131,7 +131,7 @@ class WatermarkPdfTest {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        outputFile(result, "OverlayLandscapePdf.pdf")
+        //outputFile(result, "OverlayLandscapePdf.pdf")
     }
 
     private fun outputFile(result: ByteArray, filename: String) {

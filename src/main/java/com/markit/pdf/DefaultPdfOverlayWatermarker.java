@@ -3,7 +3,6 @@ package com.markit.pdf;
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkPositionCoordinates;
 import com.markit.api.WatermarkPosition;
-import com.markit.exceptions.UnsupportedPositionException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -69,15 +68,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
     }
 
     private WatermarkPositionCoordinates.Coordinates defineXY(WatermarkPosition position, int iw, int ih, int ww, int wh){
-        var c = new OverlayMethodPositionCoordinates(iw, ih, ww, wh);
-        switch (position){
-            case CENTER: return c.center();
-            case TOP_LEFT: return c.topLeft();
-            case TOP_RIGHT: return c.topRight();
-            case BOTTOM_LEFT: return c.bottomLeft();
-            case BOTTOM_RIGHT: return c.bottomRight();
-            default: throw new UnsupportedPositionException("Unsupported position: " + position);
-        }
+        return new OverlayMethodPositionCoordinates(iw, ih, ww, wh).getCoordinatesForPosition(position);
     }
 
     private void overlayTrademark(PDPageContentStream contentStream, int textSize, float textWidth, float textHeight, float xCenter, float yCenter, PDType0Font font, Color color) throws IOException {

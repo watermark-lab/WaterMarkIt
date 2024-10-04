@@ -79,15 +79,7 @@ public class DefaultImageWatermarker implements ImageWatermarker {
     }
 
     private WatermarkPositionCoordinates.Coordinates defineXY(WatermarkPosition position, int iw, int ih, int ww, int wh){
-        var c = new DrawMethodPositionCoordinates(iw, ih, ww, wh);
-        switch (position){
-            case CENTER: return c.center();
-            case TOP_LEFT: return c.topLeft();
-            case TOP_RIGHT: return c.topRight();
-            case BOTTOM_LEFT: return c.bottomLeft();
-            case BOTTOM_RIGHT: return c.bottomRight();
-            default: throw new UnsupportedPositionException("Unsupported position: " + position);
-        }
+        return new DrawMethodPositionCoordinates(iw, ih, ww, wh).getCoordinatesForPosition(position);
     }
 
     private void drawTrademark(Graphics2D g2d, Font baseFont, int baseFontSize, Rectangle2D rect, int centerX, int centerY){
