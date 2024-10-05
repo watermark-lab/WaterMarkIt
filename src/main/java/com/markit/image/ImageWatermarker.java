@@ -20,7 +20,7 @@ public interface ImageWatermarker {
      *
      * @param sourceImageBytes The image in byte array format.
      * @param fileType The file type of image
-     * @param attr The attributes of watermark
+     * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked image.
      */
     byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException;
@@ -30,7 +30,7 @@ public interface ImageWatermarker {
      *
      * @param file The source file of image.
      * @param fileType The file type of image
-     * @param attr The attributes of watermark
+     * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked image.
      */
     byte[] watermark(File file, FileType fileType, List<WatermarkAttributes> attrs) throws IOException;

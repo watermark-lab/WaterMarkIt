@@ -2,7 +2,6 @@ package com.markit.image;
 
 import com.markit.api.FileType;
 import com.markit.api.WatermarkAttributes;
-import com.markit.exceptions.UnsupportedPositionException;
 import com.markit.pdf.DrawMethodPositionCoordinates;
 import com.markit.api.WatermarkPositionCoordinates;
 import com.markit.api.WatermarkPosition;
