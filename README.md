@@ -10,8 +10,9 @@ A lightweight Java library for adding watermarks to various file types, includin
 
 - **DSL**: Provides a user-friendly way to configure and apply watermarks.
 - **Unremovable Watermarks**: Designed to watermark PDF files in a way that the watermark cannot be removed.
-- **Customizable Watermarks**: Add text, color, size, position and trademarks with customizable DPI settings.
-- **Asynchronous Operations**: Use an `Executor` for asynchronous watermarking.
+- **Customizable Watermarks**: Add text, adjust color, change size, set position, etc.
+- **Multithreading**: Use an `Executor` for watermarking. This is relevant for multi-page files like PDFs to apply watermarks in parallel.
+- **Supported Formats**: PDF, JPEG, PNG, TIFF, BMP.
 
 ## Getting Started
 
