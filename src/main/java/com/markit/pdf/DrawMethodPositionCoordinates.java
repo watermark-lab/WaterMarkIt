@@ -1,12 +1,12 @@
 package com.markit.pdf;
 
-import com.markit.api.AbstractPositionCoordinates;
+import com.markit.api.PositionCoordinates;
 
 /**
  * @author Oleg Cheban
  * @since 1.0
  */
-public class DrawMethodPositionCoordinates extends AbstractPositionCoordinates {
+public class DrawMethodPositionCoordinates extends PositionCoordinates {
     private final int imageWidth;
     private final int imageHeight;
     private final int watermarkWidth;

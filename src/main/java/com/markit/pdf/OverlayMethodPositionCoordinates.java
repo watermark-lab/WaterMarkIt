@@ -1,12 +1,12 @@
 package com.markit.pdf;
 
-import com.markit.api.AbstractPositionCoordinates;
+import com.markit.api.PositionCoordinates;
 
 /**
  * @author Oleg Cheban
  * @since 1.0
  */
-public class OverlayMethodPositionCoordinates extends AbstractPositionCoordinates {
+public class OverlayMethodPositionCoordinates extends PositionCoordinates {
     private final int pageWidth;
     private final int pageHeight;
     private final int textWidth;

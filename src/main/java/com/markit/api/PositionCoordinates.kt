@@ -4,7 +4,7 @@ package com.markit.api
  * @author Oleg Cheban
  * @since 1.0
  */
-abstract class AbstractPositionCoordinates : WatermarkPositionCoordinates {
+abstract class PositionCoordinates : WatermarkPositionCoordinates {
         fun getCoordinatesForPosition(position: WatermarkPosition): WatermarkPositionCoordinates.Coordinates {
         return when (position) {
             WatermarkPosition.CENTER -> center()
