@@ -144,22 +144,6 @@ public interface WatermarkService {
     /**
      * Creates a new instance of {@code WatermarkService} with the specified components.
      *
-     * @param exr The executor for asynchronous tasks.
-     * @param i The image watermarker.
-     * @param d The PDF watermarker.
-     * @param o The overlay PDF watermarker.
-     * @param s The watermark PDF service.
-     * @return A new instance of {@code WatermarkService}.
-     */
-    static File create(Executor exr, ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
-        nullCheck(i, d, o, s);
-        Objects.requireNonNull(exr, "Executor is required");
-        return new WatermarkServiceImpl(exr, i, d, o, s);
-    }
-
-    /**
-     * Creates a new instance of {@code WatermarkService} with the specified components.
-     *
      * @param i The image watermarker.
      * @param d The PDF watermarker.
      * @param o The overlay PDF watermarker.
@@ -167,14 +151,10 @@ public interface WatermarkService {
      * @return A new instance of {@code WatermarkService}.
      */
     static File create(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
-        nullCheck(i, d, o, s);
-        return new WatermarkServiceImpl(i, d, o, s);
-    }
-
-    static void nullCheck(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s){
         Objects.requireNonNull(i, "ImageWatermarker is required");
         Objects.requireNonNull(d, "PdfWatermarkDrawService is required");
         Objects.requireNonNull(o, "PdfWatermarkOverlayService is required");
         Objects.requireNonNull(s, "WatermarkPdfService is required");
+        return new WatermarkServiceImpl(i, d, o, s);
     }
 }

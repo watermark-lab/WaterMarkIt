@@ -23,7 +23,6 @@ import java.util.concurrent.Executor;
 public class WatermarkServiceImpl implements WatermarkService.File, WatermarkService.Watermark {
     private static final Log logger = LogFactory.getLog(WatermarkServiceImpl.class);
     private FileType fileType;
-    private Executor executor;
     private boolean async;
     private ImageWatermarker imageWatermarker;
     private PdfWatermarker pdfWatermarker;
@@ -42,22 +41,11 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     }
 
     public WatermarkServiceImpl(Executor executor) {
-        this.executor = executor;
         this.async = true;
         this.imageWatermarker = new DefaultImageWatermarker();
         this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
         this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
-        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, this.executor);
-        this.watermarks = new ArrayList<>();
-    }
-
-    public WatermarkServiceImpl(Executor executor, ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
-        this.executor = executor;
-        this.async = true;
-        this.imageWatermarker = w;
-        this.pdfWatermarker = d;
-        this.overlayPdfWatermarker = o;
-        this.watermarkPdfService = s;
+        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, executor);
         this.watermarks = new ArrayList<>();
     }
 
