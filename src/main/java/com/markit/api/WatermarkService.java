@@ -152,8 +152,8 @@ public interface WatermarkService {
      */
     static File create(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
         Objects.requireNonNull(i, "ImageWatermarker is required");
-        Objects.requireNonNull(d, "PdfWatermarkDrawService is required");
-        Objects.requireNonNull(o, "PdfWatermarkOverlayService is required");
+        Objects.requireNonNull(d, "PdfWatermarker is required");
+        Objects.requireNonNull(o, "OverlayPdfWatermarker is required");
         Objects.requireNonNull(s, "WatermarkPdfService is required");
         return new WatermarkServiceImpl(i, d, o, s);
     }
