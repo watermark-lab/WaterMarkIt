@@ -84,7 +84,7 @@ class WatermarkPdfTest {
                 .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
                 .atPosition(WatermarkPosition.TOP_RIGHT)
                 .withTrademark()
-                .inColor(Color.YELLOW)
+                .inColor(Color.RED)
                 .apply()
 
         // Then

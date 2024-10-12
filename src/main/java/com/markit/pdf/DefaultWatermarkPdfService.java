@@ -108,10 +108,8 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
                             try {
                                 drawService.get().watermark(document, pdfRenderer, finalPageIndex, attrs);
                             } catch (IOException e) {
-                                logger.error(
-                                        String.format(
-                                                "An error occurred during watermarking on page number %d",
-                                                finalPageIndex), e);
+                                logger.error(String.format(
+                                        "An error occurred during watermarking on page number %d", finalPageIndex), e);
                                 throw new AsyncWatermarkPdfException(e);
                             }
                         },

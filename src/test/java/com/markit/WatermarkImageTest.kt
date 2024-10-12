@@ -13,6 +13,7 @@ import javax.imageio.ImageIO
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
+@SuppressWarnings("deprecation")
 class WatermarkImageTest {
     @Test
     @Throws(IOException::class)

@@ -17,11 +17,13 @@ public class DefaultImageWatermarker implements ImageWatermarker {
     private final ImageConverter imageConverter;
     private final WatermarkRenderer watermarkRenderer;
     private final WatermarkPositioner watermarkPositioner;
+
     public DefaultImageWatermarker() {
         this.imageConverter = new ImageConverter();
         this.watermarkRenderer = new WatermarkRenderer();
         this.watermarkPositioner = new WatermarkPositioner();
     }
+
     public DefaultImageWatermarker(ImageConverter imageConverter, WatermarkRenderer watermarkRenderer, WatermarkPositioner watermarkPositioner) {
         this.imageConverter = imageConverter;
         this.watermarkRenderer = watermarkRenderer;
