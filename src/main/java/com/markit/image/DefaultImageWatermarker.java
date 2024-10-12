@@ -2,18 +2,9 @@ package com.markit.image;
 
 import com.markit.api.FileType;
 import com.markit.api.WatermarkAttributes;
-import com.markit.pdf.DrawMethodPositionCoordinates;
-import com.markit.api.WatermarkPositionCoordinates;
-import com.markit.api.WatermarkPosition;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -23,17 +14,33 @@ import java.util.List;
  * @since 1.0
  */
 public class DefaultImageWatermarker implements ImageWatermarker {
+    private final ImageConverter imageConverter;
+    private final WatermarkRenderer watermarkRenderer;
+    private final WatermarkPositioner watermarkPositioner;
+    public DefaultImageWatermarker() {
+        this.imageConverter = new ImageConverter();
+        this.watermarkRenderer = new WatermarkRenderer();
+        this.watermarkPositioner = new WatermarkPositioner();
+    }
+    public DefaultImageWatermarker(ImageConverter imageConverter, WatermarkRenderer watermarkRenderer, WatermarkPositioner watermarkPositioner) {
+        this.imageConverter = imageConverter;
+        this.watermarkRenderer = watermarkRenderer;
+        this.watermarkPositioner = watermarkPositioner;
+    }
+
     @Override
     public byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
-        if (isByteArrayEmpty(sourceImageBytes)){
+        if (imageConverter.isByteArrayEmpty(sourceImageBytes)) {
             return sourceImageBytes;
         }
-        return watermark(convertToBufferedImage(sourceImageBytes), fileType, attrs);
+        BufferedImage image = imageConverter.convertToBufferedImage(sourceImageBytes);
+        return watermark(image, fileType, attrs);
     }
 
     @Override
     public byte[] watermark(File file, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
-        return watermark(ImageIO.read(file), fileType, attrs);
+        BufferedImage image = ImageIO.read(file);
+        return watermark(image, fileType, attrs);
     }
 
     public byte[] watermark(BufferedImage sourceImage, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
@@ -41,56 +48,10 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         int imageWidth = sourceImage.getWidth();
         int imageHeight = sourceImage.getHeight();
         attrs.forEach(attr -> {
-            int baseFontSize = calculateFontSize(attr.getTextSize(), imageWidth, imageHeight);
-            drawWatermark(g2d, sourceImage, baseFontSize, attr);
+            int baseFontSize = watermarkRenderer.calculateFontSize(attr.getTextSize(), imageWidth, imageHeight);
+            watermarkRenderer.drawWatermark(g2d, sourceImage, baseFontSize, attr, watermarkPositioner);
         });
         g2d.dispose();
-        return convertToByteArray(sourceImage, fileType);
-    }
-
-    private Boolean isByteArrayEmpty(byte[] byteArray) {
-        return byteArray == null || byteArray.length == 0;
-    }
-
-    private BufferedImage convertToBufferedImage(byte[] imageBytes) throws IOException {
-        return ImageIO.read(new ByteArrayInputStream(imageBytes));
-    }
-
-    private int calculateFontSize(int textSize, int imageWidth, int imageHeight) {
-        if (textSize > 0) return textSize;
-        return Math.min(imageWidth, imageHeight) / 10;
-    }
-
-    private void drawWatermark(Graphics2D g2d, BufferedImage image, int baseFontSize, WatermarkAttributes attr) {
-        var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
-        var baseFont = new Font("Arial", Font.BOLD, baseFontSize);
-        g2d.setComposite(alphaChannel);
-        g2d.setColor(attr.getColor());
-        g2d.setFont(baseFont);
-        FontRenderContext frc = g2d.getFontRenderContext();
-        TextLayout layout = new TextLayout(attr.getText(), baseFont, frc);
-        Rectangle2D rect = layout.getBounds();
-        var coordinates = defineXY(attr.getPosition(), image.getWidth(), image.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
-        layout.draw(g2d, coordinates.getX(), coordinates.getY());
-        if (attr.getTrademark()){
-            drawTrademark(g2d, baseFont, baseFontSize, rect, coordinates.getX(), coordinates.getY());
-        }
-    }
-
-    private WatermarkPositionCoordinates.Coordinates defineXY(WatermarkPosition position, int iw, int ih, int ww, int wh){
-        return new DrawMethodPositionCoordinates(iw, ih, ww, wh).getCoordinatesForPosition(position);
-    }
-
-    private void drawTrademark(Graphics2D g2d, Font baseFont, int baseFontSize, Rectangle2D rect, int centerX, int centerY){
-        FontRenderContext frc = g2d.getFontRenderContext();
-        Font smallFont = baseFont.deriveFont((float) baseFontSize / 2);
-        TextLayout trademarkLayout = new TextLayout("®", smallFont, frc);
-        trademarkLayout.draw(g2d, (float) (centerX + rect.getWidth()) + 5, centerY - (baseFontSize / 1.5f));
-    }
-
-    private byte[] convertToByteArray(BufferedImage image, FileType fileType) throws IOException {
-        var baos = new ByteArrayOutputStream();
-        ImageIO.write(image, fileType.name(), baos);
-        return baos.toByteArray();
+        return imageConverter.convertToByteArray(sourceImage, fileType);
     }
 }

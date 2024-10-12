@@ -127,8 +127,14 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     }
 
     @Override
-    public WatermarkService.Watermark asTrademark() {
+    public WatermarkService.Watermark withTrademark() {
         currentWatermark.setTrademark(true);
+        return this;
+    }
+
+    @Override
+    public WatermarkService.Watermark rotate(int degree) {
+        currentWatermark.setRotation(degree);
         return this;
     }
 

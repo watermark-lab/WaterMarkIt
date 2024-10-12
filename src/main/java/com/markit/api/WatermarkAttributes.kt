@@ -8,6 +8,7 @@ data class WatermarkAttributes (
     var color: Color = Color.BLACK,
     var dpi: Float = 300f,
     var trademark: Boolean = false,
+    var rotation: Int = 0,
     var method: WatermarkMethod = WatermarkMethod.DRAW,
     var position: WatermarkPosition = WatermarkPosition.CENTER
 ) {}

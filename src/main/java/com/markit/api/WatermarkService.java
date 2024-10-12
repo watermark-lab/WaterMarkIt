@@ -94,9 +94,13 @@ public interface WatermarkService {
         /**
          * Adds a trademark symbol to the watermark.
          *
-         * @return The current instance with the trademark added.
          */
-        Watermark asTrademark();
+        Watermark withTrademark();
+
+        /**
+         * Changes the rotation of the watermark
+         */
+        Watermark rotate(int degree);
 
         /**
          * Enables synchronous mode for applying the watermark.

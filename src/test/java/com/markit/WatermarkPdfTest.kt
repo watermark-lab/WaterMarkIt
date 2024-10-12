@@ -55,14 +55,14 @@ class WatermarkPdfTest {
                     .ofSize(50)
                     .atPosition(WatermarkPosition.TOP_LEFT)
                     .usingMethod(WatermarkMethod.DRAW)
-                    .asTrademark()
-                    .inColor(Color.RED)
+                    .inColor(Color.BLACK)
                     .withDpi(300f)
                 .and()
                     .withText("Center Watermark")
-                    .ofSize(50)
-                    .usingMethod(WatermarkMethod.OVERLAY)
-                    .asTrademark()
+                    .ofSize(150)
+                    .usingMethod(WatermarkMethod.DRAW)
+                    .withTrademark()
+                    .rotate(325)
                     .atPosition(WatermarkPosition.CENTER)
                     .inColor(Color.BLUE)
                 .apply()
@@ -83,7 +83,7 @@ class WatermarkPdfTest {
                 .ofSize(20)
                 .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
                 .atPosition(WatermarkPosition.TOP_RIGHT)
-                .asTrademark()
+                .withTrademark()
                 .inColor(Color.YELLOW)
                 .apply()
 
@@ -124,7 +124,7 @@ class WatermarkPdfTest {
                 .ofSize(30)
                 .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
                 .atPosition(WatermarkPosition.BOTTOM_LEFT)
-                .asTrademark()
+                .withTrademark()
                 .inColor(Color.GREEN)
                 .apply()
 
