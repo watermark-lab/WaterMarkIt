@@ -15,24 +15,24 @@ import java.util.List;
  */
 public class DefaultImageWatermarker implements ImageWatermarker {
     private final ImageConverter imageConverter;
-    private final WatermarkRenderer watermarkRenderer;
+    private final WatermarkPainter watermarkPainter;
     private final WatermarkPositioner watermarkPositioner;
 
     public DefaultImageWatermarker() {
         this.imageConverter = new ImageConverter();
-        this.watermarkRenderer = new WatermarkRenderer();
+        this.watermarkPainter = new WatermarkPainter();
         this.watermarkPositioner = new WatermarkPositioner();
     }
 
-    public DefaultImageWatermarker(ImageConverter imageConverter, WatermarkRenderer watermarkRenderer, WatermarkPositioner watermarkPositioner) {
+    public DefaultImageWatermarker(ImageConverter imageConverter, WatermarkPainter watermarkPainter, WatermarkPositioner watermarkPositioner) {
         this.imageConverter = imageConverter;
-        this.watermarkRenderer = watermarkRenderer;
+        this.watermarkPainter = watermarkPainter;
         this.watermarkPositioner = watermarkPositioner;
     }
 
     @Override
     public byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
-        if (imageConverter.isByteArrayEmpty(sourceImageBytes)) {
+        if (isByteArrayEmpty(sourceImageBytes)) {
             return sourceImageBytes;
         }
         BufferedImage image = imageConverter.convertToBufferedImage(sourceImageBytes);
@@ -50,10 +50,19 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         int imageWidth = sourceImage.getWidth();
         int imageHeight = sourceImage.getHeight();
         attrs.forEach(attr -> {
-            int baseFontSize = watermarkRenderer.calculateFontSize(attr.getTextSize(), imageWidth, imageHeight);
-            watermarkRenderer.drawWatermark(g2d, sourceImage, baseFontSize, attr, watermarkPositioner);
+            int baseFontSize = calculateFontSize(attr.getTextSize(), imageWidth, imageHeight);
+            watermarkPainter.draw(g2d, sourceImage, baseFontSize, attr, watermarkPositioner);
         });
         g2d.dispose();
         return imageConverter.convertToByteArray(sourceImage, fileType);
+    }
+
+    public int calculateFontSize(int textSize, int imageWidth, int imageHeight) {
+        if (textSize > 0) return textSize;
+        return Math.min(imageWidth, imageHeight) / 10;
+    }
+
+    public boolean isByteArrayEmpty(byte[] byteArray) {
+        return byteArray == null || byteArray.length == 0;
     }
 }

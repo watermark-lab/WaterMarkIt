@@ -1,4 +1,4 @@
-package com.markit.pdf;
+package com.markit.pdf.draw;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkMethod;

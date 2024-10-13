@@ -5,6 +5,8 @@ import com.markit.api.WatermarkMethod;
 import com.markit.exceptions.AsyncWatermarkPdfException;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
+import com.markit.pdf.draw.PdfWatermarker;
+import com.markit.pdf.overlay.OverlayPdfWatermarker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;

@@ -2,7 +2,7 @@ package com.markit.image;
 
 import com.markit.api.WatermarkPosition;
 import com.markit.api.WatermarkPositionCoordinates;
-import com.markit.pdf.DrawMethodPositionCoordinates;
+import com.markit.pdf.draw.DrawMethodPositionCoordinates;
 
 /**
  * @author Oleg Cheban

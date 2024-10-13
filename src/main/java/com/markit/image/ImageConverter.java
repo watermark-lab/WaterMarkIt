@@ -22,8 +22,4 @@ public class ImageConverter {
         ImageIO.write(image, fileType.name(), baos);
         return baos.toByteArray();
     }
-
-    public boolean isByteArrayEmpty(byte[] byteArray) {
-        return byteArray == null || byteArray.length == 0;
-    }
 }

@@ -1,8 +1,8 @@
 package com.markit.api;
 
 import com.markit.image.ImageWatermarker;
-import com.markit.pdf.OverlayPdfWatermarker;
-import com.markit.pdf.PdfWatermarker;
+import com.markit.pdf.overlay.OverlayPdfWatermarker;
+import com.markit.pdf.draw.PdfWatermarker;
 import com.markit.pdf.WatermarkPdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 

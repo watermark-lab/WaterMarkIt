@@ -1,4 +1,4 @@
-package com.markit.pdf;
+package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkPosition;
 import com.markit.api.WatermarkPositionCoordinates;

@@ -1,4 +1,4 @@
-package com.markit.pdf;
+package com.markit.pdf.overlay;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
