@@ -56,7 +56,7 @@ try (var document = new PDDocument()) {
                                     Runtime.getRuntime().availableProcessors()
                             )
                     )
-                    .watermark(plainDocument)
+                    .watermark(document)
                         .withText("Top Left Watermark")
                         .atPosition(WatermarkPosition.TOP_LEFT)
                         .usingMethod(WatermarkMethod.DRAW)
