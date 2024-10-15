@@ -56,22 +56,31 @@ try (var document = new PDDocument()) {
                                     Runtime.getRuntime().availableProcessors()
                             )
                     )
-                    .watermark(document)
-                        .withText("Top Left Watermark")
-                        .atPosition(WatermarkPosition.TOP_LEFT)
-                        .usingMethod(WatermarkMethod.DRAW)
-                        .inColor(Color.BLACK)
-                        .withDpi(300f)
-                    .and()
-                        .withText("Center Watermark").ofSize(50)
+                    .watermark(plainDocument)
+                        .withText("CONFIDENTIAL").ofSize(20)
                         .usingMethod(WatermarkMethod.OVERLAY)
-                        .rotate(45)
+                        .atPosition(WatermarkPosition.TOP_LEFT)
+                        .inColor(Color.RED)
+                    .and()
+                        .withText("Copyright © 2024").ofSize(10)
+                        .usingMethod(WatermarkMethod.OVERLAY)
+                        .atPosition(WatermarkPosition.BOTTOM_LEFT)
+                        .inColor(Color.BLACK)
+                    .and()
+                        .withText("Your Company Name").ofSize(200)
+                        .usingMethod(WatermarkMethod.DRAW)
                         .atPosition(WatermarkPosition.CENTER)
-                        .inColor(Color.BLUE)
+                        .withDpi(300f)
+                        .rotate(25)
                         .withTrademark()
+                        .inColor(Color.BLUE)
                     .apply();
 }
 ```
+As a result, the PDF contains three watermarks applied in different positions and using different styles.
+
+![Screenshot](https://i.imgur.com/ww4gtmbm.png)
+
 ### Libraries
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
