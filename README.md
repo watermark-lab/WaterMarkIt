@@ -56,7 +56,7 @@ try (var document = new PDDocument()) {
                                     Runtime.getRuntime().availableProcessors()
                             )
                     )
-                    .watermark(plainDocument)
+                    .watermark(document)
                         .withText("CONFIDENTIAL").ofSize(20)
                         .usingMethod(WatermarkMethod.OVERLAY)
                         .atPosition(WatermarkPosition.TOP_LEFT)
