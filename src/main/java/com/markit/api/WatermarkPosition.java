@@ -5,5 +5,5 @@ package com.markit.api;
  * @since 1.0
  */
 public enum WatermarkPosition {
-    CENTER, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
+    CENTER, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, TILED
 }

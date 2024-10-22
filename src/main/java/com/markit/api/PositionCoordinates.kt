@@ -5,13 +5,14 @@ package com.markit.api
  * @since 1.0
  */
 abstract class PositionCoordinates : WatermarkPositionCoordinates {
-        fun getCoordinatesForPosition(position: WatermarkPosition): WatermarkPositionCoordinates.Coordinates {
+        fun getCoordinatesForPosition(position: WatermarkPosition): List<WatermarkPositionCoordinates.Coordinates> {
         return when (position) {
-            WatermarkPosition.CENTER -> center()
-            WatermarkPosition.TOP_LEFT -> topLeft()
-            WatermarkPosition.TOP_RIGHT -> topRight()
-            WatermarkPosition.BOTTOM_LEFT -> bottomLeft()
-            WatermarkPosition.BOTTOM_RIGHT -> bottomRight()
+            WatermarkPosition.CENTER -> listOf(center())
+            WatermarkPosition.TOP_LEFT -> listOf(topLeft())
+            WatermarkPosition.TOP_RIGHT -> listOf(topRight())
+            WatermarkPosition.BOTTOM_LEFT -> listOf(bottomLeft())
+            WatermarkPosition.BOTTOM_RIGHT -> listOf(bottomRight())
+            WatermarkPosition.TILED -> tiled()
         }
     }
 }

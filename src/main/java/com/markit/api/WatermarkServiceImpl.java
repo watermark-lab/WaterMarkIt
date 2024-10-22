@@ -150,14 +150,10 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
 
     @Override
     public WatermarkService.Watermark and() {
-        // If no watermark has been configured after and(), ignore it.
-        // text is absolutely essential for watermarking
         if (!currentWatermark.getText().isEmpty()) {
             watermarks.add(currentWatermark);
             currentWatermark = new WatermarkAttributes();
             currentWatermark.setMethod(defineMethodByFileType(fileType));
-        } else {
-            throw new IllegalStateException("Each .and() must be followed by a watermark configuration before calling .and() again.");
         }
         return this;
     }

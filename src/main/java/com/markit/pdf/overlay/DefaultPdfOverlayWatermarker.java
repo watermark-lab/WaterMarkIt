@@ -65,8 +65,9 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;
         float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
         var coordinates = positioner.defineXY(attr.getPosition(), (int) pageWidth, (int) pageHeight, (int) textWidth, (int) textHeight);
-        float centerX = coordinates.getX() + textWidth / 2;
-        float centerY = coordinates.getY() + textHeight / 2;
+
+        float centerX = coordinates.get(0).getX() + textWidth / 2;
+        float centerY = coordinates.get(0).getY() + textHeight / 2;
         Matrix transform = new Matrix();
         transform.translate(centerX, centerY);
         transform.rotate(Math.toRadians(attr.getRotation()));

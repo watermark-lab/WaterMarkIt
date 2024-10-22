@@ -3,12 +3,14 @@ package com.markit.pdf.overlay;
 import com.markit.api.WatermarkPosition;
 import com.markit.api.WatermarkPositionCoordinates;
 
+import java.util.List;
+
 /**
  * @author Oleg Cheban
  * @since 1.0
  */
 public class WatermarkPositioner {
-    public WatermarkPositionCoordinates.Coordinates defineXY(
+    public List<WatermarkPositionCoordinates.Coordinates> defineXY(
             WatermarkPosition position,
             int imageWidth,
             int imageHeight,

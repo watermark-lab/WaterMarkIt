@@ -5,7 +5,6 @@ import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
-import org.apache.pdfbox.pdmodel.common.PDRectangle
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,40 +16,33 @@ import java.util.concurrent.Executors
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class WatermarkPdfTest {
-    private lateinit var plainDocument: PDDocument
-    private lateinit var landscapeDocument: PDDocument
+class PdfPortraitPageOrientationTest {
+    private lateinit var document: PDDocument
 
     @BeforeEach
     fun initDocument() {
-        plainDocument = PDDocument().apply {
+        document = PDDocument().apply {
             addPage(PDPage())
-        }
-
-        landscapeDocument = PDDocument().apply {
-            val landscapePage = PDPage(PDRectangle.A4).apply {
-                mediaBox = PDRectangle(PDRectangle.A4.height, PDRectangle.A4.width)
-            }
-            addPage(landscapePage)
+            addPage(PDPage())
+            addPage(PDPage())
         }
     }
 
     @AfterEach
     fun close(){
-        plainDocument.close()
-        landscapeDocument.close()
+        document.close()
     }
 
     @Test
     @Throws(IOException::class)
-    fun `given Plain Pdf when Draw Method is Used then Make Watermarked Pdf`() {
+    fun `given Portrait Pdf when Draw Method is Used then Make Watermarked Pdf`() {
         // When
         val result = WatermarkService.create(
                 Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 )
         )
-            .watermark(plainDocument)
+            .watermark(document)
                     .withText("Top Left Watermark")
                     .ofSize(50)
                     .atPosition(WatermarkPosition.TOP_LEFT)
@@ -75,10 +67,10 @@ class WatermarkPdfTest {
 
     @Test
     @Throws(IOException::class)
-    fun `given Plain Pdf when Overlay Method then Make Watermarked Pdf`() {
+    fun `given Portrait Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
         val result = WatermarkService.create()
-                .watermark(plainDocument)
+                .watermark(document)
                 .withText("Sample Watermark")
                 .ofSize(40)
                 .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
@@ -96,43 +88,25 @@ class WatermarkPdfTest {
 
     @Test
     @Throws(IOException::class)
-    fun `given Landscape Pdf when Draw Method then Make Watermarked Pdf`() {
+    fun `given Portrait Pdf when Draw Method and TILED position is Used then Make Watermarked Pdf`() {
         // When
         val result = WatermarkService.create(
-                Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+            Executors.newFixedThreadPool(
+                Runtime.getRuntime().availableProcessors()
+            )
         )
-                .watermark(landscapeDocument)
-                .withText("Sample Watermark")
-                .atPosition(WatermarkPosition.CENTER)
-                .usingMethod(WatermarkMethod.DRAW)
-                .inColor(Color.BLUE)
-                .withDpi(150f)
-                .apply()
+            .watermark(document)
+            .withText("CISCO").ofSize(194)
+            .usingMethod(WatermarkMethod.DRAW)
+            .atPosition(WatermarkPosition.TILED)
+            .inColor(Color.RED)
+            .withDpi(300f)
+            .apply()
 
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "DrawLandscapePdf.pdf")
-    }
-
-    @Test
-    @Throws(IOException::class)
-    fun `given Landscape Pdf when Overlay Method then Make Watermarked Pdf`() {
-        // When
-        val result = WatermarkService.create()
-                .watermark(landscapeDocument)
-                .withText("Sample Watermark")
-                .ofSize(30)
-                .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
-                .atPosition(WatermarkPosition.BOTTOM_LEFT)
-                .withTrademark()
-                .inColor(Color.GREEN)
-                .apply()
-
-        // Then
-        assertNotNull(result, "The resulting byte array should not be null")
-        assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "OverlayLandscapePdf.pdf")
+        outputFile(result, "tiled.pdf")
     }
 
     private fun outputFile(result: ByteArray, filename: String) {
