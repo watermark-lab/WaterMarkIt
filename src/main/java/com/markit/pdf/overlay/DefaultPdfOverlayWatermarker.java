@@ -59,28 +59,31 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         contentStream.setFont(font, fontSize);
         contentStream.setNonStrokingColor(attr.getColor());
         contentStream.setGraphicsStateParameters(defineOpacity(attr.getOpacity()));
-
         float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;
         float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
         var coordinates = positioner.defineXY(attr.getPosition(), (int) pageWidth, (int) pageHeight, (int) textWidth, (int) textHeight);
+        float x = coordinates.get(0).getX() + textWidth / 2;
+        float y = coordinates.get(0).getY() + textHeight / 2;
 
-        float centerX = coordinates.get(0).getX() + textWidth / 2;
-        float centerY = coordinates.get(0).getY() + textHeight / 2;
-        Matrix transform = new Matrix();
-        transform.translate(centerX, centerY);
-        transform.rotate(Math.toRadians(attr.getRotation()));
-        transform.translate(-textWidth / 2, -textHeight / 2); // Translate back to the original position
-        contentStream.setTextMatrix(transform);
+        contentStream.setTextMatrix(defineRotationMatrix(x, y, textWidth, textHeight, attr.getRotation()));
         contentStream.showText(attr.getText());
         contentStream.endText();
 
         if (attr.getTrademark()) {
-            trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, centerX, centerY, font, fontSize);
+            trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, x, y, font, fontSize);
         }
     }
 
+    private Matrix defineRotationMatrix(float centerX, float centerY, float textWidth, float textHeight, int rotation){
+        var m = new Matrix();
+        m.translate(centerX, centerY);
+        m.rotate(Math.toRadians(rotation));
+        m.translate(-textWidth / 2, -textHeight / 2); // Translate back to the original position
+        return m;
+    }
+
     private PDExtendedGraphicsState defineOpacity(float opacity) throws IOException {
-        PDExtendedGraphicsState transparencyState = new PDExtendedGraphicsState();
+        var transparencyState = new PDExtendedGraphicsState();
         transparencyState.setNonStrokingAlphaConstant(opacity);
         return transparencyState;
     }
