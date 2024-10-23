@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public class WatermarkPainter {
     public void draw(Graphics2D g2d, BufferedImage image, int baseFontSize, WatermarkAttributes attr, WatermarkPositioner positioner) {
-        var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
+        var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, attr.getOpacity());
         var baseFont = new Font("Arial", Font.BOLD, baseFontSize);
         configureGraphics(g2d, alphaChannel, attr.getColor(), baseFont);
 

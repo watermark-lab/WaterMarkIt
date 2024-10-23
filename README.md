@@ -66,6 +66,7 @@ try (var document = new PDDocument()) {
                         .usingMethod(WatermarkMethod.OVERLAY)
                         .atPosition(WatermarkPosition.BOTTOM_LEFT)
                         .inColor(Color.BLACK)
+                        .withOpacity(0.5f)
                     .and()
                         .withText("Your Company Name").ofSize(200)
                         .usingMethod(WatermarkMethod.DRAW)
