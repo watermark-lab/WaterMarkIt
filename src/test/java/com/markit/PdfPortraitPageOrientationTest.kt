@@ -100,6 +100,7 @@ class PdfPortraitPageOrientationTest {
             .usingMethod(WatermarkMethod.DRAW)
             .atPosition(WatermarkPosition.TILED)
             .inColor(Color.RED)
+            .withOpacity(0.5f)
             .withDpi(300f)
             .apply()
 

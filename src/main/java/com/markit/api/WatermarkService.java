@@ -85,6 +85,13 @@ public interface WatermarkService {
         Watermark inColor(Color color);
 
         /**
+         * Sets the opacity of the watermark.
+         *
+         * @param opacity The opacity value, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+         */
+        Watermark withOpacity(float opacity);
+
+        /**
          * Specifies the resolution for the watermark in DPI.
          *
          * @param dpi The resolution in DPI.

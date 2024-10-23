@@ -125,6 +125,12 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     }
 
     @Override
+    public WatermarkService.Watermark withOpacity(float opacity) {
+        currentWatermark.setOpacity(opacity);
+        return this;
+    }
+
+    @Override
     public WatermarkService.Watermark withDpi(float d) {
         currentWatermark.setDpi(d);
         return this;
