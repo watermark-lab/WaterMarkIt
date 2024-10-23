@@ -43,10 +43,6 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         float pageHeight = mediaBox.getHeight();
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
-            PDExtendedGraphicsState transparencyState = new PDExtendedGraphicsState();
-            transparencyState.setNonStrokingAlphaConstant(0.5f);
-            contentStream.setGraphicsStateParameters(transparencyState);
-
             attrs.forEach(attr -> {
                 try {
                     overlay(contentStream, pageWidth, pageHeight, fontLoader.loadArialFont(document), attr);
@@ -62,6 +58,8 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         contentStream.beginText();
         contentStream.setFont(font, fontSize);
         contentStream.setNonStrokingColor(attr.getColor());
+        contentStream.setGraphicsStateParameters(defineOpacity(attr.getOpacity()));
+
         float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;
         float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
         var coordinates = positioner.defineXY(attr.getPosition(), (int) pageWidth, (int) pageHeight, (int) textWidth, (int) textHeight);
@@ -79,5 +77,11 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         if (attr.getTrademark()) {
             trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, centerX, centerY, font, fontSize);
         }
+    }
+
+    private PDExtendedGraphicsState defineOpacity(float opacity) throws IOException {
+        PDExtendedGraphicsState transparencyState = new PDExtendedGraphicsState();
+        transparencyState.setNonStrokingAlphaConstant(opacity);
+        return transparencyState;
     }
 }

@@ -77,6 +77,7 @@ class PdfPortraitPageOrientationTest {
                 .atPosition(WatermarkPosition.CENTER)
                 .rotate(45)
                 .withTrademark()
+                .withOpacity(0.2f)
                 .inColor(Color.RED)
                 .apply()
 
