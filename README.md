@@ -6,14 +6,14 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
 # WaterMarkIt
 
-A lightweight Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed.
+A lightweight Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed. The library provides the `WatermarkMethod.DRAW` watermarking method to address the issue, whereas the `WatermarkMethod.OVERLAY` method adds a separate layer that can be easily removed, but it works much faster than the draw method.  
 
 ## Features
 
 - **DSL**: Provides a user-friendly way to configure and apply watermarks.
 - **Unremovable Watermarks**: Designed to watermark PDF files in a way that the watermark cannot be removed.
 - **Customizable Watermarks**: text, color, size, position, rotation, DPI, etc.
-- **Multithreading**: Use an `Executor` for watermarking. This is relevant for multi-page files like PDFs to apply watermarks in parallel.
+- **Multithreading**: Use a thread pool for watermarking. This is relevant for `WatermarkMethod.DRAW` method and multi-page files like PDFs to apply watermarks in parallel (a separate thread per page).
 - **Supported Formats**: PDF, JPEG, PNG, TIFF, BMP.
 
 ## Getting Started
