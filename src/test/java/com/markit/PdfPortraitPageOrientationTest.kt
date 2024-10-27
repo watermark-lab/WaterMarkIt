@@ -108,7 +108,7 @@ class PdfPortraitPageOrientationTest {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        outputFile(result, "tiled.pdf")
+        //outputFile(result, "tiled.pdf")
     }
 
     private fun outputFile(result: ByteArray, filename: String) {

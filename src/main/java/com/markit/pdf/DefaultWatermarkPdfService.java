@@ -45,28 +45,28 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     }
 
     @Override
-    public byte[] watermark(byte[] sourceImageBytes, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(byte[] sourceImageBytes, List<WatermarkAttributes> attrs) throws IOException {
         try(PDDocument document = PDDocument.load(sourceImageBytes)) {
-            return watermark(document, isAsyncMode, attrs);
+            return watermark(document, attrs);
         }
     }
 
     @Override
-    public byte[] watermark(File file, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(File file, List<WatermarkAttributes> attrs) throws IOException {
         try(PDDocument document = PDDocument.load(file)) {
-            return watermark(document, isAsyncMode, attrs);
+            return watermark(document, attrs);
         }
     }
 
     @Override
-    public byte[] watermark(PDDocument document, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
         if (drawService.isEmpty() || overlayService.isEmpty()){
             logger.error("Incorrect configuration. An empty service");
             throw new WatermarkPdfServiceNotFoundException();
         }
         var drawAttrs = attrs.stream().filter(a->a.getMethod().equals(WatermarkMethod.DRAW)).collect(Collectors.toList());
         if (!drawAttrs.isEmpty()){
-            draw(document, isAsyncMode, drawAttrs);
+            draw(document, drawAttrs);
         }
         var overlayAttrs = attrs.stream().filter(a->a.getMethod().equals(WatermarkMethod.OVERLAY)).collect(Collectors.toList());
         if (!overlayAttrs.isEmpty()) {
@@ -84,13 +84,13 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
 
     }
 
-    private void draw(PDDocument document, boolean isAsyncMode, List<WatermarkAttributes> attrs) throws IOException {
+    private void draw(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
         PDFRenderer pdfRenderer = new PDFRenderer(document);
         int numberOfPages = document.getNumberOfPages();
-        if (isAsyncMode) {
-            async(document, pdfRenderer, numberOfPages, attrs);
-        } else {
+        if (executorService.isEmpty()) {
             sync(document, pdfRenderer, numberOfPages, attrs);
+        } else {
+            async(document, pdfRenderer, numberOfPages, attrs);
         }
         removeSecurity(document);
     }

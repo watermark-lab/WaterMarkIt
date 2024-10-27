@@ -110,13 +110,6 @@ public interface WatermarkService {
         Watermark rotate(int degree);
 
         /**
-         * Enables synchronous mode for applying the watermark.
-         *
-         * @return The current instance with sync mode enabled.
-         */
-        Watermark sync();
-
-        /**
          * Adds another watermark configuration to the file.
          *
          * @return A new instance of Watermark for configuring another watermark.
@@ -150,22 +143,5 @@ public interface WatermarkService {
     static File create(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
         return new WatermarkServiceImpl(executor);
-    }
-
-    /**
-     * Creates a new instance of {@code WatermarkService} with the specified components.
-     *
-     * @param i The image watermarker.
-     * @param d The PDF watermarker.
-     * @param o The overlay PDF watermarker.
-     * @param s The watermark PDF service.
-     * @return A new instance of {@code WatermarkService}.
-     */
-    static File create(ImageWatermarker i, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
-        Objects.requireNonNull(i, "ImageWatermarker is required");
-        Objects.requireNonNull(d, "PdfWatermarker is required");
-        Objects.requireNonNull(o, "OverlayPdfWatermarker is required");
-        Objects.requireNonNull(s, "WatermarkPdfService is required");
-        return new WatermarkServiceImpl(i, d, o, s);
     }
 }

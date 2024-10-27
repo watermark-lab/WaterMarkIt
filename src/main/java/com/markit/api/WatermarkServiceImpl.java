@@ -27,7 +27,6 @@ import java.util.concurrent.Executor;
 public class WatermarkServiceImpl implements WatermarkService.File, WatermarkService.Watermark {
     private static final Log logger = LogFactory.getLog(WatermarkServiceImpl.class);
     private FileType fileType;
-    private boolean async;
     private ImageWatermarker imageWatermarker;
     private PdfWatermarker pdfWatermarker;
     private OverlayPdfWatermarker overlayPdfWatermarker;
@@ -45,7 +44,6 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     }
 
     public WatermarkServiceImpl(Executor executor) {
-        this.async = true;
         this.imageWatermarker = new DefaultImageWatermarker();
         this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
         this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
@@ -53,26 +51,20 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
         this.watermarks = new ArrayList<>();
     }
 
-    public WatermarkServiceImpl(ImageWatermarker w, PdfWatermarker d, OverlayPdfWatermarker o, WatermarkPdfService s) {
-        this.imageWatermarker = w;
-        this.pdfWatermarker = d;
-        this.overlayPdfWatermarker = o;
-        this.watermarkPdfService = s;
-        this.watermarks = new ArrayList<>();
-    }
-
     @Override
     public WatermarkService.Watermark watermark(PDDocument document) {
+
         return configureDefaultParams(FileType.PDF,
-                () -> watermarkPdfService.watermark(document, async, watermarks)
+                () -> watermarkPdfService.watermark(document, watermarks)
         );
     }
 
     @Override
     public WatermarkService.Watermark watermark(byte[] fileBytes, FileType ft) {
+
         return configureDefaultParams(ft,
                 (ft.equals(FileType.PDF)) ?
-                        () -> watermarkPdfService.watermark(fileBytes, async, watermarks) :
+                        () -> watermarkPdfService.watermark(fileBytes, watermarks) :
                         () -> imageWatermarker.watermark(fileBytes, fileType, watermarks)
         );
     }
@@ -81,7 +73,7 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     public WatermarkService.Watermark watermark(File file, FileType ft) {
         return configureDefaultParams(ft,
                 (ft.equals(FileType.PDF)) ?
-                        () -> watermarkPdfService.watermark(file, async, watermarks) :
+                        () -> watermarkPdfService.watermark(file, watermarks) :
                         () -> imageWatermarker.watermark(file, fileType, watermarks)
         );
     }
@@ -145,12 +137,6 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     @Override
     public WatermarkService.Watermark rotate(int degree) {
         currentWatermark.setRotation(degree);
-        return this;
-    }
-
-    @Override
-    public WatermarkService.Watermark sync() {
-        this.async = false;
         return this;
     }
 
