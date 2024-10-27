@@ -1,14 +1,9 @@
 package com.markit.api;
 
+import com.markit.api.handlers.WatermarkHandler;
+import com.markit.api.handlers.WatermarksHandler;
 import com.markit.exceptions.UnsupportedFileTypeException;
 import com.markit.exceptions.WatermarkingException;
-import com.markit.image.DefaultImageWatermarker;
-import com.markit.image.ImageWatermarker;
-import com.markit.pdf.*;
-import com.markit.pdf.draw.DefaultPdfDrawWatermarker;
-import com.markit.pdf.draw.PdfWatermarker;
-import com.markit.pdf.overlay.DefaultPdfOverlayWatermarker;
-import com.markit.pdf.overlay.OverlayPdfWatermarker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -27,12 +22,8 @@ import java.util.concurrent.Executor;
 public class WatermarkServiceImpl implements WatermarkService.File, WatermarkService.Watermark {
     private static final Log logger = LogFactory.getLog(WatermarkServiceImpl.class);
     private FileType fileType;
-    private ImageWatermarker imageWatermarker;
-    private PdfWatermarker pdfWatermarker;
-    private OverlayPdfWatermarker overlayPdfWatermarker;
-    private WatermarkPdfService watermarkPdfService;
     private WatermarkHandler watermarkHandler;
-    private List<WatermarkAttributes> watermarks = new ArrayList<>();
+    private final List<WatermarkAttributes> watermarks = new ArrayList<>();
     private WatermarkAttributes currentWatermark;
     private Executor executor;
 
@@ -43,41 +34,19 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
         this.executor = e;
     }
 
-    private void initServices(FileType ft){
-        this.imageWatermarker = new DefaultImageWatermarker();
-        if (ft.equals(FileType.PDF)){
-            this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
-            this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
-            this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, this.executor);
-        }
-    }
-
     @Override
     public WatermarkService.Watermark watermark(PDDocument document) {
-        initServices(FileType.PDF);
-        return configureDefaultParams(FileType.PDF,
-                () -> watermarkPdfService.watermark(document, watermarks)
-        );
+        return configureDefaultParams(FileType.PDF, new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
     }
 
     @Override
     public WatermarkService.Watermark watermark(byte[] fileBytes, FileType ft) {
-        initServices(ft);
-        return configureDefaultParams(ft,
-                (ft.equals(FileType.PDF)) ?
-                        () -> watermarkPdfService.watermark(fileBytes, watermarks) :
-                        () -> imageWatermarker.watermark(fileBytes, fileType, watermarks)
-        );
+        return configureDefaultParams(ft, new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
     }
 
     @Override
     public WatermarkService.Watermark watermark(File file, FileType ft) {
-        initServices(ft);
-        return configureDefaultParams(ft,
-                (ft.equals(FileType.PDF)) ?
-                        () -> watermarkPdfService.watermark(file, watermarks) :
-                        () -> imageWatermarker.watermark(file, fileType, watermarks)
-        );
+        return configureDefaultParams(ft, new WatermarksHandler().getHandler(file, ft, this.executor));
     }
 
     private WatermarkService.Watermark configureDefaultParams(FileType ft, WatermarkHandler h) {
@@ -156,7 +125,7 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     public byte[] apply() {
         try {
             and();
-            return this.watermarkHandler.apply();
+            return this.watermarkHandler.apply(this.watermarks);
         } catch (IOException e) {
             logger.error("Failed to watermark file", e);
             throw new WatermarkingException("Error watermarking the file", e);
