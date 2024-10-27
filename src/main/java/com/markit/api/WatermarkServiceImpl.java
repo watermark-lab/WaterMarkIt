@@ -32,28 +32,29 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
     private OverlayPdfWatermarker overlayPdfWatermarker;
     private WatermarkPdfService watermarkPdfService;
     private WatermarkHandler watermarkHandler;
-    private List<WatermarkAttributes> watermarks;
+    private List<WatermarkAttributes> watermarks = new ArrayList<>();
     private WatermarkAttributes currentWatermark;
+    private Executor executor;
 
     public WatermarkServiceImpl() {
-        this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
-        this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
-        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker);
-        this.watermarks = new ArrayList<>();
     }
 
-    public WatermarkServiceImpl(Executor executor) {
+    public WatermarkServiceImpl(Executor e) {
+        this.executor = e;
+    }
+
+    private void initServices(FileType ft){
         this.imageWatermarker = new DefaultImageWatermarker();
-        this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
-        this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
-        this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, executor);
-        this.watermarks = new ArrayList<>();
+        if (ft.equals(FileType.PDF)){
+            this.pdfWatermarker = new DefaultPdfDrawWatermarker(this.imageWatermarker);
+            this.overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
+            this.watermarkPdfService = new DefaultWatermarkPdfService(this.pdfWatermarker, this.overlayPdfWatermarker, this.executor);
+        }
     }
 
     @Override
     public WatermarkService.Watermark watermark(PDDocument document) {
-
+        initServices(FileType.PDF);
         return configureDefaultParams(FileType.PDF,
                 () -> watermarkPdfService.watermark(document, watermarks)
         );
@@ -61,7 +62,7 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
 
     @Override
     public WatermarkService.Watermark watermark(byte[] fileBytes, FileType ft) {
-
+        initServices(ft);
         return configureDefaultParams(ft,
                 (ft.equals(FileType.PDF)) ?
                         () -> watermarkPdfService.watermark(fileBytes, watermarks) :
@@ -71,6 +72,7 @@ public class WatermarkServiceImpl implements WatermarkService.File, WatermarkSer
 
     @Override
     public WatermarkService.Watermark watermark(File file, FileType ft) {
+        initServices(ft);
         return configureDefaultParams(ft,
                 (ft.equals(FileType.PDF)) ?
                         () -> watermarkPdfService.watermark(file, watermarks) :
