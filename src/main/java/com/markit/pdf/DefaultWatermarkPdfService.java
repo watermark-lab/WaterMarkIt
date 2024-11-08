@@ -64,15 +64,19 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
             logger.error("Incorrect configuration. An empty service");
             throw new WatermarkPdfServiceNotFoundException();
         }
-        var drawAttrs = attrs.stream().filter(a->a.getMethod().equals(WatermarkMethod.DRAW)).collect(Collectors.toList());
-        if (!drawAttrs.isEmpty()){
-            draw(document, drawAttrs);
-        }
-        var overlayAttrs = attrs.stream().filter(a->a.getMethod().equals(WatermarkMethod.OVERLAY)).collect(Collectors.toList());
-        if (!overlayAttrs.isEmpty()) {
-            overlay(document, overlayAttrs);
-        }
+        applyWatermark(document, attrs, WatermarkMethod.DRAW, this::draw);
+        applyWatermark(document, attrs, WatermarkMethod.OVERLAY, this::overlay);
         return convertPDDocumentToByteArray(document);
+    }
+
+    private void applyWatermark(PDDocument document, List<WatermarkAttributes> attrs,
+                                WatermarkMethod method, PdfWatermarkHandler action) throws IOException {
+        var filteredAttrs = attrs.stream()
+                .filter(attr -> attr.getMethod().equals(method))
+                .collect(Collectors.toList());
+        if (!filteredAttrs.isEmpty()) {
+            action.apply(document, filteredAttrs);
+        }
     }
 
     private void overlay(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
