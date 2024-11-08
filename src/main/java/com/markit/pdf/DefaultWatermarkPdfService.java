@@ -66,6 +66,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         }
         applyWatermark(document, attrs, WatermarkMethod.DRAW, this::draw);
         applyWatermark(document, attrs, WatermarkMethod.OVERLAY, this::overlay);
+        removeSecurity(document);
         return convertPDDocumentToByteArray(document);
     }
 
@@ -84,8 +85,6 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
             overlayService.get().watermark(document, pageIndex, attrs);
         }
-        removeSecurity(document);
-
     }
 
     private void draw(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
@@ -96,7 +95,6 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         } else {
             async(document, pdfRenderer, numberOfPages, attrs);
         }
-        removeSecurity(document);
     }
 
     private void async(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, List<WatermarkAttributes> attrs){
