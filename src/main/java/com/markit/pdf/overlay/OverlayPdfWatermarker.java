@@ -1,6 +1,6 @@
 package com.markit.pdf.overlay;
 
-import com.markit.api.WatermarkAttributes;
+import com.markit.api.TextWatermarkAttributes;
 import com.markit.api.WatermarkMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -21,5 +21,5 @@ public interface OverlayPdfWatermarker {
      * @param pageIndex The index of the page to be watermarked (zero-based).
      * @param attrs The attributes of watermark
      */
-    void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException;
+    void watermark(PDDocument document, int pageIndex, List<TextWatermarkAttributes> attrs) throws IOException;
 }

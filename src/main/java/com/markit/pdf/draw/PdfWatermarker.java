@@ -1,6 +1,6 @@
 package com.markit.pdf.draw;
 
-import com.markit.api.WatermarkAttributes;
+import com.markit.api.TextWatermarkAttributes;
 import com.markit.api.WatermarkMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -24,5 +24,5 @@ public interface PdfWatermarker {
      * @param pageIndex The index of the page to be watermarked (zero-based).
      * @param attrs The attributes of watermark
      */
-    void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, List<WatermarkAttributes> attrs) throws IOException;
+    void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, List<TextWatermarkAttributes> attrs) throws IOException;
 }

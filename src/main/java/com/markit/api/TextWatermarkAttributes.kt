@@ -2,7 +2,7 @@ package com.markit.api
 
 import java.awt.Color
 
-data class WatermarkAttributes (
+data class TextWatermarkAttributes (
     var text: String = "",
     var textSize: Int = 100,
     var color: Color = Color.BLACK,

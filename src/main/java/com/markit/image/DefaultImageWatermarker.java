@@ -1,7 +1,7 @@
 package com.markit.image;
 
 import com.markit.api.FileType;
-import com.markit.api.WatermarkAttributes;
+import com.markit.api.TextWatermarkAttributes;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -31,7 +31,7 @@ public class DefaultImageWatermarker implements ImageWatermarker {
     }
 
     @Override
-    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException {
         if (isByteArrayEmpty(sourceImageBytes)) {
             return sourceImageBytes;
         }
@@ -40,12 +40,12 @@ public class DefaultImageWatermarker implements ImageWatermarker {
     }
 
     @Override
-    public byte[] watermark(File file, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(File file, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException {
         BufferedImage image = ImageIO.read(file);
         return watermark(image, fileType, attrs);
     }
 
-    public byte[] watermark(BufferedImage sourceImage, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(BufferedImage sourceImage, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException {
         var g2d = sourceImage.createGraphics();
         int imageWidth = sourceImage.getWidth();
         int imageHeight = sourceImage.getHeight();

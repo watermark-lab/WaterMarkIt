@@ -37,7 +37,7 @@ class PdfPortraitPageOrientationTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Draw Method is Used then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.create(
+        val result = WatermarkService.createTextWatermarker(
                 Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 )
@@ -69,7 +69,7 @@ class PdfPortraitPageOrientationTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.create()
+        val result = WatermarkService.createTextWatermarker()
                 .watermark(document)
                 .withText("Sample Watermark")
                 .ofSize(40)
@@ -91,7 +91,7 @@ class PdfPortraitPageOrientationTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Draw Method and TILED position is Used then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.create(
+        val result = WatermarkService.createTextWatermarker(
             Executors.newFixedThreadPool(
                 Runtime.getRuntime().availableProcessors()
             )

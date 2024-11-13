@@ -22,7 +22,7 @@ class TextWatermarkerImageTest {
         val file = createJpegFile("test.jpeg");
 
         // When
-        val result = WatermarkService.create()
+        val result = WatermarkService.createTextWatermarker()
                 .watermark(file, FileType.JPEG)
                 .withText("Sample Watermark")
                 .ofSize(30)

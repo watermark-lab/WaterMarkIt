@@ -1,7 +1,7 @@
 package com.markit.image;
 
 import com.markit.api.FileType;
-import com.markit.api.WatermarkAttributes;
+import com.markit.api.TextWatermarkAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public interface ImageWatermarker {
      * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked image.
      */
-    byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException;
+    byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException;
 
     /**
      * Adds a text watermark to the given image.
@@ -33,5 +33,5 @@ public interface ImageWatermarker {
      * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked image.
      */
-    byte[] watermark(File file, FileType fileType, List<WatermarkAttributes> attrs) throws IOException;
+    byte[] watermark(File file, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException;
 }

@@ -19,12 +19,12 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextWatermarkerServiceImpl implements WatermarkService.File, WatermarkService.TextWatermarker {
+public class TextWatermarkerServiceImpl implements WatermarkService.WatermarkTextToFile, WatermarkService.TextWatermarker {
     private static final Log logger = LogFactory.getLog(TextWatermarkerServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
-    private final List<WatermarkAttributes> watermarks = new ArrayList<>();
-    private WatermarkAttributes currentWatermark;
+    private final List<TextWatermarkAttributes> watermarks = new ArrayList<>();
+    private TextWatermarkAttributes currentWatermark;
     private Executor executor;
 
     public TextWatermarkerServiceImpl() {
@@ -50,7 +50,7 @@ public class TextWatermarkerServiceImpl implements WatermarkService.File, Waterm
     }
 
     private WatermarkService.TextWatermarker configureDefaultParams(FileType ft, WatermarkHandler h) {
-        currentWatermark = new WatermarkAttributes();
+        currentWatermark = new TextWatermarkAttributes();
         currentWatermark.setMethod(defineMethodByFileType(ft));
         this.fileType = ft;
         this.watermarkHandler = h;
@@ -115,7 +115,7 @@ public class TextWatermarkerServiceImpl implements WatermarkService.File, Waterm
     public WatermarkService.TextWatermarker and() {
         if (!currentWatermark.getText().isEmpty()) {
             watermarks.add(currentWatermark);
-            currentWatermark = new WatermarkAttributes();
+            currentWatermark = new TextWatermarkAttributes();
             currentWatermark.setMethod(defineMethodByFileType(fileType));
         }
         return this;

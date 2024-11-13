@@ -13,7 +13,7 @@ import java.util.concurrent.Executor;
  * @since 1.0
  */
 public interface WatermarkService {
-    interface File {
+    interface WatermarkTextToFile {
 
         /**
          * Sets the source file to be watermarked using a byte array.
@@ -125,7 +125,7 @@ public interface WatermarkService {
      *
      * @return A new instance of the {@code WatermarkService}.
      */
-    static File create() {
+    static WatermarkTextToFile createTextWatermarker() {
         return new TextWatermarkerServiceImpl();
     }
 
@@ -136,8 +136,52 @@ public interface WatermarkService {
      * @return A new instance of {@code WatermarkService}.
      * @throws NullPointerException If {@code executor} is null.
      */
-    static File create(Executor executor) {
+    static WatermarkTextToFile createTextWatermarker(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
         return new TextWatermarkerServiceImpl(executor);
+    }
+
+    interface WatermarkImageToFile {
+
+        /**
+         * Sets the source file to be watermarked using a byte array.
+         *
+         * @param fileBytes The byte array representing the source file.
+         * @param fileType The type of file (e.g., PDF, Image).
+         * @see FileType
+         */
+        ImageWatermarker watermark(byte[] fileBytes, FileType fileType);
+
+        /**
+         * Sets the source file to be watermarked using a File object.
+         *
+         * @param file The file to be watermarked.
+         * @param fileType The type of file (e.g., PDF, Image).
+         */
+        ImageWatermarker watermark(java.io.File file, FileType fileType);
+
+        /**
+         * Sets the PDF document to be watermarked.
+         *
+         * @param document The PDF document to be watermarked.
+         */
+        ImageWatermarker watermark(PDDocument document);
+    }
+
+    interface ImageWatermarker {
+        ImageWatermarker ofSize(int size);
+        ImageWatermarker withOpacity(float opacity);
+        ImageWatermarker withDpi(float dpi);
+        ImageWatermarker and();
+        byte[] apply();
+    }
+
+    static WatermarkImageToFile createImageWatermarker() {
+        return new ImageWatermarkerServiceImpl();
+    }
+
+    static WatermarkImageToFile createImageWatermarker(Executor executor) {
+        Objects.requireNonNull(executor, "executor is required");
+        return new ImageWatermarkerServiceImpl(executor);
     }
 }
