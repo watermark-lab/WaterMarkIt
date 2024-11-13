@@ -19,37 +19,37 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextWatermarkerServiceImpl implements WatermarkService.WatermarkTextToFile, WatermarkService.TextWatermarker {
-    private static final Log logger = LogFactory.getLog(TextWatermarkerServiceImpl.class);
+public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder {
+    private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
     private final List<TextWatermarkAttributes> watermarks = new ArrayList<>();
     private TextWatermarkAttributes currentWatermark;
     private Executor executor;
 
-    public TextWatermarkerServiceImpl() {
+    public TextBasedWatermarkServiceImpl() {
     }
 
-    public TextWatermarkerServiceImpl(Executor e) {
+    public TextBasedWatermarkServiceImpl(Executor e) {
         this.executor = e;
     }
 
     @Override
-    public WatermarkService.TextWatermarker watermark(PDDocument document) {
+    public WatermarkService.TextBasedWatermarkBuilder watermark(PDDocument document) {
         return configureDefaultParams(FileType.PDF, new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
     }
 
     @Override
-    public WatermarkService.TextWatermarker watermark(byte[] fileBytes, FileType ft) {
+    public WatermarkService.TextBasedWatermarkBuilder watermark(byte[] fileBytes, FileType ft) {
         return configureDefaultParams(ft, new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
     }
 
     @Override
-    public WatermarkService.TextWatermarker watermark(File file, FileType ft) {
+    public WatermarkService.TextBasedWatermarkBuilder watermark(File file, FileType ft) {
         return configureDefaultParams(ft, new WatermarksHandler().getHandler(file, ft, this.executor));
     }
 
-    private WatermarkService.TextWatermarker configureDefaultParams(FileType ft, WatermarkHandler h) {
+    private WatermarkService.TextBasedWatermarkBuilder configureDefaultParams(FileType ft, WatermarkHandler h) {
         currentWatermark = new TextWatermarkAttributes();
         currentWatermark.setMethod(defineMethodByFileType(ft));
         this.fileType = ft;
@@ -58,61 +58,61 @@ public class TextWatermarkerServiceImpl implements WatermarkService.WatermarkTex
     }
 
     @Override
-    public WatermarkService.TextWatermarker withText(String text) {
+    public WatermarkService.TextBasedWatermarkBuilder withText(String text) {
         currentWatermark.setText(text);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker ofSize(int size) {
+    public WatermarkService.TextBasedWatermarkBuilder ofSize(int size) {
         currentWatermark.setTextSize(size);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker usingMethod(WatermarkMethod method) {
+    public WatermarkService.TextBasedWatermarkBuilder usingMethod(WatermarkMethod method) {
         currentWatermark.setMethod(method);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker atPosition(WatermarkPosition position) {
+    public WatermarkService.TextBasedWatermarkBuilder atPosition(WatermarkPosition position) {
         currentWatermark.setPosition(position);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker inColor(Color c) {
+    public WatermarkService.TextBasedWatermarkBuilder inColor(Color c) {
         currentWatermark.setColor(c);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker withOpacity(float opacity) {
+    public WatermarkService.TextBasedWatermarkBuilder withOpacity(float opacity) {
         currentWatermark.setOpacity(opacity);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker withDpi(float d) {
+    public WatermarkService.TextBasedWatermarkBuilder withDpi(float d) {
         currentWatermark.setDpi(d);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker withTrademark() {
+    public WatermarkService.TextBasedWatermarkBuilder withTrademark() {
         currentWatermark.setTrademark(true);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker rotate(int degree) {
+    public WatermarkService.TextBasedWatermarkBuilder rotate(int degree) {
         currentWatermark.setRotation(degree);
         return this;
     }
 
     @Override
-    public WatermarkService.TextWatermarker and() {
+    public WatermarkService.TextBasedWatermarkBuilder and() {
         if (!currentWatermark.getText().isEmpty()) {
             watermarks.add(currentWatermark);
             currentWatermark = new TextWatermarkAttributes();

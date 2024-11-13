@@ -35,7 +35,7 @@ class PdfLandscapePageOrientationTest {
     @Throws(IOException::class)
     fun `given Landscape Pdf when Draw Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.createTextWatermarker()
+        val result = WatermarkService.createTextBasedWatermarker()
                 .watermark(landscapeDocument)
                 .withText("Sample Watermark")
                 .usingMethod(WatermarkMethod.DRAW)
@@ -50,7 +50,7 @@ class PdfLandscapePageOrientationTest {
     @Throws(IOException::class)
     fun `given Landscape Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.createTextWatermarker()
+        val result = WatermarkService.createTextBasedWatermarker()
                 .watermark(landscapeDocument)
                 .withText("Sample Watermark").ofSize(50)
                 .usingMethod(WatermarkMethod.OVERLAY)

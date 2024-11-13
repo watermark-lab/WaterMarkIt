@@ -13,7 +13,7 @@ import java.util.concurrent.Executor;
  * @since 1.0
  */
 public interface WatermarkService {
-    interface WatermarkTextToFile {
+    interface TextBasedWatermarker {
 
         /**
          * Sets the source file to be watermarked using a byte array.
@@ -22,7 +22,7 @@ public interface WatermarkService {
          * @param fileType The type of file (e.g., PDF, Image).
          * @see FileType
          */
-        TextWatermarker watermark(byte[] fileBytes, FileType fileType);
+        TextBasedWatermarkBuilder watermark(byte[] fileBytes, FileType fileType);
 
         /**
          * Sets the source file to be watermarked using a File object.
@@ -30,31 +30,31 @@ public interface WatermarkService {
          * @param file The file to be watermarked.
          * @param fileType The type of file (e.g., PDF, Image).
          */
-        TextWatermarker watermark(java.io.File file, FileType fileType);
+        TextBasedWatermarkBuilder watermark(java.io.File file, FileType fileType);
 
         /**
          * Sets the PDF document to be watermarked.
          *
          * @param document The PDF document to be watermarked.
          */
-        TextWatermarker watermark(PDDocument document);
+        TextBasedWatermarkBuilder watermark(PDDocument document);
     }
 
-    interface TextWatermarker {
+    interface TextBasedWatermarkBuilder {
 
         /**
          * Sets the text to be used as the watermark.
          *
          * @param text The text for the watermark.
          */
-        TextWatermarker withText(String text);
+        TextBasedWatermarkBuilder withText(String text);
 
         /**
          * Sets the size of the watermark text.
          *
          * @param size The font size for the watermark text.
          */
-        TextWatermarker ofSize(int size);
+        TextBasedWatermarkBuilder ofSize(int size);
 
         /**
          * Defines the method for adding a watermark (default is OVERLAY).
@@ -62,7 +62,7 @@ public interface WatermarkService {
          * @param watermarkMethod The method to use for watermarking.
          * @see WatermarkMethod
          */
-        TextWatermarker usingMethod(WatermarkMethod watermarkMethod);
+        TextBasedWatermarkBuilder usingMethod(WatermarkMethod watermarkMethod);
 
         /**
          * Defines the position of the watermark on the file.
@@ -70,7 +70,7 @@ public interface WatermarkService {
          * @param watermarkPosition The position to place the watermark (e.g., CENTER, CORNER).
          * @see WatermarkPosition
          */
-        TextWatermarker atPosition(WatermarkPosition watermarkPosition);
+        TextBasedWatermarkBuilder atPosition(WatermarkPosition watermarkPosition);
 
         /**
          * Sets the color of the watermark.
@@ -78,39 +78,39 @@ public interface WatermarkService {
          * @param color The color for the watermark text.
          * @see Color
          */
-        TextWatermarker inColor(Color color);
+        TextBasedWatermarkBuilder inColor(Color color);
 
         /**
          * Sets the opacity of the watermark.
          *
          * @param opacity The opacity value, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
          */
-        TextWatermarker withOpacity(float opacity);
+        TextBasedWatermarkBuilder withOpacity(float opacity);
 
         /**
          * Specifies the resolution for the watermark in DPI.
          *
          * @param dpi The resolution in DPI.
          */
-        TextWatermarker withDpi(float dpi);
+        TextBasedWatermarkBuilder withDpi(float dpi);
 
         /**
          * Adds a trademark symbol to the watermark.
          *
          */
-        TextWatermarker withTrademark();
+        TextBasedWatermarkBuilder withTrademark();
 
         /**
          * Changes the rotation of the watermark
          */
-        TextWatermarker rotate(int degree);
+        TextBasedWatermarkBuilder rotate(int degree);
 
         /**
          * Adds another watermark configuration to the file.
          *
          * @return A new instance of Watermark for configuring another watermark.
          */
-        TextWatermarker and();
+        TextBasedWatermarkBuilder and();
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.
@@ -125,8 +125,8 @@ public interface WatermarkService {
      *
      * @return A new instance of the {@code WatermarkService}.
      */
-    static WatermarkTextToFile createTextWatermarker() {
-        return new TextWatermarkerServiceImpl();
+    static TextBasedWatermarker createTextBasedWatermarker() {
+        return new TextBasedWatermarkServiceImpl();
     }
 
     /**
@@ -136,12 +136,12 @@ public interface WatermarkService {
      * @return A new instance of {@code WatermarkService}.
      * @throws NullPointerException If {@code executor} is null.
      */
-    static WatermarkTextToFile createTextWatermarker(Executor executor) {
+    static TextBasedWatermarker createTextBasedWatermarker(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new TextWatermarkerServiceImpl(executor);
+        return new TextBasedWatermarkServiceImpl(executor);
     }
 
-    interface WatermarkImageToFile {
+    interface ImageBasedWatermarker {
 
         /**
          * Sets the source file to be watermarked using a byte array.
@@ -150,7 +150,7 @@ public interface WatermarkService {
          * @param fileType The type of file (e.g., PDF, Image).
          * @see FileType
          */
-        ImageWatermarker watermark(byte[] fileBytes, FileType fileType);
+        ImageBasedWatermarkBuilder watermark(byte[] fileBytes, FileType fileType);
 
         /**
          * Sets the source file to be watermarked using a File object.
@@ -158,30 +158,30 @@ public interface WatermarkService {
          * @param file The file to be watermarked.
          * @param fileType The type of file (e.g., PDF, Image).
          */
-        ImageWatermarker watermark(java.io.File file, FileType fileType);
+        ImageBasedWatermarkBuilder watermark(java.io.File file, FileType fileType);
 
         /**
          * Sets the PDF document to be watermarked.
          *
          * @param document The PDF document to be watermarked.
          */
-        ImageWatermarker watermark(PDDocument document);
+        ImageBasedWatermarkBuilder watermark(PDDocument document);
     }
 
-    interface ImageWatermarker {
-        ImageWatermarker ofSize(int size);
-        ImageWatermarker withOpacity(float opacity);
-        ImageWatermarker withDpi(float dpi);
-        ImageWatermarker and();
+    interface ImageBasedWatermarkBuilder {
+        ImageBasedWatermarkBuilder ofSize(int size);
+        ImageBasedWatermarkBuilder withOpacity(float opacity);
+        ImageBasedWatermarkBuilder withDpi(float dpi);
+        ImageBasedWatermarkBuilder and();
         byte[] apply();
     }
 
-    static WatermarkImageToFile createImageWatermarker() {
-        return new ImageWatermarkerServiceImpl();
+    static ImageBasedWatermarker createImageBasedWatermarker() {
+        return new ImageBasedWatermarkServiceImpl();
     }
 
-    static WatermarkImageToFile createImageWatermarker(Executor executor) {
+    static ImageBasedWatermarker createImageBasedWatermarker(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new ImageWatermarkerServiceImpl(executor);
+        return new ImageBasedWatermarkServiceImpl(executor);
     }
 }
