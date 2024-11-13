@@ -1,9 +1,5 @@
 package com.markit.api;
 
-import com.markit.image.ImageWatermarker;
-import com.markit.pdf.overlay.OverlayPdfWatermarker;
-import com.markit.pdf.draw.PdfWatermarker;
-import com.markit.pdf.WatermarkPdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
@@ -26,7 +22,7 @@ public interface WatermarkService {
          * @param fileType The type of file (e.g., PDF, Image).
          * @see FileType
          */
-        Watermark watermark(byte[] fileBytes, FileType fileType);
+        TextWatermarker watermark(byte[] fileBytes, FileType fileType);
 
         /**
          * Sets the source file to be watermarked using a File object.
@@ -34,31 +30,31 @@ public interface WatermarkService {
          * @param file The file to be watermarked.
          * @param fileType The type of file (e.g., PDF, Image).
          */
-        Watermark watermark(java.io.File file, FileType fileType);
+        TextWatermarker watermark(java.io.File file, FileType fileType);
 
         /**
          * Sets the PDF document to be watermarked.
          *
          * @param document The PDF document to be watermarked.
          */
-        Watermark watermark(PDDocument document);
+        TextWatermarker watermark(PDDocument document);
     }
 
-    interface Watermark {
+    interface TextWatermarker {
 
         /**
          * Sets the text to be used as the watermark.
          *
          * @param text The text for the watermark.
          */
-        Watermark withText(String text);
+        TextWatermarker withText(String text);
 
         /**
          * Sets the size of the watermark text.
          *
          * @param size The font size for the watermark text.
          */
-        Watermark ofSize(int size);
+        TextWatermarker ofSize(int size);
 
         /**
          * Defines the method for adding a watermark (default is OVERLAY).
@@ -66,7 +62,7 @@ public interface WatermarkService {
          * @param watermarkMethod The method to use for watermarking.
          * @see WatermarkMethod
          */
-        Watermark usingMethod(WatermarkMethod watermarkMethod);
+        TextWatermarker usingMethod(WatermarkMethod watermarkMethod);
 
         /**
          * Defines the position of the watermark on the file.
@@ -74,7 +70,7 @@ public interface WatermarkService {
          * @param watermarkPosition The position to place the watermark (e.g., CENTER, CORNER).
          * @see WatermarkPosition
          */
-        Watermark atPosition(WatermarkPosition watermarkPosition);
+        TextWatermarker atPosition(WatermarkPosition watermarkPosition);
 
         /**
          * Sets the color of the watermark.
@@ -82,39 +78,39 @@ public interface WatermarkService {
          * @param color The color for the watermark text.
          * @see Color
          */
-        Watermark inColor(Color color);
+        TextWatermarker inColor(Color color);
 
         /**
          * Sets the opacity of the watermark.
          *
          * @param opacity The opacity value, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
          */
-        Watermark withOpacity(float opacity);
+        TextWatermarker withOpacity(float opacity);
 
         /**
          * Specifies the resolution for the watermark in DPI.
          *
          * @param dpi The resolution in DPI.
          */
-        Watermark withDpi(float dpi);
+        TextWatermarker withDpi(float dpi);
 
         /**
          * Adds a trademark symbol to the watermark.
          *
          */
-        Watermark withTrademark();
+        TextWatermarker withTrademark();
 
         /**
          * Changes the rotation of the watermark
          */
-        Watermark rotate(int degree);
+        TextWatermarker rotate(int degree);
 
         /**
          * Adds another watermark configuration to the file.
          *
          * @return A new instance of Watermark for configuring another watermark.
          */
-        Watermark and();
+        TextWatermarker and();
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.
@@ -130,7 +126,7 @@ public interface WatermarkService {
      * @return A new instance of the {@code WatermarkService}.
      */
     static File create() {
-        return new WatermarkServiceImpl();
+        return new TextWatermarkerServiceImpl();
     }
 
     /**
@@ -142,6 +138,6 @@ public interface WatermarkService {
      */
     static File create(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new WatermarkServiceImpl(executor);
+        return new TextWatermarkerServiceImpl(executor);
     }
 }

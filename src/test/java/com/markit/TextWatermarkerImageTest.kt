@@ -14,7 +14,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @SuppressWarnings("deprecation")
-class WatermarkImageTest {
+class TextWatermarkerImageTest {
     @Test
     @Throws(IOException::class)
     fun `given jpeg file when draw method then make watermarked jpeg`() {
