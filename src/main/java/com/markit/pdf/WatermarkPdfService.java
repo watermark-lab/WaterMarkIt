@@ -1,6 +1,6 @@
 package com.markit.pdf;
 
-import com.markit.api.TextWatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public interface WatermarkPdfService {
      * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked PDF file.
      */
-    byte[] watermark(byte[] sourceImageBytes, List<TextWatermarkAttributes> attrs) throws IOException;
+    byte[] watermark(byte[] sourceImageBytes, List<WatermarkAttributes> attrs) throws IOException;
 
     /**
      * Adds a text watermark to a PDF file.
@@ -30,7 +30,7 @@ public interface WatermarkPdfService {
      * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked PDF file.
      */
-    byte[] watermark(File file, List<TextWatermarkAttributes> attrs) throws IOException;
+    byte[] watermark(File file, List<WatermarkAttributes> attrs) throws IOException;
 
     /**
      * Adds a text watermark to a PDF file.
@@ -39,5 +39,5 @@ public interface WatermarkPdfService {
      * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked PDF file.
      */
-    byte[] watermark(PDDocument pdDocument, List<TextWatermarkAttributes> attrs) throws IOException;
+    byte[] watermark(PDDocument pdDocument, List<WatermarkAttributes> attrs) throws IOException;
 }

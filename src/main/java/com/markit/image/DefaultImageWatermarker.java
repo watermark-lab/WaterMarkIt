@@ -1,7 +1,7 @@
 package com.markit.image;
 
 import com.markit.api.FileType;
-import com.markit.api.TextWatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,23 +15,26 @@ import java.util.List;
  */
 public class DefaultImageWatermarker implements ImageWatermarker {
     private final ImageConverter imageConverter;
-    private final WatermarkPainter watermarkPainter;
+    private final TextBasedWatermarkPainter textBasedWatermarkPainter;
+    private final ImageBasedWatermarkPainter imageBasedWatermarkPainter;
     private final WatermarkPositioner watermarkPositioner;
 
     public DefaultImageWatermarker() {
+        this.imageBasedWatermarkPainter = new ImageBasedWatermarkPainter();
         this.imageConverter = new ImageConverter();
-        this.watermarkPainter = new WatermarkPainter();
+        this.textBasedWatermarkPainter = new TextBasedWatermarkPainter();
         this.watermarkPositioner = new WatermarkPositioner();
     }
 
-    public DefaultImageWatermarker(ImageConverter imageConverter, WatermarkPainter watermarkPainter, WatermarkPositioner watermarkPositioner) {
+    public DefaultImageWatermarker(ImageConverter imageConverter, TextBasedWatermarkPainter textBasedWatermarkPainter, ImageBasedWatermarkPainter imageBasedWatermarkPainter, WatermarkPositioner watermarkPositioner) {
         this.imageConverter = imageConverter;
-        this.watermarkPainter = watermarkPainter;
+        this.textBasedWatermarkPainter = textBasedWatermarkPainter;
+        this.imageBasedWatermarkPainter = imageBasedWatermarkPainter;
         this.watermarkPositioner = watermarkPositioner;
     }
 
     @Override
-    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
         if (isByteArrayEmpty(sourceImageBytes)) {
             return sourceImageBytes;
         }
@@ -40,18 +43,21 @@ public class DefaultImageWatermarker implements ImageWatermarker {
     }
 
     @Override
-    public byte[] watermark(File file, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(File file, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
         BufferedImage image = ImageIO.read(file);
         return watermark(image, fileType, attrs);
     }
 
-    public byte[] watermark(BufferedImage sourceImage, FileType fileType, List<TextWatermarkAttributes> attrs) throws IOException {
+    public byte[] watermark(BufferedImage sourceImage, FileType fileType, List<WatermarkAttributes> attrs) throws IOException {
         var g2d = sourceImage.createGraphics();
         int imageWidth = sourceImage.getWidth();
         int imageHeight = sourceImage.getHeight();
         attrs.forEach(attr -> {
-            int baseFontSize = calculateFontSize(attr.getTextSize(), imageWidth, imageHeight);
-            watermarkPainter.draw(g2d, sourceImage, baseFontSize, attr, watermarkPositioner);
+            if (attr.getImage().isPresent()){
+                imageBasedWatermarkPainter.draw(g2d, sourceImage, attr);
+            } else {
+                textBasedWatermarkPainter.draw(g2d, sourceImage, calculateFontSize(attr.getSize(), imageWidth, imageHeight), attr, watermarkPositioner);
+            }
         });
         g2d.dispose();
         return imageConverter.convertToByteArray(sourceImage, fileType);

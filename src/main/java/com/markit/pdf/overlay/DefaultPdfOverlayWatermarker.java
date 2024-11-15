@@ -1,6 +1,6 @@
 package com.markit.pdf.overlay;
 
-import com.markit.api.TextWatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -37,7 +37,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
     }
 
     @Override
-    public void watermark(PDDocument document, int pageIndex, List<TextWatermarkAttributes> attrs) throws IOException {
+    public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         PDPage page = document.getPage(pageIndex);
         PDRectangle mediaBox = page.getMediaBox();
         float pageWidth = mediaBox.getWidth();
@@ -54,8 +54,8 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         }
     }
 
-    private void overlay(PDPageContentStream contentStream, float pageWidth, float pageHeight, PDType0Font font, TextWatermarkAttributes attr) throws IOException {
-        final int fontSize = attr.getTextSize() == 0 ? TEXT_SIZE : attr.getTextSize();
+    private void overlay(PDPageContentStream contentStream, float pageWidth, float pageHeight, PDType0Font font, WatermarkAttributes attr) throws IOException {
+        final int fontSize = attr.getSize() == 0 ? TEXT_SIZE : attr.getSize();
         contentStream.beginText();
         contentStream.setFont(PDType1Font.TIMES_BOLD, fontSize);
         contentStream.setNonStrokingColor(attr.getColor());

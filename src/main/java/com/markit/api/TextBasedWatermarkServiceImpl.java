@@ -23,8 +23,8 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
-    private final List<TextWatermarkAttributes> watermarks = new ArrayList<>();
-    private TextWatermarkAttributes currentWatermark;
+    private final List<WatermarkAttributes> watermarks = new ArrayList<>();
+    private WatermarkAttributes currentWatermark;
     private Executor executor;
 
     public TextBasedWatermarkServiceImpl() {
@@ -50,7 +50,7 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     }
 
     private WatermarkService.TextBasedWatermarkBuilder configureDefaultParams(FileType ft, WatermarkHandler h) {
-        currentWatermark = new TextWatermarkAttributes();
+        currentWatermark = new WatermarkAttributes();
         currentWatermark.setMethod(defineMethodByFileType(ft));
         this.fileType = ft;
         this.watermarkHandler = h;
@@ -65,7 +65,7 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
 
     @Override
     public WatermarkService.TextBasedWatermarkBuilder ofSize(int size) {
-        currentWatermark.setTextSize(size);
+        currentWatermark.setSize(size);
         return this;
     }
 
@@ -115,7 +115,7 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     public WatermarkService.TextBasedWatermarkBuilder and() {
         if (!currentWatermark.getText().isEmpty()) {
             watermarks.add(currentWatermark);
-            currentWatermark = new TextWatermarkAttributes();
+            currentWatermark = new WatermarkAttributes();
             currentWatermark.setMethod(defineMethodByFileType(fileType));
         }
         return this;

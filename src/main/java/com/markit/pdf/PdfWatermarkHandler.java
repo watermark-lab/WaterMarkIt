@@ -1,6 +1,6 @@
 package com.markit.pdf;
 
-import com.markit.api.TextWatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.IOException;
@@ -12,5 +12,5 @@ import java.util.List;
  */
 @FunctionalInterface
 interface PdfWatermarkHandler {
-    void apply(PDDocument document, List<TextWatermarkAttributes> attributes) throws IOException;
+    void apply(PDDocument document, List<WatermarkAttributes> attributes) throws IOException;
 }

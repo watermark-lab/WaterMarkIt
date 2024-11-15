@@ -1,6 +1,6 @@
 package com.markit.pdf.draw;
 
-import com.markit.api.TextWatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 import com.markit.image.ImageWatermarker;
 import com.markit.api.FileType;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -27,9 +27,9 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
     }
 
     @Override
-    public void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, List<TextWatermarkAttributes> attrs) throws IOException {
+    public void watermark(PDDocument document, PDFRenderer pdfRenderer, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         var page = document.getPage(pageIndex);
-        var image = pdfRenderer.renderImageWithDPI(pageIndex, attrs.stream().map(TextWatermarkAttributes::getDpi).max(Comparator.naturalOrder()).get());
+        var image = pdfRenderer.renderImageWithDPI(pageIndex, attrs.stream().map(WatermarkAttributes::getDpi).max(Comparator.naturalOrder()).get());
         var baos = new ByteArrayOutputStream();
         ImageIO.write(image, FileType.JPEG.name(), baos);
         var watermarkedImageBytes = imageWatermarker.watermark(baos.toByteArray(), FileType.JPEG, attrs);

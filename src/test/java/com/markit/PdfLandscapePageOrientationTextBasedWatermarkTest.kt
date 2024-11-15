@@ -13,7 +13,7 @@ import java.io.IOException
 import java.nio.file.Files
 import kotlin.test.assertTrue
 
-class PdfLandscapePageOrientationTest {
+class PdfLandscapePageOrientationTextBasedWatermarkTest {
     private lateinit var landscapeDocument: PDDocument
 
     @BeforeEach
@@ -35,7 +35,7 @@ class PdfLandscapePageOrientationTest {
     @Throws(IOException::class)
     fun `given Landscape Pdf when Draw Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.createTextBasedWatermarker()
+        val result = WatermarkService.textBasedWatermarker()
                 .watermark(landscapeDocument)
                 .withText("Sample Watermark")
                 .usingMethod(WatermarkMethod.DRAW)
@@ -50,7 +50,7 @@ class PdfLandscapePageOrientationTest {
     @Throws(IOException::class)
     fun `given Landscape Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.createTextBasedWatermarker()
+        val result = WatermarkService.textBasedWatermarker()
                 .watermark(landscapeDocument)
                 .withText("Sample Watermark").ofSize(50)
                 .usingMethod(WatermarkMethod.OVERLAY)

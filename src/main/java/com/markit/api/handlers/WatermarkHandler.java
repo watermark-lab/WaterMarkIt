@@ -1,6 +1,6 @@
 package com.markit.api.handlers;
 
-import com.markit.api.TextWatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,5 +11,5 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface WatermarkHandler {
-    byte[] apply(List<TextWatermarkAttributes> watermarks) throws IOException;
+    byte[] apply(List<WatermarkAttributes> watermarks) throws IOException;
 }

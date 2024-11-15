@@ -16,7 +16,7 @@ import java.util.concurrent.Executors
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class PdfPortraitPageOrientationTest {
+class PdfPortraitPageOrientationTextBasedWatermarkTest {
     private lateinit var document: PDDocument
 
     @BeforeEach
@@ -37,7 +37,7 @@ class PdfPortraitPageOrientationTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Draw Method is Used then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.createTextBasedWatermarker(
+        val result = WatermarkService.textBasedWatermarker(
                 Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 )
@@ -69,7 +69,7 @@ class PdfPortraitPageOrientationTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.createTextBasedWatermarker()
+        val result = WatermarkService.textBasedWatermarker()
                 .watermark(document)
                 .withText("Sample Watermark")
                 .ofSize(40)
@@ -91,7 +91,7 @@ class PdfPortraitPageOrientationTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Draw Method and TILED position is Used then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.createTextBasedWatermarker(
+        val result = WatermarkService.textBasedWatermarker(
             Executors.newFixedThreadPool(
                 Runtime.getRuntime().availableProcessors()
             )

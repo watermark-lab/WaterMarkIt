@@ -14,7 +14,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @SuppressWarnings("deprecation")
-class TextBasedWatermarkImageTest {
+class TextBasedWatermarkTextBasedWatermarkTest {
     @Test
     @Throws(IOException::class)
     fun `given jpeg file when draw method then make watermarked jpeg`() {
@@ -22,7 +22,7 @@ class TextBasedWatermarkImageTest {
         val file = createJpegFile("test.jpeg");
 
         // When
-        val result = WatermarkService.createTextBasedWatermarker()
+        val result = WatermarkService.textBasedWatermarker()
                 .watermark(file, FileType.JPEG)
                 .withText("Sample Watermark")
                 .ofSize(30)

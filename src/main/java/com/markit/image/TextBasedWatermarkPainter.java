@@ -1,6 +1,6 @@
 package com.markit.image;
 
-import com.markit.api.TextWatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class WatermarkPainter {
-    public void draw(Graphics2D g2d, BufferedImage image, int baseFontSize, TextWatermarkAttributes attr, WatermarkPositioner positioner) {
+public class TextBasedWatermarkPainter {
+    public void draw(Graphics2D g2d, BufferedImage image, int baseFontSize, WatermarkAttributes attr, WatermarkPositioner positioner) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, attr.getOpacity());
         var baseFont = new Font("Arial", Font.BOLD, baseFontSize);
         configureGraphics(g2d, alphaChannel, attr.getColor(), baseFont);
@@ -32,7 +32,7 @@ public class WatermarkPainter {
         g2d.setFont(font);
     }
 
-    private void drawWatermark(Graphics2D g2d, TextLayout watermarkLayout, TextWatermarkAttributes attr, Rectangle2D rect, int x, int y, Font baseFont, int baseFontSize) {
+    private void drawWatermark(Graphics2D g2d, TextLayout watermarkLayout, WatermarkAttributes attr, Rectangle2D rect, int x, int y, Font baseFont, int baseFontSize) {
         if (attr.getRotation() != 0) {
             applyRotation(g2d, attr.getRotation(), x, y, rect);
         }

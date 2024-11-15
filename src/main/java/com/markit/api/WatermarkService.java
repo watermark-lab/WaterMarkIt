@@ -3,6 +3,7 @@ package com.markit.api;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
+import java.io.File;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -13,6 +14,28 @@ import java.util.concurrent.Executor;
  * @since 1.0
  */
 public interface WatermarkService {
+
+    static TextBasedWatermarker textBasedWatermarker() {
+        return new TextBasedWatermarkServiceImpl();
+    }
+
+    static TextBasedWatermarker textBasedWatermarker(Executor executor) {
+        Objects.requireNonNull(executor, "executor is required");
+        return new TextBasedWatermarkServiceImpl(executor);
+    }
+
+    static ImageBasedWatermarker imageBasedWatermarker() {
+        return new ImageBasedWatermarkServiceImpl();
+    }
+
+    static ImageBasedWatermarker imageBasedWatermarker(Executor executor) {
+        Objects.requireNonNull(executor, "executor is required");
+        return new ImageBasedWatermarkServiceImpl(executor);
+    }
+
+    /**
+     * text-based watermarks service
+     */
     interface TextBasedWatermarker {
 
         /**
@@ -30,7 +53,7 @@ public interface WatermarkService {
          * @param file The file to be watermarked.
          * @param fileType The type of file (e.g., PDF, Image).
          */
-        TextBasedWatermarkBuilder watermark(java.io.File file, FileType fileType);
+        TextBasedWatermarkBuilder watermark(File file, FileType fileType);
 
         /**
          * Sets the PDF document to be watermarked.
@@ -40,6 +63,9 @@ public interface WatermarkService {
         TextBasedWatermarkBuilder watermark(PDDocument document);
     }
 
+    /**
+     * interface for building and applying text-based watermarks
+     */
     interface TextBasedWatermarkBuilder {
 
         /**
@@ -121,26 +147,8 @@ public interface WatermarkService {
     }
 
     /**
-     * Creates a new instance of {@code WatermarkService}.
-     *
-     * @return A new instance of the {@code WatermarkService}.
+     * image-based watermarks service
      */
-    static TextBasedWatermarker createTextBasedWatermarker() {
-        return new TextBasedWatermarkServiceImpl();
-    }
-
-    /**
-     * Creates a new instance of {@code WatermarkService} using the provided {@code Executor}.
-     *
-     * @param executor The executor for handling asynchronous operations.
-     * @return A new instance of {@code WatermarkService}.
-     * @throws NullPointerException If {@code executor} is null.
-     */
-    static TextBasedWatermarker createTextBasedWatermarker(Executor executor) {
-        Objects.requireNonNull(executor, "executor is required");
-        return new TextBasedWatermarkServiceImpl(executor);
-    }
-
     interface ImageBasedWatermarker {
 
         /**
@@ -158,7 +166,7 @@ public interface WatermarkService {
          * @param file The file to be watermarked.
          * @param fileType The type of file (e.g., PDF, Image).
          */
-        ImageBasedWatermarkBuilder watermark(java.io.File file, FileType fileType);
+        ImageBasedWatermarkBuilder watermark(File file, FileType fileType);
 
         /**
          * Sets the PDF document to be watermarked.
@@ -168,20 +176,32 @@ public interface WatermarkService {
         ImageBasedWatermarkBuilder watermark(PDDocument document);
     }
 
+    /**
+     * interface for building and applying image-based watermarks
+     */
     interface ImageBasedWatermarkBuilder {
+        /**
+         * Sets the watermark image.
+         */
+        ImageBasedWatermarkBuilder withImage(byte[] image);
+        /**
+         * Sets the size of the watermark image.
+         */
         ImageBasedWatermarkBuilder ofSize(int size);
+        /**
+         * Sets the opacity of the watermark.
+         */
         ImageBasedWatermarkBuilder withOpacity(float opacity);
+        /**
+         * Sets the dpi of the watermark.
+         */
         ImageBasedWatermarkBuilder withDpi(float dpi);
-        ImageBasedWatermarkBuilder and();
+
+        /**
+         * Applies the watermark to the file and returns the result as a byte array.
+         *
+         * @return A byte array representing the watermarked file.
+         */
         byte[] apply();
-    }
-
-    static ImageBasedWatermarker createImageBasedWatermarker() {
-        return new ImageBasedWatermarkServiceImpl();
-    }
-
-    static ImageBasedWatermarker createImageBasedWatermarker(Executor executor) {
-        Objects.requireNonNull(executor, "executor is required");
-        return new ImageBasedWatermarkServiceImpl(executor);
     }
 }
