@@ -6,15 +6,35 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
 # WaterMarkIt
 
-A lightweight Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed. The library provides the `WatermarkMethod.DRAW` watermarking method to address the issue, whereas the `WatermarkMethod.OVERLAY` method adds a separate layer that can be easily removed, but it works much faster than the draw method.  
+A lightweight Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed. The library provides the `WatermarkMethod.DRAW` method to address the issue, whereas the `WatermarkMethod.OVERLAY` one adds a separate layer that can be easily removed.  
 
 ## Features
 
-- **DSL**: Provides a user-friendly way to configure and apply watermarks.
-- **Unremovable Watermarks**: Designed to watermark PDF files in a way that the watermark cannot be removed.
-- **Customizable Watermarks**: text, color, size, position, rotation, DPI, etc.
-- **Multithreading**: Use a thread pool for watermarking. This is relevant for `WatermarkMethod.DRAW` method and multi-page files like PDFs to apply watermarks in parallel (a separate thread per page).
-- **Supported Formats**: PDF, JPEG, PNG, TIFF, BMP.
+- **DSL**: Provides a user-friendly way to configure and apply watermarks with ease.
+- **Unremovable Watermarks**: Ensures that watermarks applied to PDF files are designed to be unremovable.
+- **Customizable Watermarks**: Customize various aspects of your watermark, including:
+  - Text
+  - Color
+  - Size
+  - Position
+  - Rotation
+  - Opacity
+  - Trademark
+  - DPI
+
+
+- **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkMethod.DRAW` approach and multi-page files such as PDFs, enabling parallel watermark application with a separate thread for each page.
+- **Supported Formats**:
+  - PDF
+  - JPEG
+  - PNG
+  - TIFF
+  - BMP
+
+
+- **Types of Watermarks**: Supports creating:
+  - Text-based watermarks
+  - Image-based watermarks
 
 ## Getting Started
 
@@ -42,8 +62,6 @@ implementation 'io.github.olegcheban:WaterMarkIt:1.1.1'
 
 ### Usage
 
-Here’s a quick example of how to use the WaterMarkIt library:
-
 ```java
 try (var document = new PDDocument()) {
     document.addPage(new PDPage());
@@ -51,7 +69,7 @@ try (var document = new PDDocument()) {
     document.addPage(new PDPage());
     
     byte[] result =
-            WatermarkService.create(
+            WatermarkService.textBasedWatermarker(
                             Executors.newFixedThreadPool(
                                     Runtime.getRuntime().availableProcessors()
                             )
@@ -78,9 +96,39 @@ try (var document = new PDDocument()) {
                     .apply();
 }
 ```
-As a result, the PDF contains three watermarks applied in different positions and using different styles.
-
 ![Screenshot](https://i.imgur.com/ww4gtmbm.png)
+
+```java
+try (var document = new PDDocument()) {
+    document.addPage(new PDPage());
+    
+    byte[] result =
+            WatermarkService.textBasedWatermarker()
+                    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+                    .withText("WaterMarkIt").ofSize(194)
+                    .usingMethod(WatermarkMethod.DRAW)
+                    .atPosition(WatermarkPosition.TILED)
+                    .inColor(Color.RED)
+                    .withOpacity(0.1f)                    
+                    .apply();
+}
+```
+![Screenshot](https://i.imgur.com/EO9AGeum.png)
+
+```java
+try (var document = new PDDocument()) {
+    document.addPage(new PDPage());    
+    
+    byte[] result =
+            WatermarkService.imageBasedWatermarker()
+                    .watermark(document)                    
+                    .withImage(readFileFromClasspathAsBytes("logo.png"))                    
+                    .withOpacity(0.3f)
+                    .apply();
+    
+}
+```
+
 
 ### Libraries
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.

@@ -1,7 +1,6 @@
 package com.markit.pdf.overlay;
 
 import com.markit.api.PositionCoordinates;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -48,7 +47,6 @@ public class OverlayMethodPositionCoordinates extends PositionCoordinates {
         return new Coordinates(pageWidth - textWidth - EDGE_SIZE,textHeight);
     }
 
-    @NotNull
     @Override
     public List<Coordinates> tiled() {
         throw new RuntimeException("overlay tiled position hasn't implemented yet");
