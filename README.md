@@ -32,7 +32,7 @@ A lightweight Java library for adding watermarks to various file types, includin
   - BMP
 
 
-- **Types of Watermarks**: Supports creating:
+- **Types of Watermarks**:
   - Text-based watermarks
   - Image-based watermarks
 
@@ -99,9 +99,6 @@ try (var document = new PDDocument()) {
 ![Screenshot](https://i.imgur.com/ww4gtmbm.png)
 
 ```java
-try (var document = new PDDocument()) {
-    document.addPage(new PDPage());
-    
     byte[] result =
             WatermarkService.textBasedWatermarker()
                     .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
@@ -111,7 +108,6 @@ try (var document = new PDDocument()) {
                     .inColor(Color.RED)
                     .withOpacity(0.1f)                    
                     .apply();
-}
 ```
 ![Screenshot](https://i.imgur.com/EO9AGeum.png)
 
@@ -130,7 +126,7 @@ try (var document = new PDDocument()) {
 ```
 
 
-### Libraries
+### Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
 - **commons-logging**: [Apache Commons Logging](https://commons.apache.org/proper/commons-logging/) - A simple logging facade for Java.
