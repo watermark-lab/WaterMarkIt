@@ -23,7 +23,7 @@ A lightweight Java library for adding watermarks to various file types, includin
   - DPI
 
 
-- **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkMethod.DRAW` approach and multi-page files such as PDFs, enabling parallel watermark application with a separate thread for each page.
+- **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkMethod.DRAW` approach and multi-page files such as PDFs, enabling parallel watermarking with a separate thread for each page.
 - **Supported Formats**:
   - PDF
   - JPEG
