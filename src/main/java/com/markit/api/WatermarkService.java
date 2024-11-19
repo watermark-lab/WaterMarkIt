@@ -80,15 +80,15 @@ public interface WatermarkService {
          *
          * @param size The font size for the watermark text.
          */
-        TextBasedWatermarkBuilder ofSize(int size);
+        TextBasedWatermarkBuilder size(int size);
 
         /**
          * Defines the method for adding a watermark (default is OVERLAY).
          *
-         * @param watermarkMethod The method to use for watermarking.
-         * @see WatermarkMethod
+         * @param watermarkingMethod The method to use for watermarking.
+         * @see WatermarkingMethod
          */
-        TextBasedWatermarkBuilder usingMethod(WatermarkMethod watermarkMethod);
+        TextBasedWatermarkBuilder method(WatermarkingMethod watermarkingMethod);
 
         /**
          * Defines the position of the watermark on the file.
@@ -96,7 +96,7 @@ public interface WatermarkService {
          * @param watermarkPosition The position to place the watermark (e.g., CENTER, CORNER).
          * @see WatermarkPosition
          */
-        TextBasedWatermarkBuilder atPosition(WatermarkPosition watermarkPosition);
+        TextBasedWatermarkBuilder position(WatermarkPosition watermarkPosition);
 
         /**
          * Sets the color of the watermark.
@@ -104,32 +104,32 @@ public interface WatermarkService {
          * @param color The color for the watermark text.
          * @see Color
          */
-        TextBasedWatermarkBuilder inColor(Color color);
+        TextBasedWatermarkBuilder color(Color color);
 
         /**
          * Sets the opacity of the watermark.
          *
          * @param opacity The opacity value, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
          */
-        TextBasedWatermarkBuilder withOpacity(float opacity);
+        TextBasedWatermarkBuilder opacity(float opacity);
 
         /**
          * Specifies the resolution for the watermark in DPI.
          *
          * @param dpi The resolution in DPI.
          */
-        TextBasedWatermarkBuilder withDpi(float dpi);
+        TextBasedWatermarkBuilder dpi(float dpi);
 
         /**
          * Adds a trademark symbol to the watermark.
          *
          */
-        TextBasedWatermarkBuilder withTrademark();
+        TextBasedWatermarkBuilder addTrademark();
 
         /**
          * Changes the rotation of the watermark
          */
-        TextBasedWatermarkBuilder rotate(int degree);
+        TextBasedWatermarkBuilder rotation(int degree);
 
         /**
          * Adds another watermark configuration to the file.
@@ -187,15 +187,15 @@ public interface WatermarkService {
         /**
          * Sets the size of the watermark image.
          */
-        ImageBasedWatermarkBuilder ofSize(int size);
+        ImageBasedWatermarkBuilder size(int size);
         /**
          * Sets the opacity of the watermark.
          */
-        ImageBasedWatermarkBuilder withOpacity(float opacity);
+        ImageBasedWatermarkBuilder opacity(float opacity);
         /**
          * Sets the dpi of the watermark.
          */
-        ImageBasedWatermarkBuilder withDpi(float dpi);
+        ImageBasedWatermarkBuilder dpi(float dpi);
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.

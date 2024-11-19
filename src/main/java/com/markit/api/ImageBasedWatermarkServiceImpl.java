@@ -50,7 +50,7 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     private WatermarkService.ImageBasedWatermarkBuilder configureDefaultParams(FileType ft, WatermarkHandler h) {
         imageConverter = new ImageConverter();
         watermarkAttributes = new WatermarkAttributes();
-        watermarkAttributes.setMethod(WatermarkMethod.DRAW);
+        watermarkAttributes.setMethod(WatermarkingMethod.DRAW);
         this.watermarkHandler = h;
         return this;
     }
@@ -67,19 +67,19 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder ofSize(int size) {
+    public WatermarkService.ImageBasedWatermarkBuilder size(int size) {
         watermarkAttributes.setSize(size);
         return this;
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder withOpacity(float opacity) {
+    public WatermarkService.ImageBasedWatermarkBuilder opacity(float opacity) {
         watermarkAttributes.setOpacity(opacity);
         return this;
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder withDpi(float dpi) {
+    public WatermarkService.ImageBasedWatermarkBuilder dpi(float dpi) {
         watermarkAttributes.setDpi(dpi);
         return this;
     }

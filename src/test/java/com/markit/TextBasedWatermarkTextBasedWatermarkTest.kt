@@ -25,8 +25,8 @@ class TextBasedWatermarkTextBasedWatermarkTest {
         val result = WatermarkService.textBasedWatermarker()
                 .watermark(file, FileType.JPEG)
                 .withText("Sample Watermark")
-                .ofSize(30)
-                .atPosition(WatermarkPosition.CENTER)
+                .size(30)
+                .position(WatermarkPosition.CENTER)
                 .apply()
 
         // Then

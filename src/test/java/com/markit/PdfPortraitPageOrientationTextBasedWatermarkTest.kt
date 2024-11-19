@@ -1,6 +1,6 @@
 package com.markit
 
-import com.markit.api.WatermarkMethod
+import com.markit.api.WatermarkingMethod
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -44,19 +44,19 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
         )
             .watermark(document)
                     .withText("Top Left Watermark")
-                    .ofSize(50)
-                    .atPosition(WatermarkPosition.TOP_LEFT)
-                    .usingMethod(WatermarkMethod.DRAW)
-                    .inColor(Color.BLACK)
-                    .withDpi(300f)
+                    .size(50)
+                    .position(WatermarkPosition.TOP_LEFT)
+                    .method(WatermarkingMethod.DRAW)
+                    .color(Color.BLACK)
+                    .dpi(300f)
                 .and()
                     .withText("Center Watermark")
-                    .ofSize(150)
-                    .usingMethod(WatermarkMethod.DRAW)
-                    .withTrademark()
-                    .rotate(45)
-                    .atPosition(WatermarkPosition.CENTER)
-                    .inColor(Color.BLUE)
+                    .size(150)
+                    .method(WatermarkingMethod.DRAW)
+                    .addTrademark()
+                    .rotation(45)
+                    .position(WatermarkPosition.CENTER)
+                    .color(Color.BLUE)
                 .apply()
 
         // Then
@@ -72,13 +72,13 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
         val result = WatermarkService.textBasedWatermarker()
                 .watermark(document)
                 .withText("Sample Watermark")
-                .ofSize(40)
-                .usingMethod(WatermarkMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
-                .atPosition(WatermarkPosition.CENTER)
-                .rotate(45)
-                .withTrademark()
-                .withOpacity(0.2f)
-                .inColor(Color.RED)
+                .size(40)
+                .method(WatermarkingMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
+                .position(WatermarkPosition.CENTER)
+                .rotation(45)
+                .addTrademark()
+                .opacity(0.2f)
+                .color(Color.RED)
                 .apply()
 
         // Then
@@ -97,12 +97,12 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
             )
         )
             .watermark(document)
-            .withText("CISCO").ofSize(194)
-            .usingMethod(WatermarkMethod.DRAW)
-            .atPosition(WatermarkPosition.TILED)
-            .inColor(Color.RED)
-            .withOpacity(0.5f)
-            .withDpi(300f)
+            .withText("CISCO").size(194)
+            .method(WatermarkingMethod.DRAW)
+            .position(WatermarkPosition.TILED)
+            .color(Color.RED)
+            .opacity(0.5f)
+            .dpi(300f)
             .apply()
 
         // Then

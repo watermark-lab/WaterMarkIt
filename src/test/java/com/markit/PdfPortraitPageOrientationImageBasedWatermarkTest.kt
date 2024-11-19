@@ -42,8 +42,8 @@ class PdfPortraitPageOrientationImageBasedWatermarkTest {
         )
             .watermark(document)
             .withImage(readFileFromClasspathAsBytes("whatsapp.png"))
-            .withDpi(300f)
-            .withOpacity(0.3f)
+            .dpi(300f)
+            .opacity(0.3f)
             .apply()
 
         // Then

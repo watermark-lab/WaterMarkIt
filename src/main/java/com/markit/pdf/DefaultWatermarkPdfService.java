@@ -1,7 +1,7 @@
 package com.markit.pdf;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.WatermarkMethod;
+import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.AsyncWatermarkPdfException;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
@@ -64,14 +64,14 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
             logger.error("Incorrect configuration. An empty service");
             throw new WatermarkPdfServiceNotFoundException();
         }
-        applyWatermark(document, attrs, WatermarkMethod.DRAW, this::draw);
-        applyWatermark(document, attrs, WatermarkMethod.OVERLAY, this::overlay);
+        applyWatermark(document, attrs, WatermarkingMethod.DRAW, this::draw);
+        applyWatermark(document, attrs, WatermarkingMethod.OVERLAY, this::overlay);
         removeSecurity(document);
         return convertPDDocumentToByteArray(document);
     }
 
     private void applyWatermark(PDDocument document, List<WatermarkAttributes> attrs,
-                                WatermarkMethod method, PdfWatermarkHandler action) throws IOException {
+                                WatermarkingMethod method, PdfWatermarkHandler action) throws IOException {
         var filteredAttrs = attrs.stream()
                 .filter(attr -> attr.getMethod().equals(method))
                 .collect(Collectors.toList());

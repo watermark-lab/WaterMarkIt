@@ -6,12 +6,16 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
 # WaterMarkIt
 
-A lightweight Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed. The library provides the `WatermarkMethod.DRAW` method to address the issue, whereas the `WatermarkMethod.OVERLAY` one adds a separate layer that can be easily removed.  
+A lightweight Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed.  
 
 ## Features
 
 - **DSL**: Provides a user-friendly way to configure and apply watermarks with ease.
-- **Unremovable Watermarks**: Ensures that watermarks applied to PDF files are designed to be unremovable.
+
+- **Types of Watermarks**:
+  - Text-based watermarks
+  - Image-based watermarks
+
 - **Customizable Watermarks**: Customize various aspects of your watermark, including:
   - Text
   - Color
@@ -21,20 +25,17 @@ A lightweight Java library for adding watermarks to various file types, includin
   - Opacity
   - Trademark
   - DPI
-
-
-- **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkMethod.DRAW` approach and multi-page files such as PDFs, enabling parallel watermarking with a separate thread for each page.
+ 
 - **Supported Formats**:
   - PDF
   - JPEG
   - PNG
   - TIFF
   - BMP
+ 
+- **Unremovable Watermarks**: Ensures that watermarks applied to PDF files are designed to be unremovable. The library provides the `WatermarkingMethod.DRAW` method to address the issue, whereas the `WatermarkingMethod.OVERLAY` one adds a separate layer that can be easily removed.
 
-
-- **Types of Watermarks**:
-  - Text-based watermarks
-  - Image-based watermarks
+- **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkingMethod.DRAW` approach and multi-page files such as PDFs, enabling parallel watermarking with a separate thread for each page.
 
 ## Getting Started
 
@@ -66,62 +67,58 @@ implementation 'io.github.olegcheban:WaterMarkIt:1.1.1'
 try (var document = new PDDocument()) {
     document.addPage(new PDPage());
     document.addPage(new PDPage());
-    document.addPage(new PDPage());
+    document.addPage(new PDPage());    
     
-    byte[] result =
-            WatermarkService.textBasedWatermarker(
-                            Executors.newFixedThreadPool(
-                                    Runtime.getRuntime().availableProcessors()
-                            )
+    WatermarkService.textBasedWatermarker(
+                    Executors.newFixedThreadPool(
+                            Runtime.getRuntime().availableProcessors()
                     )
-                    .watermark(document)
-                        .withText("CONFIDENTIAL").ofSize(20)
-                        .usingMethod(WatermarkMethod.OVERLAY)
-                        .atPosition(WatermarkPosition.TOP_LEFT)
-                        .inColor(Color.RED)
-                    .and()
-                        .withText("Copyright © 2024").ofSize(10)
-                        .usingMethod(WatermarkMethod.OVERLAY)
-                        .atPosition(WatermarkPosition.BOTTOM_LEFT)
-                        .inColor(Color.BLACK)
-                        .withOpacity(0.5f)
-                    .and()
-                        .withText("Your Company Name").ofSize(200)
-                        .usingMethod(WatermarkMethod.DRAW)
-                        .atPosition(WatermarkPosition.CENTER)
-                        .withDpi(300f)
-                        .rotate(25)
-                        .withTrademark()
-                        .inColor(Color.BLUE)
-                    .apply();
+            )
+            .watermark(document)
+                .withText("CONFIDENTIAL").size(20)
+                .method(WatermarkingMethod.OVERLAY)
+                .position(WatermarkPosition.TOP_LEFT)
+                .color(Color.RED)
+            .and()
+                .withText("Copyright © 2024").size(10)
+                .method(WatermarkingMethod.OVERLAY)
+                .position(WatermarkPosition.BOTTOM_LEFT)
+                .color(Color.BLACK)
+                .opacity(0.5f)
+            .and()
+                .withText("Your Company Name").size(200)
+                .method(WatermarkingMethod.DRAW)
+                .position(WatermarkPosition.CENTER)
+                .dpi(300f)
+                .rotation(25)
+                .addTrademark()
+                .color(Color.BLUE)
+            .apply();
 }
 ```
 ![Screenshot](https://i.imgur.com/ww4gtmbm.png)
 
-```java
-    byte[] result =
-            WatermarkService.textBasedWatermarker()
-                    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-                    .withText("WaterMarkIt").ofSize(194)
-                    .usingMethod(WatermarkMethod.DRAW)
-                    .atPosition(WatermarkPosition.TILED)
-                    .inColor(Color.RED)
-                    .withOpacity(0.1f)                    
-                    .apply();
+```java    
+    WatermarkService.textBasedWatermarker()
+            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+            .withText("WaterMarkIt").size(194)
+            .method(WatermarkingMethod.DRAW)
+            .position(WatermarkPosition.TILED)
+            .color(Color.RED)
+            .opacity(0.1f)                    
+            .apply();
 ```
 ![Screenshot](https://i.imgur.com/EO9AGeum.png)
 
 ```java
 try (var document = new PDDocument()) {
-    document.addPage(new PDPage());    
+    document.addPage(new PDPage());
     
-    byte[] result =
-            WatermarkService.imageBasedWatermarker()
-                    .watermark(document)                    
-                    .withImage(readFileFromClasspathAsBytes("logo.png"))                    
-                    .withOpacity(0.3f)
-                    .apply();
-    
+    WatermarkService.imageBasedWatermarker()
+            .watermark(document)                    
+            .withImage(readFileFromClasspathAsBytes("logo.png"))                    
+            .opacity(0.3f)
+            .apply();
 }
 ```
 

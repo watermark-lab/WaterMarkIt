@@ -1,6 +1,6 @@
 package com.markit
 
-import com.markit.api.WatermarkMethod
+import com.markit.api.WatermarkingMethod
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -38,7 +38,7 @@ class PdfLandscapePageOrientationTextBasedWatermarkTest {
         val result = WatermarkService.textBasedWatermarker()
                 .watermark(landscapeDocument)
                 .withText("Sample Watermark")
-                .usingMethod(WatermarkMethod.DRAW)
+                .method(WatermarkingMethod.DRAW)
                 .apply()
 
         // Then
@@ -52,8 +52,8 @@ class PdfLandscapePageOrientationTextBasedWatermarkTest {
         // When
         val result = WatermarkService.textBasedWatermarker()
                 .watermark(landscapeDocument)
-                .withText("Sample Watermark").ofSize(50)
-                .usingMethod(WatermarkMethod.OVERLAY)
+                .withText("Sample Watermark").size(50)
+                .method(WatermarkingMethod.OVERLAY)
                 .apply()
 
         // Then

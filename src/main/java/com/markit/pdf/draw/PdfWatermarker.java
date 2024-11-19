@@ -1,7 +1,7 @@
 package com.markit.pdf.draw;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.WatermarkMethod;
+import com.markit.api.WatermarkingMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * An interface for adding watermarks to a PDF page. ({@link WatermarkMethod#DRAW method}
+ * An interface for adding watermarks to a PDF page. ({@link WatermarkingMethod#DRAW method}
  *
  * @author Oleg Cheban
  * @since 1.0

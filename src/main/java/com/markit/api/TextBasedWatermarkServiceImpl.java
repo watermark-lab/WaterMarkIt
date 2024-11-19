@@ -64,49 +64,49 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder ofSize(int size) {
+    public WatermarkService.TextBasedWatermarkBuilder size(int size) {
         currentWatermark.setSize(size);
         return this;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder usingMethod(WatermarkMethod method) {
+    public WatermarkService.TextBasedWatermarkBuilder method(WatermarkingMethod method) {
         currentWatermark.setMethod(method);
         return this;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder atPosition(WatermarkPosition position) {
+    public WatermarkService.TextBasedWatermarkBuilder position(WatermarkPosition position) {
         currentWatermark.setPosition(position);
         return this;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder inColor(Color c) {
+    public WatermarkService.TextBasedWatermarkBuilder color(Color c) {
         currentWatermark.setColor(c);
         return this;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder withOpacity(float opacity) {
+    public WatermarkService.TextBasedWatermarkBuilder opacity(float opacity) {
         currentWatermark.setOpacity(opacity);
         return this;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder withDpi(float d) {
+    public WatermarkService.TextBasedWatermarkBuilder dpi(float d) {
         currentWatermark.setDpi(d);
         return this;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder withTrademark() {
+    public WatermarkService.TextBasedWatermarkBuilder addTrademark() {
         currentWatermark.setTrademark(true);
         return this;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder rotate(int degree) {
+    public WatermarkService.TextBasedWatermarkBuilder rotation(int degree) {
         currentWatermark.setRotation(degree);
         return this;
     }
@@ -132,13 +132,13 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
         }
     }
 
-    private WatermarkMethod defineMethodByFileType(FileType ft){
+    private WatermarkingMethod defineMethodByFileType(FileType ft){
         switch (ft){
             case JPEG:
             case PNG:
             case TIFF:
-            case BMP: return WatermarkMethod.DRAW;
-            case PDF: return WatermarkMethod.OVERLAY;
+            case BMP: return WatermarkingMethod.DRAW;
+            case PDF: return WatermarkingMethod.OVERLAY;
             default: throw new UnsupportedFileTypeException("Unsupported file type: " + ft);
         }
     }

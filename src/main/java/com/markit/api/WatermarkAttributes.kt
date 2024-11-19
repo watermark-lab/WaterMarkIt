@@ -12,7 +12,7 @@ data class WatermarkAttributes (
     var dpi: Float = 300f,
     var trademark: Boolean = false,
     var rotation: Int = 0,
-    var method: WatermarkMethod = WatermarkMethod.DRAW,
+    var method: WatermarkingMethod = WatermarkingMethod.DRAW,
     var position: WatermarkPosition = WatermarkPosition.CENTER,
     var image: Optional<BufferedImage> = Optional.empty()
 ) {}
