@@ -184,6 +184,7 @@ public interface WatermarkService {
          * Sets the watermark image.
          */
         ImageBasedWatermarkBuilder withImage(byte[] image);
+
         /**
          * Sets the size of the watermark image.
          */
@@ -192,6 +193,11 @@ public interface WatermarkService {
          * Sets the opacity of the watermark.
          */
         ImageBasedWatermarkBuilder opacity(float opacity);
+
+        /**
+         * Sets the rotation of the watermark.
+         */
+        ImageBasedWatermarkBuilder rotation(int degree);
         /**
          * Sets the dpi of the watermark.
          */

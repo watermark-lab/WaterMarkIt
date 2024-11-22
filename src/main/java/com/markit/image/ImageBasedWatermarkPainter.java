@@ -3,6 +3,7 @@ package com.markit.image;
 import com.markit.api.WatermarkAttributes;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 
 /**
@@ -17,14 +18,22 @@ public class ImageBasedWatermarkPainter {
         int watermarkWidth = (int) (watermarkImage.getWidth() * (attr.getSize() / 100.0));
         int watermarkHeight = (int) (watermarkImage.getHeight() * (attr.getSize() / 100.0));
         var coordinates = positioner.defineXY(attr.getPosition(), image.getWidth(), image.getHeight(), watermarkWidth, watermarkHeight);
-        coordinates.forEach(v->drawWatermark(g2d, watermarkImage, v.getX(), v.getY(), watermarkWidth, watermarkHeight));
+        coordinates.forEach(v->drawWatermark(g2d, watermarkImage, v.getX(), v.getY(), watermarkWidth, watermarkHeight, attr.getRotation()));
     }
 
     private void configureGraphics(Graphics2D g2d, AlphaComposite alphaChannel) {
         g2d.setComposite(alphaChannel);
     }
 
-    private void drawWatermark(Graphics2D g2d, BufferedImage watermarkImage, int x, int y, int width, int height) {
+    private void drawWatermark(Graphics2D g2d, BufferedImage watermarkImage, int x, int y, int width, int height, int rotation) {
+        applyRotation(g2d, rotation, x, y, width, height);
         g2d.drawImage(watermarkImage, x, y, width, height, null);
     }
+
+    private void applyRotation(Graphics2D g2d, int rotation, int x, int y, int width, int height) {
+        double centerX = x + width / 2.0;
+        double centerY = y + height / 2.0;
+        g2d.rotate(-Math.toRadians(rotation), centerX, centerY);
+    }
+
 }
