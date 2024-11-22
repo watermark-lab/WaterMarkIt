@@ -14,8 +14,8 @@ public class DrawMethodPositionCoordinates extends PositionCoordinates {
     private final int imageHeight;
     private final int watermarkWidth;
     private final int watermarkHeight;
-    private final int H_MIN_EDGE_SIZE = 30;
-    private final int V_MIN_EDGE_SIZE = 10;
+    private final int MIN_X_EDGE_SIZE = 30;
+    private final int MIN_Y_EDGE_SIZE = 100;
 
     public DrawMethodPositionCoordinates(int iw, int ih, int ww, int wh) {
         this.imageWidth = iw;
@@ -26,27 +26,27 @@ public class DrawMethodPositionCoordinates extends PositionCoordinates {
 
     @Override
     public Coordinates center(){
-        return new Coordinates((imageWidth - watermarkWidth) / 2, imageHeight / 2 );
+        return new Coordinates((imageWidth - watermarkWidth) / 2, (imageHeight - watermarkHeight) / 2 );
     }
 
     @Override
     public Coordinates topLeft(){
-        return new Coordinates(H_MIN_EDGE_SIZE, watermarkHeight + V_MIN_EDGE_SIZE);
+        return new Coordinates(MIN_X_EDGE_SIZE, MIN_Y_EDGE_SIZE);
     }
 
     @Override
     public Coordinates topRight() {
-        return new Coordinates(imageWidth - watermarkWidth - H_MIN_EDGE_SIZE, watermarkHeight + V_MIN_EDGE_SIZE);
+        return new Coordinates(imageWidth - watermarkWidth - MIN_X_EDGE_SIZE, MIN_Y_EDGE_SIZE);
     }
 
     @Override
     public Coordinates bottomLeft() {
-        return new Coordinates(H_MIN_EDGE_SIZE, imageHeight - H_MIN_EDGE_SIZE);
+        return new Coordinates(MIN_X_EDGE_SIZE, imageHeight - watermarkHeight);
     }
 
     @Override
     public Coordinates bottomRight() {
-        return new Coordinates(imageWidth - watermarkWidth - H_MIN_EDGE_SIZE, imageHeight - H_MIN_EDGE_SIZE);
+        return new Coordinates(imageWidth - watermarkWidth - MIN_X_EDGE_SIZE, imageHeight - watermarkHeight);
     }
 
     @Override

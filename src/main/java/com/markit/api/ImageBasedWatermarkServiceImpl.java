@@ -85,6 +85,12 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
+    public WatermarkService.ImageBasedWatermarkBuilder position(WatermarkPosition position) {
+        watermarkAttributes.setPosition(position);
+        return this;
+    }
+
+    @Override
     public byte[] apply() {
         try {
             return this.watermarkHandler.apply(Collections.singletonList(this.watermarkAttributes));

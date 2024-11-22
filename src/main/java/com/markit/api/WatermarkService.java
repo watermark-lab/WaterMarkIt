@@ -196,6 +196,13 @@ public interface WatermarkService {
          * Sets the dpi of the watermark.
          */
         ImageBasedWatermarkBuilder dpi(float dpi);
+        /**
+         * Defines the position of the watermark on the file.
+         *
+         * @param position The position to place the watermark
+         * @see WatermarkPosition
+         */
+        ImageBasedWatermarkBuilder position(WatermarkPosition position);
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.
