@@ -3,7 +3,6 @@ package com.markit.image;
 import com.markit.api.WatermarkAttributes;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 
 /**
@@ -26,7 +25,9 @@ public class ImageBasedWatermarkPainter {
     }
 
     private void drawWatermark(Graphics2D g2d, BufferedImage watermarkImage, int x, int y, int width, int height, int rotation) {
-        applyRotation(g2d, rotation, x, y, width, height);
+        if (rotation != 0){
+            applyRotation(g2d, rotation, x, y, width, height);
+        }
         g2d.drawImage(watermarkImage, x, y, width, height, null);
     }
 
@@ -35,5 +36,4 @@ public class ImageBasedWatermarkPainter {
         double centerY = y + height / 2.0;
         g2d.rotate(-Math.toRadians(rotation), centerX, centerY);
     }
-
 }
