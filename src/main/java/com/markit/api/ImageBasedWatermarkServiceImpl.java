@@ -34,20 +34,20 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
 
     @Override
     public WatermarkService.ImageBasedWatermarkBuilder watermark(byte[] fileBytes, FileType ft) {
-        return configureDefaultParams(ft, new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
+        return configureDefaultParams(new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
     }
 
     @Override
     public WatermarkService.ImageBasedWatermarkBuilder watermark(File file, FileType ft) {
-        return configureDefaultParams(ft, new WatermarksHandler().getHandler(file, ft, this.executor));
+        return configureDefaultParams(new WatermarksHandler().getHandler(file, ft, this.executor));
     }
 
     @Override
     public WatermarkService.ImageBasedWatermarkBuilder watermark(PDDocument document) {
-        return configureDefaultParams(FileType.PDF, new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
+        return configureDefaultParams(new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
     }
 
-    private WatermarkService.ImageBasedWatermarkBuilder configureDefaultParams(FileType ft, WatermarkHandler h) {
+    private WatermarkService.ImageBasedWatermarkBuilder configureDefaultParams(WatermarkHandler h) {
         imageConverter = new ImageConverter();
         watermarkAttributes = new WatermarkAttributes();
         watermarkAttributes.setMethod(WatermarkingMethod.DRAW);
