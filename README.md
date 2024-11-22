@@ -70,6 +70,7 @@ try (var document = new PDDocument()) {
     document.addPage(new PDPage());    
     
     WatermarkService.textBasedWatermarker(
+                    //it's a good point to use a configured thread pool for multipage documents.
                     Executors.newFixedThreadPool(
                             Runtime.getRuntime().availableProcessors()
                     )
