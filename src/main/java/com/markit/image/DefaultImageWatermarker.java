@@ -54,7 +54,7 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         int imageHeight = sourceImage.getHeight();
         attrs.forEach(attr -> {
             if (attr.getImage().isPresent()){
-                imageBasedWatermarkPainter.draw(g2d, sourceImage, attr);
+                imageBasedWatermarkPainter.draw(g2d, sourceImage, attr, watermarkPositioner);
             } else {
                 textBasedWatermarkPainter.draw(g2d, sourceImage, calculateFontSize(attr.getSize(), imageWidth, imageHeight), attr, watermarkPositioner);
             }

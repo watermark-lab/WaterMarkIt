@@ -1,5 +1,6 @@
 package com.markit
 
+import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -43,6 +44,7 @@ class PdfPortraitPageOrientationImageBasedWatermarkTest {
             .watermark(document)
             .withImage(readFileFromClasspathAsBytes("whatsapp.png"))
             .dpi(300f)
+            .position(WatermarkPosition.TILED)
             .opacity(0.3f)
             .apply()
 
