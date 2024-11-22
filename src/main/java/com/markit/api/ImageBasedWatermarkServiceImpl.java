@@ -79,6 +79,12 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
+    public WatermarkService.ImageBasedWatermarkBuilder rotation(int degree) {
+        watermarkAttributes.setRotation(degree);
+        return this;
+    }
+
+    @Override
     public WatermarkService.ImageBasedWatermarkBuilder dpi(float dpi) {
         watermarkAttributes.setDpi(dpi);
         return this;

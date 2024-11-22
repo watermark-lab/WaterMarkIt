@@ -19,17 +19,16 @@ public class ImageBasedWatermarkPainter {
         int watermarkHeight = (int) (watermarkImage.getHeight() * (attr.getSize() / 100.0));
         int x = (image.getWidth() - watermarkWidth) / 2;
         int y = (image.getHeight() - watermarkHeight) / 2;
-
-        applyRotation(g2d, attr.getRotation(), x, y, watermarkWidth, watermarkHeight);
-
-        drawWatermark(g2d, watermarkImage, x, y, watermarkWidth, watermarkHeight);
+        int watermarkRotation = attr.getRotation();
+        drawWatermark(g2d, watermarkImage, x, y, watermarkWidth, watermarkHeight, watermarkRotation);
     }
 
     private void configureGraphics(Graphics2D g2d, AlphaComposite alphaChannel) {
         g2d.setComposite(alphaChannel);
     }
 
-    private void drawWatermark(Graphics2D g2d, BufferedImage watermarkImage, int x, int y, int width, int height) {
+    private void drawWatermark(Graphics2D g2d, BufferedImage watermarkImage, int x, int y, int width, int height, int rotation) {
+        applyRotation(g2d, rotation, x, y, width, height);
         g2d.drawImage(watermarkImage, x, y, width, height, null);
     }
 
