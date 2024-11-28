@@ -54,11 +54,12 @@ public class DrawMethodPositionCoordinates extends PositionCoordinates {
         // Calculate the number of watermarks that can fit horizontally and vertically
         int numHorizontal = (int) Math.ceil((double) imageWidth / watermarkWidth);
         int numVertical = (int) Math.ceil((double) imageHeight / watermarkHeight);
+        int spacing = 50;
         List<Coordinates> list = new ArrayList<>();
 
         for (int i = 0; i < numHorizontal; i++) {
             for (int j = 0; j < numVertical; j++) {
-                list.add(new Coordinates((i * watermarkWidth) + (i * 50), (j * watermarkHeight) + (j * 50)));
+                list.add(new Coordinates((i * watermarkWidth) + (i * spacing), (j * watermarkHeight) + (j * spacing)));
             }
         }
         return list;

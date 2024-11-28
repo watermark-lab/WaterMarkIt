@@ -25,10 +25,21 @@ public class ImageBasedWatermarkPainter {
     }
 
     private void drawWatermark(Graphics2D g2d, BufferedImage watermarkImage, int x, int y, int width, int height, int rotation) {
-        if (rotation != 0){
+        applyWithOptionalRotation(g2d, rotation, x, y, width, height, () -> {
+            g2d.drawImage(watermarkImage, x, y, width, height, null);
+        });
+    }
+
+    private void applyWithOptionalRotation(Graphics2D g2d, int rotation, int x, int y, int width, int height, Runnable drawAction) {
+        var originalTransform = g2d.getTransform();
+        if (rotation != 0) {
             applyRotation(g2d, rotation, x, y, width, height);
         }
-        g2d.drawImage(watermarkImage, x, y, width, height, null);
+        drawAction.run();
+
+        if (rotation != 0) {
+            g2d.setTransform(originalTransform);
+        }
     }
 
     private void applyRotation(Graphics2D g2d, int rotation, int x, int y, int width, int height) {

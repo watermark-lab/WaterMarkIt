@@ -45,6 +45,7 @@ class PdfPortraitPageOrientationImageBasedWatermarkTest {
             .withImage(readFileFromClasspathAsBytes("whatsapp.png"))
             .dpi(300f)
             .position(WatermarkPosition.TILED)
+            .rotation(180)
             .opacity(0.3f)
             .apply()
 

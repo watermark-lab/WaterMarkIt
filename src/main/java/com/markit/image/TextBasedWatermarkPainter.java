@@ -33,13 +33,31 @@ public class TextBasedWatermarkPainter {
     }
 
     private void drawWatermark(Graphics2D g2d, TextLayout watermarkLayout, WatermarkAttributes attr, Rectangle2D rect, int x, int y, Font baseFont, int baseFontSize) {
-        if (attr.getRotation() != 0) {
-            applyRotation(g2d, attr.getRotation(), x, y, rect);
-        }
-        watermarkLayout.draw(g2d, x, y);
+        applyWithOptionalRotation(g2d, attr.getRotation(), x, y, rect, () -> {
+            watermarkLayout.draw(g2d, x, y);
 
-        if (attr.getTrademark()) {
-            drawTrademark(g2d, baseFont, baseFontSize, rect, x, y);
+            if (attr.getTrademark()) {
+                drawTrademark(g2d, baseFont, baseFontSize, rect, x, y);
+            }
+        });
+    }
+
+    private void applyWithOptionalRotation(Graphics2D g2d, int rotation, int x, int y, Rectangle2D rect, Runnable drawAction) {
+        var originalTransform = g2d.getTransform();
+        if (rotation != 0) {
+            applyRotation(g2d, rotation, x, y, rect);
+        }
+        drawAction.run();
+
+        if (rotation != 0) {
+            /**
+             * Restores the original transformation matrix of the Graphics2D object.
+             * This is crucial to ensure that subsequent drawing operations (in case of TILED position) are not affected
+             * by the transformations (e.g., rotation) applied to the current watermark.
+             * Without this reset, transformations would accumulate, leading to incorrect
+             * placement or rendering of other elements.
+             */
+            g2d.setTransform(originalTransform);
         }
     }
 
