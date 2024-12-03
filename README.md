@@ -1,5 +1,5 @@
 [![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
-[![javadoc](https://img.shields.io/badge/javadoc-1.2.0-brightgreen.svg)](https://javadoc.io/doc/io.github.olegcheban/WaterMarkIt/latest/index.html)
+[![javadoc](https://img.shields.io/badge/javadoc-1.2.1-brightgreen.svg)](https://javadoc.io/doc/io.github.olegcheban/WaterMarkIt/latest/index.html)
 [![Code climate](https://api.codeclimate.com/v1/badges/0cd17315421a1bec3587/maintainability)](https://codeclimate.com/github/OlegCheban/WaterMarkIt/maintainability)
 [![Hits-of-Code](https://hitsofcode.com/github/OlegCheban/WaterMarkIt?branch=master)](https://hitsofcode.com/github/OlegCheban/WaterMarkIt/view?branch=master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
@@ -52,13 +52,13 @@ A lightweight Java library for adding watermarks to various file types, includin
 <dependency>
     <groupId>io.github.olegcheban</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
 **For Gradle**, add the following to your `build.gradle`:
 ```kotlin
-implementation 'io.github.olegcheban:WaterMarkIt:1.2.0'
+implementation 'io.github.olegcheban:WaterMarkIt:1.2.1'
 ```
 
 ### Usage
@@ -102,14 +102,17 @@ try (var document = new PDDocument()) {
 ```java    
     WatermarkService.textBasedWatermarker()
             .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-            .withText("WaterMarkIt").size(194)
+            .withText("WaterMarkIt").size(100)
             .method(WatermarkingMethod.DRAW)
             .position(WatermarkPosition.TILED)
             .color(Color.RED)
-            .opacity(0.1f)                    
-            .apply();
+            .opacity(0.1f)
+            .rotation(25)
+            .addTrademark()
+            .dpi(300f)
+            .apply()
 ```
-![Screenshot](https://i.imgur.com/EO9AGeum.png)
+![Screenshot](https://github.com/user-attachments/assets/b07fa51c-dd64-4da7-994c-263968f6d6c6)
 
 ```java
 try (var document = new PDDocument()) {
