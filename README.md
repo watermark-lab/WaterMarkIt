@@ -119,13 +119,14 @@ try (var document = new PDDocument()) {
     document.addPage(new PDPage());
     
     WatermarkService.imageBasedWatermarker()
-            .watermark(document)                    
-            .withImage(readFileFromClasspathAsBytes("logo.png"))                    
-            .opacity(0.3f)
-            .apply();
+            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+            .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
+            .position(WatermarkPosition.TILED)
+            .opacity(0.1f)
+            .apply()
 }
 ```
-
+![Screenshot](https://github.com/user-attachments/assets/be223354-617a-4275-9779-64f246d585d1)
 
 ### Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
