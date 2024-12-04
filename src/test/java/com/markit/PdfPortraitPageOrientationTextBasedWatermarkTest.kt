@@ -1,5 +1,6 @@
 package com.markit
 
+import com.markit.api.FileType
 import com.markit.api.WatermarkingMethod
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test
 import java.awt.Color
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.nio.file.Files
 import java.util.concurrent.Executors
 import kotlin.test.assertNotNull
@@ -111,6 +113,38 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
         //outputFile(result, "tiled.pdf")
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun `given Pdf file when Draw Method and TILED position is Used then Make Watermarked Pdf`() {
+        // When
+        val result = WatermarkService.textBasedWatermarker(
+            Executors.newFixedThreadPool(
+                Runtime.getRuntime().availableProcessors()
+            )
+        )
+            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+            .withText("WaterMarkIt").size(100)
+            .method(WatermarkingMethod.DRAW)
+            .position(WatermarkPosition.TILED)
+            .color(Color.RED)
+            .opacity(0.1f)
+            .rotation(25)
+            .addTrademark()
+            .dpi(300f)
+            .apply()
+
+        // Then
+        assertNotNull(result, "The resulting byte array should not be null")
+        assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
+        //outputFile(result, "tiled.pdf")
+    }
+
+    fun readFileFromClasspathAsBytes(fileName: String): ByteArray? {
+        val classLoader = Thread.currentThread().contextClassLoader
+        val inputStream: InputStream? = classLoader.getResourceAsStream(fileName)
+        return inputStream?.readBytes()
     }
 
     private fun outputFile(result: ByteArray, filename: String) {
