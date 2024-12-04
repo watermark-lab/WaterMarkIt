@@ -1,6 +1,5 @@
 package com.markit
 
-import com.markit.api.FileType
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -42,7 +41,7 @@ class PdfPortraitPageOrientationImageBasedWatermarkTest {
                         Runtime.getRuntime().availableProcessors()
                 )
         )
-            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+            .watermark(document)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
             .position(WatermarkPosition.TILED)
             .opacity(0.1f)

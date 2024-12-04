@@ -1,6 +1,5 @@
 package com.markit
 
-import com.markit.api.FileType
 import com.markit.api.WatermarkingMethod
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
@@ -124,7 +123,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
                 Runtime.getRuntime().availableProcessors()
             )
         )
-            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+            .watermark(document)
             .withText("WaterMarkIt").size(100)
             .method(WatermarkingMethod.DRAW)
             .position(WatermarkPosition.TILED)
