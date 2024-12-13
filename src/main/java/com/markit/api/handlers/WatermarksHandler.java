@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
 public class WatermarksHandler {
     public <T> WatermarkHandler getHandler(T file, FileType fileType, Executor executor){
         if (fileType.equals(FileType.PDF)){
-            return new WatermarkPdfHandler().getHandler(file, fileType, executor);
+            return new WatermarkPdfHandler().getHandler(file, executor);
         } else {
             return new WatermarkImagesHandler().getHandler(file, fileType);
         }

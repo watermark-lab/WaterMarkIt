@@ -2,15 +2,14 @@ package com.markit.pdf;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkingMethod;
-import com.markit.exceptions.AsyncWatermarkPdfException;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
 import com.markit.pdf.draw.PdfWatermarker;
 import com.markit.pdf.overlay.OverlayPdfWatermarker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,14 +45,14 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
 
     @Override
     public byte[] watermark(byte[] sourceImageBytes, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = PDDocument.load(sourceImageBytes)) {
+        try(PDDocument document = Loader.loadPDF(sourceImageBytes)) {
             return watermark(document, attrs);
         }
     }
 
     @Override
     public byte[] watermark(File file, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = PDDocument.load(file)) {
+        try(PDDocument document = Loader.loadPDF(file)) {
             return watermark(document, attrs);
         }
     }
@@ -87,17 +86,16 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         }
     }
 
-    private void draw(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
-        PDFRenderer pdfRenderer = new PDFRenderer(document);
+    private void draw(PDDocument document, List<WatermarkAttributes> attrs) {
         int numberOfPages = document.getNumberOfPages();
         if (executorService.isEmpty()) {
-            sync(document, pdfRenderer, numberOfPages, attrs);
+            sync(document, numberOfPages, attrs);
         } else {
-            async(document, pdfRenderer, numberOfPages, attrs);
+            async(document, numberOfPages, attrs);
         }
     }
 
-    private void async(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, List<WatermarkAttributes> attrs){
+    private void async(PDDocument document, int numberOfPages, List<WatermarkAttributes> attrs){
         if (executorService.isEmpty()){
             logger.error("An empty executor");
             throw new ExecutorNotFoundException();
@@ -105,16 +103,14 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
 
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            int finalPageIndex = pageIndex;
+            final int pIndex = pageIndex;
             futures.add(
                 CompletableFuture.runAsync(
                         () -> {
                             try {
-                                drawService.get().watermark(document, pdfRenderer, finalPageIndex, attrs);
+                                drawService.get().watermark(document, pIndex, attrs);
                             } catch (IOException e) {
-                                logger.error(String.format(
-                                        "An error occurred during watermarking on page number %d", finalPageIndex), e);
-                                throw new AsyncWatermarkPdfException(e);
+                                logPageException(e, pIndex);
                             }
                         },
                         executorService.get()
@@ -125,10 +121,18 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         allOf.join();
     }
 
-    private void sync(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, List<WatermarkAttributes> attrs) throws IOException {
+    private void sync(PDDocument document, int numberOfPages, List<WatermarkAttributes> attrs) {
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            drawService.get().watermark(document, pdfRenderer, pageIndex, attrs);
+            try {
+                drawService.get().watermark(document, pageIndex, attrs);
+            } catch (IOException e) {
+                logPageException(e, pageIndex);
+            }
         }
+    }
+
+    private void logPageException(Exception e, int pageIndex){
+        logger.error(String.format("An error occurred during watermarking on page number %d", pageIndex), e);
     }
 
     private byte[] convertPDDocumentToByteArray(PDDocument document) throws IOException {

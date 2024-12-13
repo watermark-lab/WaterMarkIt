@@ -57,12 +57,8 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
 
     @Override
     public WatermarkService.ImageBasedWatermarkBuilder withImage(byte[] image) {
-        try {
-            var convertedImage = imageConverter.convertToBufferedImage(image);
-            watermarkAttributes.setImage(Optional.of(convertedImage));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        var convertedImage = imageConverter.convertToBufferedImage(image);
+        watermarkAttributes.setImage(Optional.of(convertedImage));
         return this;
     }
 
