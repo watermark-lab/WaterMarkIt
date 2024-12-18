@@ -8,7 +8,6 @@ import com.markit.pdf.draw.PdfWatermarker;
 import com.markit.pdf.overlay.OverlayPdfWatermarker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.ByteArrayOutputStream;
@@ -45,14 +44,14 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
 
     @Override
     public byte[] watermark(byte[] sourceImageBytes, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = Loader.loadPDF(sourceImageBytes)) {
+        try(PDDocument document = PDDocument.load(sourceImageBytes)) {
             return watermark(document, attrs);
         }
     }
 
     @Override
     public byte[] watermark(File file, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = Loader.loadPDF(file)) {
+        try(PDDocument document = PDDocument.load(file)) {
             return watermark(document, attrs);
         }
     }

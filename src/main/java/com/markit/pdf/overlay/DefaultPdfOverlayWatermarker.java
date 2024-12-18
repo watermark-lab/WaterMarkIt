@@ -7,7 +7,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 import org.apache.pdfbox.util.Matrix;
 
@@ -58,7 +57,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
     private void overlay(PDPageContentStream contentStream, float pageWidth, float pageHeight, PDType0Font font, WatermarkAttributes attr) throws IOException {
         final int fontSize = attr.getSize() == 0 ? TEXT_SIZE : attr.getSize();
         contentStream.beginText();
-        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD), fontSize);
+        contentStream.setFont(PDType1Font.TIMES_BOLD, fontSize);
         contentStream.setNonStrokingColor(attr.getColor());
         contentStream.setGraphicsStateParameters(defineOpacity(attr.getOpacity()));
         float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;

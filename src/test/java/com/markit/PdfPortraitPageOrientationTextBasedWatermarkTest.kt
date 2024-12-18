@@ -141,32 +141,6 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
         //outputFile(result, "tiled.pdf")
     }
 
-    @Test
-    @Throws(IOException::class)
-    fun `test`() {
-        // When
-        val result = WatermarkService.textBasedWatermarker(
-            Executors.newFixedThreadPool(
-                2
-            )
-        )
-            .watermark(readFileFromClasspathAsBytes("withtext.pdf"), FileType.PDF)
-            .withText("WaterMarkIt").size(100)
-            .method(WatermarkingMethod.DRAW)
-            .position(WatermarkPosition.CENTER)
-            .color(Color.BLACK)
-            //.opacity(0.1f)
-            //.rotation(25)
-            //.addTrademark()
-            .dpi(150f)
-            .apply()
-
-        // Then
-        assertNotNull(result, "The resulting byte array should not be null")
-        assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        outputFile(result, "res.pdf")
-    }
-
     fun readFileFromClasspathAsBytes(fileName: String): ByteArray? {
         val classLoader = Thread.currentThread().contextClassLoader
         val inputStream: InputStream? = classLoader.getResourceAsStream(fileName)
