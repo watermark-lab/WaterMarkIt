@@ -83,7 +83,8 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
 
     @Override
     public WatermarkService.TextBasedWatermarkBuilder adjust(int x, int y) {
-        // WIP
+        WatermarkAdjustment adjustment = new WatermarkAdjustment(x, y);
+        currentWatermark.setAdjustment(adjustment);
         return this;
     }
 

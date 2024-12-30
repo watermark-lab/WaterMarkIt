@@ -94,7 +94,8 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
 
     @Override
     public WatermarkService.ImageBasedWatermarkBuilder adjust(int x, int y) {
-        // WIP
+        WatermarkAdjustment adjustment = new WatermarkAdjustment(x, y);
+        watermarkAttributes.setAdjustment(adjustment);
         return this;
     }
 
