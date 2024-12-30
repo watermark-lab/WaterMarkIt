@@ -114,17 +114,13 @@ try (var document = new PDDocument()) {
 ```
 ![Screenshot](https://github.com/user-attachments/assets/b07fa51c-dd64-4da7-994c-263968f6d6c6)
 
-```java
-try (var document = new PDDocument()) {
-    document.addPage(new PDPage());
-    
+```java 
     WatermarkService.imageBasedWatermarker()
             .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
             .position(WatermarkPosition.TILED)
             .opacity(0.1f)
             .apply()
-}
 ```
 ![Screenshot](https://github.com/user-attachments/assets/be223354-617a-4275-9779-64f246d585d1)
 
