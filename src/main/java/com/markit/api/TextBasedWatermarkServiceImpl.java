@@ -19,7 +19,7 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder {
+public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
     private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
@@ -76,8 +76,14 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder position(WatermarkPosition position) {
+    public WatermarkService.TextBasedWatermarkPositionStepBuilder position(WatermarkPosition position) {
         currentWatermark.setPosition(position);
+        return this;
+    }
+
+    @Override
+    public WatermarkService.TextBasedWatermarkBuilder adjust(int x, int y) {
+        // WIP
         return this;
     }
 

@@ -96,7 +96,7 @@ public interface WatermarkService {
          * @param watermarkPosition The position to place the watermark (e.g., CENTER, CORNER).
          * @see WatermarkPosition
          */
-        TextBasedWatermarkBuilder position(WatermarkPosition watermarkPosition);
+        TextBasedWatermarkPositionStepBuilder position(WatermarkPosition watermarkPosition);
 
         /**
          * Sets the color of the watermark.
@@ -144,6 +144,20 @@ public interface WatermarkService {
          * @return A byte array representing the watermarked file.
          */
         byte[] apply();
+    }
+
+    /**
+     * Interface for adjusting the position of text-based watermarks.
+     */
+    interface TextBasedWatermarkPositionStepBuilder extends TextBasedWatermarkBuilder {
+
+        /**
+         * Adjusts the position of the watermark relative to its default location.
+         *
+         * @param x The horizontal offset in pixels.
+         * @param y The vertical offset in pixels.
+         */
+        TextBasedWatermarkBuilder adjust(int x, int y);
     }
 
     /**
@@ -208,7 +222,7 @@ public interface WatermarkService {
          * @param position The position to place the watermark
          * @see WatermarkPosition
          */
-        ImageBasedWatermarkBuilder position(WatermarkPosition position);
+        ImageBasedWatermarkPositionStepBuilder position(WatermarkPosition position);
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.
@@ -216,5 +230,19 @@ public interface WatermarkService {
          * @return A byte array representing the watermarked file.
          */
         byte[] apply();
+    }
+
+    /**
+     * Interface for adjusting the position of image-based watermarks.
+     */
+    interface ImageBasedWatermarkPositionStepBuilder extends ImageBasedWatermarkBuilder {
+
+        /**
+         * Adjusts the position of the watermark relative to its default location.
+         *
+         * @param x The horizontal offset in pixels.
+         * @param y The vertical offset in pixels.
+         */
+        ImageBasedWatermarkBuilder adjust(int x, int y);
     }
 }
