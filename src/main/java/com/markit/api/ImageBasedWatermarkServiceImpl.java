@@ -18,7 +18,7 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.2.0
  */
-public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBasedWatermarker, WatermarkService.ImageBasedWatermarkBuilder {
+public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBasedWatermarker, WatermarkService.ImageBasedWatermarkBuilder, WatermarkService.ImageBasedWatermarkPositionStepBuilder {
     private static final Log logger = LogFactory.getLog(ImageBasedWatermarkServiceImpl.class);
     private Executor executor;
     private WatermarkAttributes watermarkAttributes;
@@ -87,8 +87,15 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder position(WatermarkPosition position) {
+    public WatermarkService.ImageBasedWatermarkPositionStepBuilder position(WatermarkPosition position) {
         watermarkAttributes.setPosition(position);
+        return this;
+    }
+
+    @Override
+    public WatermarkService.ImageBasedWatermarkBuilder adjust(int x, int y) {
+        WatermarkAdjustment adjustment = new WatermarkAdjustment(x, y);
+        watermarkAttributes.setAdjustment(adjustment);
         return this;
     }
 

@@ -14,6 +14,7 @@ data class WatermarkAttributes (
     var rotation: Int = 0,
     var method: WatermarkingMethod = WatermarkingMethod.DRAW,
     var position: WatermarkPosition = WatermarkPosition.CENTER,
+    var adjustment: WatermarkAdjustment = WatermarkAdjustment(),
     var image: Optional<BufferedImage> = Optional.empty()
 ) {}
 

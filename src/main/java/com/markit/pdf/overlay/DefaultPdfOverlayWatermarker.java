@@ -62,7 +62,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         contentStream.setGraphicsStateParameters(defineOpacity(attr.getOpacity()));
         float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;
         float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
-        var coordinates = positioner.defineXY(attr.getPosition(), (int) pageWidth, (int) pageHeight, (int) textWidth, (int) textHeight);
+        var coordinates = positioner.defineXY(attr, (int) pageWidth, (int) pageHeight, (int) textWidth, (int) textHeight);
         float x = coordinates.get(0).getX() + textWidth / 2;
         float y = coordinates.get(0).getY() + textHeight / 2;
 

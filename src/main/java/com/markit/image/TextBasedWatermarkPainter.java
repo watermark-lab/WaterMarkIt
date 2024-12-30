@@ -22,7 +22,7 @@ public class TextBasedWatermarkPainter {
         TextLayout watermarkLayout = new TextLayout(attr.getText(), baseFont, frc);
         Rectangle2D rect = watermarkLayout.getBounds();
 
-        var coordinates = positioner.defineXY(attr.getPosition(), image.getWidth(), image.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
+        var coordinates = positioner.defineXY(attr, image.getWidth(), image.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
         coordinates.forEach(v -> drawWatermark(g2d, watermarkLayout, attr, rect, v.getX(), v.getY(), baseFont, baseFontSize));
     }
 

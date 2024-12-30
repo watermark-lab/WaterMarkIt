@@ -48,6 +48,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
                     .withText("Top Left Watermark")
                     .size(50)
                     .position(WatermarkPosition.TOP_LEFT)
+                    .adjust(5, 5)
                     .method(WatermarkingMethod.DRAW)
                     .color(Color.BLACK)
                     .dpi(300f)
@@ -58,6 +59,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
                     .addTrademark()
                     .rotation(45)
                     .position(WatermarkPosition.CENTER)
+                    .adjust(5, 5)
                     .color(Color.BLUE)
                 .apply()
 
