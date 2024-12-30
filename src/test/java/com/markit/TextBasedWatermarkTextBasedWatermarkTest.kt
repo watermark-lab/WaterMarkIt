@@ -27,6 +27,7 @@ class TextBasedWatermarkTextBasedWatermarkTest {
                 .withText("Sample Watermark")
                 .size(30)
                 .position(WatermarkPosition.CENTER)
+                .adjust(5, 5)
                 .apply()
 
         // Then
