@@ -67,12 +67,8 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
         final int rotation = page.getRotation();
         final float pageWidth = page.getMediaBox().getWidth();
         final float pageHeight = page.getMediaBox().getHeight();
-        final int D_90 = 90;
-        final int D_180 = 180;
-        final int D_270 = 270;
-        float scaleX = 1;
-        float scaleY = 1;
-
+        final int D_90 = 90, D_180 = 180, D_270 = 270;
+        float scaleX = 1, scaleY = 1;
         switch (rotation) {
             case D_90:
                 contentStream.transform(Matrix.getRotateInstance(Math.toRadians(D_90), 0, 0));
@@ -91,7 +87,6 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
                 scaleY = pageWidth / pageHeight;
                 break;
         }
-
         contentStream.transform(Matrix.getScaleInstance(scaleX, scaleY));
     }
 }
