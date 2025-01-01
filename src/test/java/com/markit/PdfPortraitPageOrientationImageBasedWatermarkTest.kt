@@ -44,7 +44,6 @@ class PdfPortraitPageOrientationImageBasedWatermarkTest {
             .watermark(document)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
             .position(WatermarkPosition.TILED)
-            .adjust(5, 5)
             .opacity(0.1f)
             .apply()
 

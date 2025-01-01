@@ -2,6 +2,7 @@ package com.markit.api;
 
 import com.markit.api.handlers.WatermarkHandler;
 import com.markit.api.handlers.WatermarksHandler;
+import com.markit.exceptions.EmptyWatermarkTextException;
 import com.markit.exceptions.UnsupportedFileTypeException;
 import com.markit.exceptions.WatermarkingException;
 import org.apache.commons.logging.Log;
@@ -20,37 +21,37 @@ import java.util.function.Predicate;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
-    private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
+public class TextBasedWatermarkerWatermarkServiceImpl implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
+    private static final Log logger = LogFactory.getLog(TextBasedWatermarkerWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
     private final List<WatermarkAttributes> watermarks = new ArrayList<>();
     private WatermarkAttributes currentWatermark;
     private Executor executor;
 
-    public TextBasedWatermarkServiceImpl() {
+    public TextBasedWatermarkerWatermarkServiceImpl() {
     }
 
-    public TextBasedWatermarkServiceImpl(Executor e) {
+    public TextBasedWatermarkerWatermarkServiceImpl(Executor e) {
         this.executor = e;
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder watermark(PDDocument document) {
+    public WatermarkService.TextBasedWatermarker watermark(PDDocument document) {
         return configureDefaultParams(FileType.PDF, new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder watermark(byte[] fileBytes, FileType ft) {
+    public WatermarkService.TextBasedWatermarker watermark(byte[] fileBytes, FileType ft) {
         return configureDefaultParams(ft, new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder watermark(File file, FileType ft) {
+    public WatermarkService.TextBasedWatermarker watermark(File file, FileType ft) {
         return configureDefaultParams(ft, new WatermarksHandler().getHandler(file, ft, this.executor));
     }
 
-    private WatermarkService.TextBasedWatermarkBuilder configureDefaultParams(FileType ft, WatermarkHandler h) {
+    private WatermarkService.TextBasedWatermarker configureDefaultParams(FileType ft, WatermarkHandler h) {
         currentWatermark = new WatermarkAttributes();
         currentWatermark.setMethod(defineMethodByFileType(ft));
         this.fileType = ft;
@@ -120,12 +121,14 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder and() {
-        if (!currentWatermark.getText().isEmpty()) {
-            watermarks.add(currentWatermark);
-            currentWatermark = new WatermarkAttributes();
-            currentWatermark.setMethod(defineMethodByFileType(fileType));
+    public WatermarkService.TextBasedWatermarker and() {
+        if (currentWatermark.getText().isEmpty()) {
+            logger.error("the watermarking text is empty");
+            throw new EmptyWatermarkTextException("");
         }
+        watermarks.add(currentWatermark);
+        currentWatermark = new WatermarkAttributes();
+        currentWatermark.setMethod(defineMethodByFileType(fileType));
         return this;
     }
 
