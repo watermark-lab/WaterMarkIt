@@ -44,13 +44,17 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         float pageHeight = mediaBox.getHeight();
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
-            attrs.forEach(attr -> {
-                try {
-                    overlay(contentStream, pageWidth, pageHeight, fontLoader.loadArialFont(document), attr);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            attrs.stream()
+                    .filter(WatermarkAttributes::getWatermarkEnabled)
+                    .filter(attr -> attr.getPagePredicate().test(pageIndex))
+                    .filter(attr -> attr.getDocumentPredicates().test(document))
+                    .forEach(attr -> {
+                        try {
+                            overlay(contentStream, pageWidth, pageHeight, fontLoader.loadArialFont(document), attr);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
         }
     }
 
