@@ -45,6 +45,7 @@
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <kotlin.version>2.0.20</kotlin.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
@@ -82,11 +83,6 @@
             <artifactId>kotlin-test</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
 
