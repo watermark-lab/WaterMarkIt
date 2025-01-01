@@ -18,7 +18,7 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.2.0
  */
-public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBasedWatermarker, WatermarkService.ImageBasedWatermarkBuilder, WatermarkService.ImageBasedWatermarkPositionStepBuilder {
+public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBasedFileSetter, WatermarkService.ImageBasedWatermarker, WatermarkService.ImageBasedWatermarkBuilder, WatermarkService.ImageBasedWatermarkPositionStepBuilder {
     private static final Log logger = LogFactory.getLog(ImageBasedWatermarkServiceImpl.class);
     private Executor executor;
     private WatermarkAttributes watermarkAttributes;
@@ -33,21 +33,21 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder watermark(byte[] fileBytes, FileType ft) {
+    public WatermarkService.ImageBasedWatermarker watermark(byte[] fileBytes, FileType ft) {
         return configureDefaultParams(new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder watermark(File file, FileType ft) {
+    public WatermarkService.ImageBasedWatermarker watermark(File file, FileType ft) {
         return configureDefaultParams(new WatermarksHandler().getHandler(file, ft, this.executor));
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder watermark(PDDocument document) {
+    public WatermarkService.ImageBasedWatermarker watermark(PDDocument document) {
         return configureDefaultParams(new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
     }
 
-    private WatermarkService.ImageBasedWatermarkBuilder configureDefaultParams(WatermarkHandler h) {
+    private WatermarkService.ImageBasedWatermarker configureDefaultParams(WatermarkHandler h) {
         imageConverter = new ImageConverter();
         watermarkAttributes = new WatermarkAttributes();
         watermarkAttributes.setMethod(WatermarkingMethod.DRAW);
