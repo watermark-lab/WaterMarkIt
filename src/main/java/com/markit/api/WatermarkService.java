@@ -142,21 +142,23 @@ public interface WatermarkService {
         /**
          * Adds a condition to filter the document when applying the watermark.
          * Only documents that meet the condition will have the watermark applied.
-         * predicate: A condition that takes a PDDocument as input and returns true/false.
+         *
+         * @param predicate: A condition that takes a PDDocument as input and returns true/false.
          */
         TextBasedWatermarkBuilder filterDocument(Predicate<PDDocument> predicate);
 
         /**
          * Adds a condition to filter the page when applying the watermark.
          * Only pages that meet the condition will have the watermark applied.
-         * predicate: A condition that takes a page number (Integer) as input and returns true/false.
+         *
+         * @param predicate A condition that takes a page number (Integer) as input and returns true/false.
+         *                  The page index starts from 1.
          */
         TextBasedWatermarkBuilder filterPage(Predicate<Integer> predicate);
 
         /**
          * Enables or disables the watermark based on a specific condition.
-         * condition: A boolean value that determines whether the watermark is enabled (true) or disabled (false).
-         * @return
+         * @param condition: A boolean value that determines whether the watermark is enabled (true) or disabled (false).
          */
         TextBasedWatermarkBuilder when(boolean condition);
 
