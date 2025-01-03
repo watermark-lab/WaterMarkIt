@@ -16,12 +16,12 @@ import java.util.concurrent.Executor;
 public interface WatermarkService {
 
     static TextBasedFileSetter textBasedWatermarker() {
-        return new TextBasedWatermarkerWatermarkServiceImpl();
+        return new TextBasedWatermarkServiceImpl();
     }
 
     static TextBasedFileSetter textBasedWatermarker(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new TextBasedWatermarkerWatermarkServiceImpl(executor);
+        return new TextBasedWatermarkServiceImpl(executor);
     }
 
     static ImageBasedFileSetter imageBasedWatermarker() {

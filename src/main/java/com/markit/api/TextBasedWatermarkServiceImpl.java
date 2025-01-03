@@ -20,18 +20,18 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextBasedWatermarkerWatermarkServiceImpl implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
-    private static final Log logger = LogFactory.getLog(TextBasedWatermarkerWatermarkServiceImpl.class);
+public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
+    private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
     private final List<WatermarkAttributes> watermarks = new ArrayList<>();
     private WatermarkAttributes currentWatermark;
     private Executor executor;
 
-    public TextBasedWatermarkerWatermarkServiceImpl() {
+    public TextBasedWatermarkServiceImpl() {
     }
 
-    public TextBasedWatermarkerWatermarkServiceImpl(Executor e) {
+    public TextBasedWatermarkServiceImpl(Executor e) {
         this.executor = e;
     }
 
