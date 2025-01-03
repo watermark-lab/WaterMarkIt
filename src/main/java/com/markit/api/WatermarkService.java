@@ -249,6 +249,30 @@ public interface WatermarkService {
         ImageBasedWatermarkPositionStepBuilder position(WatermarkPosition position);
 
         /**
+         * Adds a condition to filter the document when applying the watermark.
+         * Only documents that meet the condition will have the watermark applied.
+         *
+         * @param predicate: A condition that takes a PDDocument as input and returns true/false.
+         */
+        ImageBasedWatermarkBuilder filterDocument(Predicate<PDDocument> predicate);
+
+        /**
+         * Adds a condition to filter the page when applying the watermark.
+         * Only pages that meet the condition will have the watermark applied.
+         *
+         * @param predicate A condition that takes a page number (Integer) as input and returns true/false.
+         *                  The page index starts from 1.
+         */
+        ImageBasedWatermarkBuilder filterPage(Predicate<Integer> predicate);
+
+        /**
+         * Enables or disables the watermark based on a specific condition.
+         *
+         * @param condition: A boolean value that determines whether the watermark is enabled (true) or disabled (false).
+         */
+        ImageBasedWatermarkBuilder when(boolean condition);
+
+        /**
          * Applies the watermark to the file and returns the result as a byte array.
          *
          * @return A byte array representing the watermarked file.
