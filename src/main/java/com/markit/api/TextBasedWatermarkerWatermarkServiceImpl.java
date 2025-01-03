@@ -132,6 +132,7 @@ public class TextBasedWatermarkerWatermarkServiceImpl implements WatermarkServic
         return this;
     }
 
+    @Override
     public WatermarkService.TextBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate) {
         currentWatermark.setDocumentPredicates(predicate);
         return this;
