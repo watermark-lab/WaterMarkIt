@@ -94,7 +94,7 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder filterDocument(Predicate<PDDocument> predicate) {
+    public WatermarkService.ImageBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate) {
         watermarkAttributes.setDocumentPredicates(predicate);
         return this;
     }

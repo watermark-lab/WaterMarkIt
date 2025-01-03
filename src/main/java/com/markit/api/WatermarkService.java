@@ -145,7 +145,7 @@ public interface WatermarkService {
          *
          * @param predicate: A condition that takes a PDDocument as input and returns true/false.
          */
-        TextBasedWatermarkBuilder filterDocument(Predicate<PDDocument> predicate);
+        TextBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate);
 
         /**
          * Adds a condition to filter the page when applying the watermark.
@@ -254,7 +254,7 @@ public interface WatermarkService {
          *
          * @param predicate: A condition that takes a PDDocument as input and returns true/false.
          */
-        ImageBasedWatermarkBuilder filterDocument(Predicate<PDDocument> predicate);
+        ImageBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate);
 
         /**
          * Adds a condition to filter the page when applying the watermark.
