@@ -46,8 +46,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
             .watermark(document)
                     .withText("Top Left Watermark")
                     .size(50)
-                    .position(WatermarkPosition.TOP_LEFT)
-                    .adjust(5, 5)
+                    .position(WatermarkPosition.TOP_LEFT).adjust(45, 45)
                     .method(WatermarkingMethod.DRAW)
                     .pageFilter { it >= 1 }
                     .color(Color.BLACK)
@@ -61,7 +60,6 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
                     .`when`(true)
                     .documentFilter{document -> document.getNumberOfPages() > 2}
                     .position(WatermarkPosition.CENTER)
-                    .adjust(5, 5)
                     .color(Color.BLUE)
                 .apply()
 

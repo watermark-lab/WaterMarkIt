@@ -1,8 +1,6 @@
 package com.markit.pdf.overlay;
 
-import com.markit.api.WatermarkAdjustment;
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.WatermarkPosition;
 import com.markit.api.WatermarkPositionCoordinates;
 
 import java.util.List;

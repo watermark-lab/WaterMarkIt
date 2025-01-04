@@ -86,8 +86,8 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
 
     @Override
     public WatermarkService.TextBasedWatermarkBuilder adjust(int x, int y) {
-        WatermarkAdjustment adjustment = new WatermarkAdjustment(x, y);
-        currentWatermark.setAdjustment(adjustment);
+        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
+        currentWatermark.setPositionAdjustment(adjustment);
         return this;
     }
 
