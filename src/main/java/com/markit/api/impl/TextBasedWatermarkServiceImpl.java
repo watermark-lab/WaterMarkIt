@@ -1,5 +1,6 @@
-package com.markit.api;
+package com.markit.api.impl;
 
+import com.markit.api.*;
 import com.markit.api.handlers.WatermarkHandler;
 import com.markit.api.handlers.WatermarksHandler;
 import com.markit.exceptions.EmptyWatermarkTextException;
@@ -135,7 +136,7 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
 
     @Override
     public WatermarkService.TextBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate) {
-        currentWatermark.setDocumentPredicates(predicate);
+        currentWatermark.setDocumentPredicate(predicate);
         return this;
     }
 

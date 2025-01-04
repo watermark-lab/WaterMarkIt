@@ -1,5 +1,6 @@
-package com.markit.api;
+package com.markit.api.impl;
 
+import com.markit.api.*;
 import com.markit.api.handlers.WatermarkHandler;
 import com.markit.api.handlers.WatermarksHandler;
 import com.markit.exceptions.WatermarkingException;
@@ -95,7 +96,7 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
 
     @Override
     public WatermarkService.ImageBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate) {
-        watermarkAttributes.setDocumentPredicates(predicate);
+        watermarkAttributes.setDocumentPredicate(predicate);
         return this;
     }
 

@@ -72,7 +72,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
                                 WatermarkingMethod method, PdfWatermarkHandler action) throws IOException {
         var filteredAttrs = attrs.stream()
                 .filter(WatermarkAttributes::getWatermarkEnabled)
-                .filter(attr -> attr.getDocumentPredicates().test(document))
+                .filter(attr -> attr.getDocumentPredicate().test(document))
                 .filter(attr -> attr.getMethod().equals(method))
                 .collect(Collectors.toList());
         if (!filteredAttrs.isEmpty()) {

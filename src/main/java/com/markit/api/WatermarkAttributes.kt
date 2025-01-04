@@ -18,7 +18,7 @@ data class WatermarkAttributes (
     var position: WatermarkPosition = WatermarkPosition.CENTER,
     var positionAdjustment: WatermarkPositionCoordinates.Coordinates = WatermarkPositionCoordinates.Coordinates(0, 0),
     var image: Optional<BufferedImage> = Optional.empty(),
-    var documentPredicates: Predicate<PDDocument> = Predicate { true },
+    var documentPredicate: Predicate<PDDocument> = Predicate { true },
     var pagePredicate: Predicate<Int> = Predicate { true },
     var watermarkEnabled: Boolean = true
 )
