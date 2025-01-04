@@ -1,9 +1,9 @@
 package com.markit.pdf.draw;
 
+import com.markit.api.FileType;
 import com.markit.api.WatermarkAttributes;
 import com.markit.image.ImageConverter;
 import com.markit.image.ImageWatermarker;
-import com.markit.api.FileType;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -14,13 +14,14 @@ import org.apache.pdfbox.util.Matrix;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Oleg Cheban
  * @since 1.0
  */
 public class DefaultPdfDrawWatermarker implements PdfWatermarker {
+
+    private final static float DEFAULT_DPI = 72f;
     private final ImageWatermarker imageWatermarker;
     private final ImageConverter imageConverter;
 
@@ -34,16 +35,8 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
 
         var page = document.getPage(pageIndex);
         PDFRenderer pdfRenderer = new PDFRenderer(document);
-        var image = pdfRenderer.renderImageWithDPI(pageIndex, attrs.stream().map(WatermarkAttributes::getDpi).max(Comparator.naturalOrder()).get());
-        var watermarkedImageBytes = imageWatermarker.watermark(
-                imageConverter.convertToByteArray(image, FileType.JPEG),
-                FileType.JPEG,
-                attrs.stream()
-                        .filter(WatermarkAttributes::getWatermarkEnabled)
-                        .filter(attr -> attr.getPagePredicate().test(pageIndex))
-                        .filter(attr -> attr.getDocumentPredicates().test(document))
-                        .collect(Collectors.toList())
-        );
+        var image = pdfRenderer.renderImageWithDPI(pageIndex, attrs.stream().map(WatermarkAttributes::getDpi).max(Comparator.naturalOrder()).orElse(DEFAULT_DPI));
+        var watermarkedImageBytes = imageWatermarker.watermark(imageConverter.convertToByteArray(image, FileType.JPEG), FileType.JPEG, attrs);
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");
         replaceImageInPDF(
                 document,
