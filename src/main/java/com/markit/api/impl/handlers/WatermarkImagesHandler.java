@@ -1,4 +1,4 @@
-package com.markit.api.handlers;
+package com.markit.api.impl.handlers;
 
 import com.markit.api.FileType;
 import com.markit.image.DefaultImageWatermarker;

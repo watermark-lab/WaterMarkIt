@@ -1,8 +1,8 @@
 package com.markit.api.impl;
 
 import com.markit.api.*;
-import com.markit.api.handlers.WatermarkHandler;
-import com.markit.api.handlers.WatermarksHandler;
+import com.markit.api.impl.handlers.WatermarkHandler;
+import com.markit.api.impl.handlers.WatermarksHandler;
 import com.markit.exceptions.EmptyWatermarkTextException;
 import com.markit.exceptions.UnsupportedFileTypeException;
 import com.markit.exceptions.WatermarkingException;
