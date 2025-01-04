@@ -63,7 +63,7 @@ implementation 'io.github.watermark-lab:WaterMarkIt:1.2.3'
 
 ### Usage
 
-#### Basic Text Watermark
+#### Text-based multiple watermarks
 ```java
 try (var document = new PDDocument()) {
     document.addPage(new PDPage());
@@ -100,54 +100,59 @@ try (var document = new PDDocument()) {
 ```
 ![Screenshot](https://i.imgur.com/ww4gtmbm.png)
 
-#### Applying Watermark to an Existing PDF File
+#### Tiled watermarks
 ```java    
-    WatermarkService.textBasedWatermarker()
-            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-            .withText("WaterMarkIt").size(100)
-            .method(WatermarkingMethod.DRAW)
-            .position(WatermarkPosition.TILED)
-            .color(Color.RED)
-            .opacity(0.1f)
-            .rotation(25)
-            .addTrademark()
-            .dpi(300f)
-            .apply()
+WatermarkService.textBasedWatermarker()
+    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+    .withText("WaterMarkIt").size(100)
+    .method(WatermarkingMethod.DRAW)
+    .position(WatermarkPosition.TILED)
+    .color(Color.RED)
+    .opacity(0.1f)
+    .rotation(25)
+    .addTrademark()
+    .dpi(300f)
+    .apply()
 ```
 ![Screenshot](https://github.com/user-attachments/assets/b07fa51c-dd64-4da7-994c-263968f6d6c6)
 
-#### Image-Based Watermarking
+#### Image-Based watermarks
 ```java 
-    WatermarkService.imageBasedWatermarker()
-            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-            .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
-            .position(WatermarkPosition.TILED)
-            .opacity(0.1f)
-            .apply()
+WatermarkService.imageBasedWatermarker()
+    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+    .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
+    .position(WatermarkPosition.TILED)
+    .opacity(0.1f)
+    .apply()
 ```
 ![Screenshot](https://github.com/user-attachments/assets/be223354-617a-4275-9779-64f246d585d1)
 
-
-#### Applying Watermarks Conditionally
+#### Watermarking conditions 
 ```java
-// Apply watermark only on pages with index >= 2
+// skip the first page
 WatermarkService.textBasedWatermarker()
-  .watermark(document)
-  .pageFilter(index -> index >= 2)
+    .watermark(document)
+    .withText("Text-based Watermark")
+    .pageFilter(index -> index > 1)
+    .apply()
 ```
 
 ```java
-// Apply watermark only if the user is an admin
+// don't add a watermark for the owner of the file; the owner has access to the original file.
 WatermarkService.textBasedWatermarker()
-  .watermark(document)
-  .when(isAdmin)
+    .watermark(document)
+    .withText("Text-based Watermark")
+    .when(!isOwner)
+    .apply()
 ```
 
 ```java
 // Apply watermark only if the document has more than 3 pages
 WatermarkService.textBasedWatermarker()
-  .watermark(document)
-  .documentFilter(document -> document.getNumberOfPages() > 3)
+    .watermark(document)
+    .withText("Text-based Watermark")
+    .documentFilter(document -> document.getNumberOfPages() > 3)
+    .apply()  
 ```
 
 ### Dependencies 
