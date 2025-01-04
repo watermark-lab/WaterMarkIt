@@ -11,7 +11,7 @@ data class WatermarkAttributes (
     var size: Int = 100,
     var color: Color = Color.BLACK,
     var opacity: Float = 0.4f,
-    var dpi: Float = 300f,
+    var dpi: Optional<Float> = Optional.empty(),
     var trademark: Boolean = false,
     var rotation: Int = 0,
     var method: WatermarkingMethod = WatermarkingMethod.DRAW,
@@ -21,6 +21,4 @@ data class WatermarkAttributes (
     var documentPredicates: Predicate<PDDocument> = Predicate { true },
     var pagePredicate: Predicate<Int> = Predicate { true },
     var watermarkEnabled: Boolean = true
-) {
-}
-
+)

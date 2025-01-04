@@ -123,7 +123,7 @@ public interface WatermarkService {
          *
          * @param dpi The resolution in DPI.
          */
-        TextBasedWatermarkBuilder dpi(float dpi);
+        TextBasedWatermarkBuilder dpi(int dpi);
 
         /**
          * Adds a trademark symbol to the watermark.
@@ -248,7 +248,7 @@ public interface WatermarkService {
         /**
          * Sets the dpi of the watermark.
          */
-        ImageBasedWatermarkBuilder dpi(float dpi);
+        ImageBasedWatermarkBuilder dpi(int dpi);
         /**
          * Defines the position of the watermark on the file.
          *

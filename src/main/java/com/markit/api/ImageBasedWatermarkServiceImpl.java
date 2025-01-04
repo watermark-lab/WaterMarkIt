@@ -82,8 +82,8 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder dpi(float dpi) {
-        watermarkAttributes.setDpi(dpi);
+    public WatermarkService.ImageBasedWatermarkBuilder dpi(int dpi) {
+        watermarkAttributes.setDpi(Optional.of((float) dpi));
         return this;
     }
 

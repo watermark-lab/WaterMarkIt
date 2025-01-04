@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class DefaultPdfDrawWatermarker implements PdfWatermarker {
 
-    private final static float DEFAULT_DPI = 72f;
+    private final static float DEFAULT_DPI = 300f;
     private final ImageWatermarker imageWatermarker;
     private final ImageConverter imageConverter;
 
@@ -35,7 +35,7 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
 
         var page = document.getPage(pageIndex);
         PDFRenderer pdfRenderer = new PDFRenderer(document);
-        var image = pdfRenderer.renderImageWithDPI(pageIndex, attrs.stream().map(WatermarkAttributes::getDpi).max(Comparator.naturalOrder()).orElse(DEFAULT_DPI));
+        var image = pdfRenderer.renderImageWithDPI(pageIndex, getDPI(attrs));
         var watermarkedImageBytes = imageWatermarker.watermark(imageConverter.convertToByteArray(image, FileType.JPEG), FileType.JPEG, attrs);
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");
         replaceImageInPDF(
@@ -45,6 +45,13 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
                 page.getCropBox().getLowerLeftX(), page.getCropBox().getLowerLeftY(),
                 page.getCropBox().getWidth(), page.getCropBox().getHeight()
         );
+    }
+
+    private float getDPI(List<WatermarkAttributes> attrs){
+        return attrs.stream()
+                .flatMap(v -> v.getDpi().stream())
+                .max(Comparator.naturalOrder())
+                .orElse(DEFAULT_DPI);
     }
 
     private void replaceImageInPDF(

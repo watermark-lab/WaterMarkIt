@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
@@ -103,8 +104,8 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder dpi(float d) {
-        currentWatermark.setDpi(d);
+    public WatermarkService.TextBasedWatermarkBuilder dpi(int d) {
+        currentWatermark.setDpi(Optional.of((float) d));
         return this;
     }
 

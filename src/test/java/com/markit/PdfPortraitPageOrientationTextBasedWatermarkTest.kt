@@ -51,7 +51,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
                     .adjust(5, 5)
                     .method(WatermarkingMethod.DRAW)
                     .color(Color.BLACK)
-                    .dpi(300f)
+                    .dpi(300)
                 .and()
                     .withText("Center Watermark")
                     .size(150)
@@ -108,7 +108,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
             .opacity(0.5f)
             .addTrademark()
             .rotation(25)
-            .dpi(300f)
+            .dpi(300)
             .apply()
 
         // Then
@@ -134,7 +134,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
             .opacity(0.1f)
             .rotation(25)
             .addTrademark()
-            .dpi(300f)
+            .dpi(300)
             .apply()
 
         // Then
