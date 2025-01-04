@@ -140,7 +140,7 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder filterPage(Predicate<Integer> predicate) {
+    public WatermarkService.TextBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate) {
         currentWatermark.setPagePredicate(predicate);
         return this;
     }

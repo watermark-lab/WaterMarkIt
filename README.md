@@ -129,11 +129,11 @@ WatermarkService.imageBasedWatermarker()
 
 #### Watermarking conditions 
 ```java
-// skip the first page
+// skip the first page (the page index starts from 0)
 WatermarkService.textBasedWatermarker()
     .watermark(document)
     .withText("Text-based Watermark")
-    .pageFilter(index -> index > 1)
+    .pageFilter(index -> index >= 1)
     .apply()
 ```
 

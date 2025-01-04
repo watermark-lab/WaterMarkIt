@@ -100,7 +100,7 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder filterPage(Predicate<Integer> predicate) {
+    public WatermarkService.ImageBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate) {
         watermarkAttributes.setPagePredicate(predicate);
         return this;
     }

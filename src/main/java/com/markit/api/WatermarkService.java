@@ -155,10 +155,9 @@ public interface WatermarkService {
          * Adds a condition to filter the page when applying the watermark.
          * Only pages that meet the condition will have the watermark applied.
          *
-         * @param predicate A condition that takes a page number (Integer) as input and returns true/false.
-         *                  The page index starts from 1.
+         * @param predicate A condition that takes a page number (Integer) as input and returns true/false. The page index starts from 0.
          */
-        TextBasedWatermarkBuilder filterPage(Predicate<Integer> predicate);
+        TextBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate);
 
         /**
          * Enables or disables the watermark based on a specific condition.
@@ -269,10 +268,9 @@ public interface WatermarkService {
          * Adds a condition to filter the page when applying the watermark.
          * Only pages that meet the condition will have the watermark applied.
          *
-         * @param predicate A condition that takes a page number (Integer) as input and returns true/false.
-         *                  The page index starts from 1.
+         * @param predicate A condition that takes a page number (Integer) as input and returns true/false. The page index starts from 0.
          */
-        ImageBasedWatermarkBuilder filterPage(Predicate<Integer> predicate);
+        ImageBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate);
 
         /**
          * Enables or disables the watermark based on a specific condition.

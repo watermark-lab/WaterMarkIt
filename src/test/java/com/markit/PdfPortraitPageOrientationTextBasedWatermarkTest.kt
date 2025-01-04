@@ -1,6 +1,5 @@
 package com.markit
 
-import com.markit.api.FileType
 import com.markit.api.WatermarkingMethod
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
@@ -50,6 +49,7 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
                     .position(WatermarkPosition.TOP_LEFT)
                     .adjust(5, 5)
                     .method(WatermarkingMethod.DRAW)
+                    .pageFilter { it >= 1 }
                     .color(Color.BLACK)
                     .dpi(300)
                 .and()
@@ -58,6 +58,8 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
                     .method(WatermarkingMethod.DRAW)
                     .addTrademark()
                     .rotation(45)
+                    .`when`(true)
+                    .documentFilter{document -> document.getNumberOfPages() > 2}
                     .position(WatermarkPosition.CENTER)
                     .adjust(5, 5)
                     .color(Color.BLUE)
