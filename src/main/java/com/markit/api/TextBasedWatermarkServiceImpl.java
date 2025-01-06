@@ -2,7 +2,6 @@ package com.markit.api;
 
 import com.markit.api.handlers.WatermarkHandler;
 import com.markit.api.handlers.WatermarksHandler;
-import com.markit.exceptions.ConvertBytesToBufferedImageException;
 import com.markit.exceptions.EmptyWatermarkTextException;
 import com.markit.exceptions.UnsupportedFileTypeException;
 import com.markit.exceptions.WatermarkingException;
@@ -13,8 +12,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -23,7 +20,7 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
+public class TextBasedWatermarkServiceImpl extends AbstractWatermarkService implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
     private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
@@ -145,39 +142,6 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
         }
     }
 
-    public Path apply(String directoryPath, String fileName){
-        StringBuilder directoryPathBuilder = new StringBuilder();
-        for (int i = 0; i < directoryPath.length(); i++) {
-            char c = directoryPath.charAt(i);
-            if (c == '/' || c == '\\') {
-                directoryPathBuilder.append(File.separator);
-            } else {
-                directoryPathBuilder.append(c);
-            }
-        }
-        directoryPath = directoryPathBuilder.toString();
-        File directory = new File(directoryPath);
-        if (!directory.exists() || !directory.isDirectory()) {
-            logger.error("Try to watermark file in a directory that does not exist or is not a directory");
-            throw new IllegalArgumentException("The directory does not exist or is not a directory.");
-        }
-        try {
-
-            byte [] file = apply();
-            File newFile = new File(directoryPath + fileName);
-
-            return Files.write(newFile.toPath(), file);
-
-        }catch (IOException e){
-            logger.error("Failed to watermark file", e);
-            throw new WatermarkingException("Error watermarking the file", e);
-        }catch (ConvertBytesToBufferedImageException e) {
-            logger.error("Failed to convert bytes to buffered image", e);
-            throw new WatermarkingException("Error converting bytes to buffered image", e);
-        }
-
-
-    }
 
     private WatermarkingMethod defineMethodByFileType(FileType ft){
         switch (ft){
