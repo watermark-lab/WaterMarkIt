@@ -1,7 +1,8 @@
-package com.markit.api;
+package com.markit.api.impl;
 
-import com.markit.api.handlers.WatermarkHandler;
-import com.markit.api.handlers.WatermarksHandler;
+import com.markit.api.*;
+import com.markit.api.impl.handlers.WatermarkHandler;
+import com.markit.api.impl.handlers.WatermarksHandler;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageConverter;
 import org.apache.commons.logging.Log;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.Executor;
+import java.util.function.Predicate;
 
 /**
  * @author Oleg Cheban
@@ -81,8 +83,8 @@ public class ImageBasedWatermarkServiceImpl extends AbstractWatermarkService imp
     }
 
     @Override
-    public WatermarkService.ImageBasedWatermarkBuilder dpi(float dpi) {
-        watermarkAttributes.setDpi(dpi);
+    public WatermarkService.ImageBasedWatermarkBuilder dpi(int dpi) {
+        watermarkAttributes.setDpi(Optional.of((float) dpi));
         return this;
     }
 
@@ -93,9 +95,27 @@ public class ImageBasedWatermarkServiceImpl extends AbstractWatermarkService imp
     }
 
     @Override
+    public WatermarkService.ImageBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate) {
+        watermarkAttributes.setDocumentPredicate(predicate);
+        return this;
+    }
+
+    @Override
+    public WatermarkService.ImageBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate) {
+        watermarkAttributes.setPagePredicate(predicate);
+        return this;
+    }
+
+    @Override
+    public WatermarkService.ImageBasedWatermarkBuilder when(boolean condition) {
+        watermarkAttributes.setWatermarkEnabled(condition);
+        return this;
+    }
+
+    @Override
     public WatermarkService.ImageBasedWatermarkBuilder adjust(int x, int y) {
-        WatermarkAdjustment adjustment = new WatermarkAdjustment(x, y);
-        watermarkAttributes.setAdjustment(adjustment);
+        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
+        watermarkAttributes.setPositionAdjustment(adjustment);
         return this;
     }
 
