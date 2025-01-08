@@ -1,11 +1,14 @@
 package com.markit.api;
 
+import com.markit.api.impl.ImageBasedWatermarkServiceImpl;
+import com.markit.api.impl.TextBasedWatermarkServiceImpl;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
 import java.io.File;
 import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.function.Predicate;
 
 /**
  * Watermark Service for applying watermarks to different file types.
@@ -16,12 +19,12 @@ import java.util.concurrent.Executor;
 public interface WatermarkService {
 
     static TextBasedFileSetter textBasedWatermarker() {
-        return new TextBasedWatermarkerWatermarkServiceImpl();
+        return new TextBasedWatermarkServiceImpl();
     }
 
     static TextBasedFileSetter textBasedWatermarker(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new TextBasedWatermarkerWatermarkServiceImpl(executor);
+        return new TextBasedWatermarkServiceImpl(executor);
     }
 
     static ImageBasedFileSetter imageBasedWatermarker() {
@@ -122,7 +125,7 @@ public interface WatermarkService {
          *
          * @param dpi The resolution in DPI.
          */
-        TextBasedWatermarkBuilder dpi(float dpi);
+        TextBasedWatermarkBuilder dpi(int dpi);
 
         /**
          * Adds a trademark symbol to the watermark.
@@ -141,6 +144,28 @@ public interface WatermarkService {
          * @return A new instance of Watermark for configuring another watermark.
          */
         TextBasedWatermarker and();
+
+        /**
+         * Adds a condition to filter the document when applying the watermark.
+         * Only documents that meet the condition will have the watermark applied.
+         *
+         * @param predicate: A condition that takes a PDDocument as input and returns true/false.
+         */
+        TextBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate);
+
+        /**
+         * Adds a condition to filter the page when applying the watermark.
+         * Only pages that meet the condition will have the watermark applied.
+         *
+         * @param predicate A condition that takes a page number (Integer) as input and returns true/false. The page index starts from 0.
+         */
+        TextBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate);
+
+        /**
+         * Enables or disables the watermark based on a specific condition.
+         * @param condition: A boolean value that determines whether the watermark is enabled (true) or disabled (false).
+         */
+        TextBasedWatermarkBuilder when(boolean condition);
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.
@@ -224,7 +249,7 @@ public interface WatermarkService {
         /**
          * Sets the dpi of the watermark.
          */
-        ImageBasedWatermarkBuilder dpi(float dpi);
+        ImageBasedWatermarkBuilder dpi(int dpi);
         /**
          * Defines the position of the watermark on the file.
          *
@@ -232,6 +257,29 @@ public interface WatermarkService {
          * @see WatermarkPosition
          */
         ImageBasedWatermarkPositionStepBuilder position(WatermarkPosition position);
+
+        /**
+         * Adds a condition to filter the document when applying the watermark.
+         * Only documents that meet the condition will have the watermark applied.
+         *
+         * @param predicate: A condition that takes a PDDocument as input and returns true/false.
+         */
+        ImageBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate);
+
+        /**
+         * Adds a condition to filter the page when applying the watermark.
+         * Only pages that meet the condition will have the watermark applied.
+         *
+         * @param predicate A condition that takes a page number (Integer) as input and returns true/false. The page index starts from 0.
+         */
+        ImageBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate);
+
+        /**
+         * Enables or disables the watermark based on a specific condition.
+         *
+         * @param condition: A boolean value that determines whether the watermark is enabled (true) or disabled (false).
+         */
+        ImageBasedWatermarkBuilder when(boolean condition);
 
         /**
          * Applies the watermark to the file and returns the result as a byte array.

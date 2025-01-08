@@ -63,6 +63,7 @@ implementation 'io.github.watermark-lab:WaterMarkIt:1.2.3'
 
 ### Usage
 
+#### Text-based multiple watermarks
 ```java
 try (var document = new PDDocument()) {
     document.addPage(new PDPage());
@@ -90,7 +91,7 @@ try (var document = new PDDocument()) {
                 .withText("Your Company Name").size(200)
                 .method(WatermarkingMethod.DRAW)
                 .position(WatermarkPosition.CENTER)
-                .dpi(300f)
+                .dpi(200)
                 .rotation(25)
                 .addTrademark()
                 .color(Color.BLUE)
@@ -99,30 +100,60 @@ try (var document = new PDDocument()) {
 ```
 ![Screenshot](https://i.imgur.com/ww4gtmbm.png)
 
+#### Tiled watermarks
 ```java    
-    WatermarkService.textBasedWatermarker()
-            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-            .withText("WaterMarkIt").size(100)
-            .method(WatermarkingMethod.DRAW)
-            .position(WatermarkPosition.TILED)
-            .color(Color.RED)
-            .opacity(0.1f)
-            .rotation(25)
-            .addTrademark()
-            .dpi(300f)
-            .apply()
+WatermarkService.textBasedWatermarker()
+    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+    .withText("WaterMarkIt").size(100)
+    .method(WatermarkingMethod.DRAW)
+    .position(WatermarkPosition.TILED)
+    .color(Color.RED)
+    .opacity(0.1f)
+    .rotation(25)
+    .addTrademark()
+    .dpi(150)
+    .apply()
 ```
 ![Screenshot](https://github.com/user-attachments/assets/b07fa51c-dd64-4da7-994c-263968f6d6c6)
 
+#### Image-Based watermarks
 ```java 
-    WatermarkService.imageBasedWatermarker()
-            .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-            .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
-            .position(WatermarkPosition.TILED)
-            .opacity(0.1f)
-            .apply()
+WatermarkService.imageBasedWatermarker()
+    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
+    .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
+    .position(WatermarkPosition.TILED)
+    .opacity(0.1f)
+    .apply()
 ```
 ![Screenshot](https://github.com/user-attachments/assets/be223354-617a-4275-9779-64f246d585d1)
+
+#### Watermarking conditions 
+```java
+// skip the first page (the page index starts from 0)
+WatermarkService.textBasedWatermarker()
+    .watermark(document)
+    .withText("Text-based Watermark")
+    .pageFilter(index -> index >= 1)
+    .apply()
+```
+
+```java
+// don't add a watermark for the owner of the file; the owner has access to the original file.
+WatermarkService.textBasedWatermarker()
+    .watermark(document)
+    .withText("Text-based Watermark")
+    .when(!isOwner)
+    .apply()
+```
+
+```java
+// Apply watermark only if the document has more than 3 pages
+WatermarkService.textBasedWatermarker()
+    .watermark(document)
+    .withText("Text-based Watermark")
+    .documentFilter(document -> document.getNumberOfPages() > 3)
+    .apply()  
+```
 
 ### Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.

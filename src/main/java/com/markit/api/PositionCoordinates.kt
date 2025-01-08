@@ -14,11 +14,11 @@ abstract class PositionCoordinates : WatermarkPositionCoordinates {
             WatermarkPosition.BOTTOM_RIGHT -> listOf(bottomRight())
             WatermarkPosition.TILED -> tiled()
         }
-        if (attr.adjustment.x != 0 || attr.adjustment.y != 0) {
+        if (attr.positionAdjustment.x != 0 || attr.positionAdjustment.y != 0) {
             coordinates = coordinates.map {
                 WatermarkPositionCoordinates.Coordinates(
-                    it.x + attr.adjustment.x,
-                    it.y + attr.adjustment.y
+                    it.x + attr.positionAdjustment.x,
+                    it.y + attr.positionAdjustment.y
                 )
             }
         }

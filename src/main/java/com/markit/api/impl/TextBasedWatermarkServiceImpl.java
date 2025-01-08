@@ -1,7 +1,8 @@
-package com.markit.api;
+package com.markit.api.impl;
 
-import com.markit.api.handlers.WatermarkHandler;
-import com.markit.api.handlers.WatermarksHandler;
+import com.markit.api.*;
+import com.markit.api.impl.handlers.WatermarkHandler;
+import com.markit.api.impl.handlers.WatermarksHandler;
 import com.markit.exceptions.EmptyWatermarkTextException;
 import com.markit.exceptions.UnsupportedFileTypeException;
 import com.markit.exceptions.WatermarkingException;
@@ -14,24 +15,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executor;
+import java.util.function.Predicate;
 
 /**
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextBasedWatermarkerWatermarkServiceImpl implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
-    private static final Log logger = LogFactory.getLog(TextBasedWatermarkerWatermarkServiceImpl.class);
+public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
+    private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
     private final List<WatermarkAttributes> watermarks = new ArrayList<>();
     private WatermarkAttributes currentWatermark;
     private Executor executor;
 
-    public TextBasedWatermarkerWatermarkServiceImpl() {
+    public TextBasedWatermarkServiceImpl() {
     }
 
-    public TextBasedWatermarkerWatermarkServiceImpl(Executor e) {
+    public TextBasedWatermarkServiceImpl(Executor e) {
         this.executor = e;
     }
 
@@ -84,8 +87,8 @@ public class TextBasedWatermarkerWatermarkServiceImpl implements WatermarkServic
 
     @Override
     public WatermarkService.TextBasedWatermarkBuilder adjust(int x, int y) {
-        WatermarkAdjustment adjustment = new WatermarkAdjustment(x, y);
-        currentWatermark.setAdjustment(adjustment);
+        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
+        currentWatermark.setPositionAdjustment(adjustment);
         return this;
     }
 
@@ -102,8 +105,8 @@ public class TextBasedWatermarkerWatermarkServiceImpl implements WatermarkServic
     }
 
     @Override
-    public WatermarkService.TextBasedWatermarkBuilder dpi(float d) {
-        currentWatermark.setDpi(d);
+    public WatermarkService.TextBasedWatermarkBuilder dpi(int d) {
+        currentWatermark.setDpi(Optional.of((float) d));
         return this;
     }
 
@@ -128,6 +131,24 @@ public class TextBasedWatermarkerWatermarkServiceImpl implements WatermarkServic
         watermarks.add(currentWatermark);
         currentWatermark = new WatermarkAttributes();
         currentWatermark.setMethod(defineMethodByFileType(fileType));
+        return this;
+    }
+
+    @Override
+    public WatermarkService.TextBasedWatermarkBuilder documentFilter(Predicate<PDDocument> predicate) {
+        currentWatermark.setDocumentPredicate(predicate);
+        return this;
+    }
+
+    @Override
+    public WatermarkService.TextBasedWatermarkBuilder pageFilter(Predicate<Integer> predicate) {
+        currentWatermark.setPagePredicate(predicate);
+        return this;
+    }
+
+    @Override
+    public WatermarkService.TextBasedWatermarkBuilder when(boolean condition) {
+        currentWatermark.setWatermarkEnabled(condition);
         return this;
     }
 
