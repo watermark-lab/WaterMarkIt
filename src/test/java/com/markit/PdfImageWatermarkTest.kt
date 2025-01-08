@@ -53,7 +53,7 @@ class PdfImageWatermarkTest {
         val result = WatermarkService.imageBasedWatermarker()
             .watermark(document)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
-            .dpi(100f)
+            .dpi(100)
             .position(com.markit.api.WatermarkPosition.TILED)
             .apply()
 
