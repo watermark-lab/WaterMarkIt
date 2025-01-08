@@ -1,10 +1,6 @@
 package com.markit.api.impl.handlers;
 
-import com.markit.image.DefaultImageWatermarker;
-import com.markit.image.ImageConverter;
-import com.markit.pdf.DefaultWatermarkPdfService;
-import com.markit.pdf.draw.DefaultPdfDrawWatermarker;
-import com.markit.pdf.overlay.DefaultPdfOverlayWatermarker;
+import com.markit.pdf.WatermarkPdfServiceBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -16,11 +12,7 @@ import java.util.concurrent.Executor;
  */
 public class WatermarkPdfHandler {
     public <T> WatermarkHandler getHandler(T file, Executor executor){
-        var imageWatermarker = new DefaultImageWatermarker();
-        var pdfWatermarker = new DefaultPdfDrawWatermarker(imageWatermarker, new ImageConverter());
-        var overlayPdfWatermarker = new DefaultPdfOverlayWatermarker();
-        var watermarkPdfService = new DefaultWatermarkPdfService(pdfWatermarker, overlayPdfWatermarker, executor);
-
+        var watermarkPdfService = WatermarkPdfServiceBuilder.build(executor);
         if (file instanceof PDDocument) {
             return (watermarks) -> watermarkPdfService.watermark((PDDocument) file, watermarks);
         } else if (file instanceof byte[]) {

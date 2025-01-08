@@ -90,7 +90,7 @@ public interface WatermarkService {
         TextBasedWatermarkBuilder size(int size);
 
         /**
-         * Defines the method for adding a watermark (default is OVERLAY).
+         * Defines the method for adding a watermark (default is DRAW).
          *
          * @param watermarkingMethod The method to use for watermarking.
          * @see WatermarkingMethod
@@ -233,6 +233,14 @@ public interface WatermarkService {
      * interface for building and applying image-based watermarks
      */
     interface ImageBasedWatermarkBuilder {
+        /**
+         * Defines the method for adding a watermark (default is DRAW).
+         *
+         * @param watermarkingMethod The method to use for watermarking.
+         * @see WatermarkingMethod
+         */
+        ImageBasedWatermarkBuilder method(WatermarkingMethod watermarkingMethod);
+
         /**
          * Sets the size of the watermark image.
          */

@@ -2,7 +2,7 @@ package com.markit.api.impl;
 
 import com.markit.api.*;
 import com.markit.api.impl.handlers.WatermarkHandler;
-import com.markit.api.impl.handlers.WatermarksHandler;
+import com.markit.api.impl.handlers.WatermarkHandlerResolver;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageConverter;
 import org.apache.commons.logging.Log;
@@ -36,17 +36,17 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
 
     @Override
     public WatermarkService.ImageBasedWatermarker watermark(byte[] fileBytes, FileType ft) {
-        return configureDefaultParams(new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
+        return configureDefaultParams(new WatermarkHandlerResolver().getHandler(fileBytes, ft, this.executor));
     }
 
     @Override
     public WatermarkService.ImageBasedWatermarker watermark(File file, FileType ft) {
-        return configureDefaultParams(new WatermarksHandler().getHandler(file, ft, this.executor));
+        return configureDefaultParams(new WatermarkHandlerResolver().getHandler(file, ft, this.executor));
     }
 
     @Override
     public WatermarkService.ImageBasedWatermarker watermark(PDDocument document) {
-        return configureDefaultParams(new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
+        return configureDefaultParams(new WatermarkHandlerResolver().getHandler(document, FileType.PDF, this.executor));
     }
 
     private WatermarkService.ImageBasedWatermarker configureDefaultParams(WatermarkHandler h) {
@@ -61,6 +61,12 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
     public WatermarkService.ImageBasedWatermarkBuilder withImage(byte[] image) {
         var convertedImage = imageConverter.convertToBufferedImage(image);
         watermarkAttributes.setImage(Optional.of(convertedImage));
+        return this;
+    }
+
+    @Override
+    public WatermarkService.ImageBasedWatermarkBuilder method(WatermarkingMethod watermarkingMethod) {
+        watermarkAttributes.setMethod(watermarkingMethod);
         return this;
     }
 

@@ -2,7 +2,7 @@ package com.markit.api.impl;
 
 import com.markit.api.*;
 import com.markit.api.impl.handlers.WatermarkHandler;
-import com.markit.api.impl.handlers.WatermarksHandler;
+import com.markit.api.impl.handlers.WatermarkHandlerResolver;
 import com.markit.exceptions.EmptyWatermarkTextException;
 import com.markit.exceptions.UnsupportedFileTypeException;
 import com.markit.exceptions.WatermarkingException;
@@ -40,17 +40,17 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
 
     @Override
     public WatermarkService.TextBasedWatermarker watermark(PDDocument document) {
-        return configureDefaultParams(FileType.PDF, new WatermarksHandler().getHandler(document, FileType.PDF, this.executor));
+        return configureDefaultParams(FileType.PDF, new WatermarkHandlerResolver().getHandler(document, FileType.PDF, this.executor));
     }
 
     @Override
     public WatermarkService.TextBasedWatermarker watermark(byte[] fileBytes, FileType ft) {
-        return configureDefaultParams(ft, new WatermarksHandler().getHandler(fileBytes, ft, this.executor));
+        return configureDefaultParams(ft, new WatermarkHandlerResolver().getHandler(fileBytes, ft, this.executor));
     }
 
     @Override
     public WatermarkService.TextBasedWatermarker watermark(File file, FileType ft) {
-        return configureDefaultParams(ft, new WatermarksHandler().getHandler(file, ft, this.executor));
+        return configureDefaultParams(ft, new WatermarkHandlerResolver().getHandler(file, ft, this.executor));
     }
 
     private WatermarkService.TextBasedWatermarker configureDefaultParams(FileType ft, WatermarkHandler h) {

@@ -36,12 +36,6 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         this.executorService = Optional.ofNullable(es);
     }
 
-    public DefaultWatermarkPdfService(PdfWatermarker pdfWatermarker, OverlayPdfWatermarker overlayService) {
-        this.drawService = Optional.ofNullable(pdfWatermarker);
-        this.overlayService = Optional.ofNullable(overlayService);
-        this.executorService = Optional.empty();
-    }
-
     @Override
     public byte[] watermark(byte[] sourceImageBytes, List<WatermarkAttributes> attrs) throws IOException {
         try(PDDocument document = PDDocument.load(sourceImageBytes)) {
