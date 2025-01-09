@@ -20,7 +20,7 @@ import java.util.function.Predicate;
  * @author Oleg Cheban
  * @since 1.2.0
  */
-public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBasedFileSetter, WatermarkService.ImageBasedWatermarker, WatermarkService.ImageBasedWatermarkBuilder, WatermarkService.ImageBasedWatermarkPositionStepBuilder {
+public class ImageBasedWatermarkServiceImpl extends AbstractWatermarkService implements WatermarkService.ImageBasedFileSetter, WatermarkService.ImageBasedWatermarker, WatermarkService.ImageBasedWatermarkBuilder, WatermarkService.ImageBasedWatermarkPositionStepBuilder {
     private static final Log logger = LogFactory.getLog(ImageBasedWatermarkServiceImpl.class);
     private Executor executor;
     private WatermarkAttributes watermarkAttributes;
@@ -134,4 +134,5 @@ public class ImageBasedWatermarkServiceImpl implements WatermarkService.ImageBas
             throw new WatermarkingException("Error watermarking the file", e);
         }
     }
+
 }

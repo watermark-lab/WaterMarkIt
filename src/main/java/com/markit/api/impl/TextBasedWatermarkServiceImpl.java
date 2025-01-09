@@ -23,7 +23,7 @@ import java.util.function.Predicate;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
+public class TextBasedWatermarkServiceImpl extends AbstractWatermarkService implements WatermarkService.TextBasedFileSetter, WatermarkService.TextBasedWatermarker, WatermarkService.TextBasedWatermarkBuilder, WatermarkService.TextBasedWatermarkPositionStepBuilder {
     private static final Log logger = LogFactory.getLog(TextBasedWatermarkServiceImpl.class);
     private FileType fileType;
     private WatermarkHandler watermarkHandler;
@@ -162,6 +162,7 @@ public class TextBasedWatermarkServiceImpl implements WatermarkService.TextBased
             throw new WatermarkingException("Error watermarking the file", e);
         }
     }
+
 
     private WatermarkingMethod defineMethodByFileType(FileType ft){
         switch (ft){
