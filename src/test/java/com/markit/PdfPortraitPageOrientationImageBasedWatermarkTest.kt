@@ -36,12 +36,12 @@ class PdfPortraitPageOrientationImageBasedWatermarkTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Draw Method is Used then Make Image-Based Watermarked Pdf`() {
         // When
-        val result = WatermarkService.imageBasedWatermarker(
+        val result = WatermarkService.create(
                 Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 )
         )
-            .watermark(document)
+            .watermarkPDF(document)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
             .position(WatermarkPosition.TILED)
             .opacity(0.1f)

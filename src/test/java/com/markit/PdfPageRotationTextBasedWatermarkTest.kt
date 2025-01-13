@@ -38,12 +38,13 @@ class PdfPageRotationTextBasedWatermarkTest {
     @Throws(IOException::class)
     fun `given Pdf with 0, 90, 180 and 270 degrees page rotation when Draw Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Sample Watermark")
-            .size(50)
-            .position(WatermarkPosition.CENTER)
-            .method(WatermarkingMethod.DRAW)
+                .watermark()
+                    .size(50)
+                    .position(WatermarkPosition.CENTER)
+                    .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
@@ -56,12 +57,13 @@ class PdfPageRotationTextBasedWatermarkTest {
     @Throws(IOException::class)
     fun `given Pdf with 0, 90, 180 and 270 degrees page rotation when Overlay Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Sample Watermark")
-            .size(50)
-            .position(WatermarkPosition.CENTER)
-            .method(WatermarkingMethod.OVERLAY)
+                .watermark()
+                    .size(50)
+                    .position(WatermarkPosition.CENTER)
+                    .method(WatermarkingMethod.OVERLAY)
             .apply()
 
         // Then

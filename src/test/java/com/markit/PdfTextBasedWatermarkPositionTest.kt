@@ -34,11 +34,12 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Center Position and Draw method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Center Watermark")
-            .position(WatermarkPosition.CENTER)
-            .method(WatermarkingMethod.DRAW)
+                .watermark()
+                    .position(WatermarkPosition.CENTER)
+                    .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
@@ -51,11 +52,12 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Top Left Position and Draw method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Top Left Watermark")
-            .position(WatermarkPosition.TOP_LEFT)
-            .method(WatermarkingMethod.DRAW)
+                .watermark()
+                    .position(WatermarkPosition.TOP_LEFT)
+                    .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
@@ -68,11 +70,12 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Top Right Position and Draw method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Top Right Watermark")
-            .position(WatermarkPosition.TOP_RIGHT)
-            .method(WatermarkingMethod.DRAW)
+                .watermark()
+                    .position(WatermarkPosition.TOP_RIGHT)
+                    .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
@@ -85,11 +88,12 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Bottom Left Position and Draw method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Bottom Left Watermark")
-            .position(WatermarkPosition.BOTTOM_LEFT)
-            .method(WatermarkingMethod.DRAW)
+                .watermark()
+                    .position(WatermarkPosition.BOTTOM_LEFT)
+                    .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
@@ -102,11 +106,12 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Bottom Right Position and Draw method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Bottom Right Watermark")
-            .position(WatermarkPosition.BOTTOM_RIGHT)
-            .method(WatermarkingMethod.DRAW)
+                .watermark()
+                    .position(WatermarkPosition.BOTTOM_RIGHT)
+                    .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
@@ -119,11 +124,12 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Tiled Position and Draw method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withText("Tiled Watermark")
-            .position(WatermarkPosition.TILED)
-            .method(WatermarkingMethod.DRAW)
+                .watermark()
+                    .position(WatermarkPosition.TILED)
+                    .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
@@ -136,11 +142,13 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Center Position and Overlay method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
-            .withText("Center Watermark").size(25)
-            .position(WatermarkPosition.CENTER)
-            .method(WatermarkingMethod.OVERLAY)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
+            .withText("Center Watermark")
+                .watermark()
+                    .size(25)
+                    .position(WatermarkPosition.CENTER)
+                    .method(WatermarkingMethod.OVERLAY)
             .apply()
 
         // Then
@@ -153,11 +161,13 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Top Left Position and Overlay method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
-            .withText("Top Left Watermark").size(25)
-            .position(WatermarkPosition.TOP_LEFT)
-            .method(WatermarkingMethod.OVERLAY)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
+            .withText("Top Left Watermark")
+                .watermark()
+                    .size(25)
+                    .position(WatermarkPosition.TOP_LEFT)
+                    .method(WatermarkingMethod.OVERLAY)
             .apply()
 
         // Then
@@ -170,11 +180,13 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Top Right Position and Overlay method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
-            .withText("Top Right Watermark").size(25)
-            .position(WatermarkPosition.TOP_RIGHT)
-            .method(WatermarkingMethod.OVERLAY)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
+            .withText("Top Right Watermark")
+                .watermark()
+                    .size(25)
+                    .position(WatermarkPosition.TOP_RIGHT)
+                    .method(WatermarkingMethod.OVERLAY)
             .apply()
 
         // Then
@@ -187,11 +199,13 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Bottom Left Position and Overlay method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
-            .withText("Bottom Left Watermark").size(25)
-            .position(WatermarkPosition.BOTTOM_LEFT)
-            .method(WatermarkingMethod.OVERLAY)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
+            .withText("Bottom Left Watermark")
+                .watermark()
+                    .size(25)
+                    .position(WatermarkPosition.BOTTOM_LEFT)
+                    .method(WatermarkingMethod.OVERLAY)
             .apply()
 
         // Then
@@ -204,11 +218,13 @@ class PdfTextBasedWatermarkPositionTest {
     @Throws(IOException::class)
     fun `given Pdf when Bottom Right Position and Overlay method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(document)
-            .withText("Bottom Right Watermark").size(25)
-            .position(WatermarkPosition.BOTTOM_RIGHT)
-            .method(WatermarkingMethod.OVERLAY)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
+            .withText("Bottom Right Watermark")
+                .watermark()
+                    .size(25)
+                    .position(WatermarkPosition.BOTTOM_RIGHT)
+                    .method(WatermarkingMethod.OVERLAY)
             .apply()
 
         // Then

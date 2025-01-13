@@ -1,6 +1,4 @@
-package com.markit.api.impl.handlers;
-
-import com.markit.api.WatermarkAttributes;
+package com.markit.api;
 
 import java.io.IOException;
 import java.util.List;

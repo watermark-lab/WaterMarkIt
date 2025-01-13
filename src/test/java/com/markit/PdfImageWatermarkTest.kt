@@ -33,8 +33,8 @@ class PdfImageWatermarkTest {
     @Throws(IOException::class)
     fun `given Pdf when Image Watermark with 180 Degree Rotation then Apply Watermark`() {
         // When
-        val result = WatermarkService.imageBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
             .rotation(180)
             .position(com.markit.api.WatermarkPosition.TILED)
@@ -50,8 +50,8 @@ class PdfImageWatermarkTest {
     @Throws(IOException::class)
     fun `given Pdf when Image Watermark and DPI then Apply Watermark`() {
         // When
-        val result = WatermarkService.imageBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
             .dpi(100)
             .position(com.markit.api.WatermarkPosition.TILED)
@@ -67,8 +67,8 @@ class PdfImageWatermarkTest {
     @Throws(IOException::class)
     fun `given Pdf when Image Watermark and Adjust then Apply Watermark`() {
         // When
-        val result = WatermarkService.imageBasedWatermarker()
-            .watermark(document)
+        val result = WatermarkService.create()
+            .watermarkPDF(document)
             .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
             .position(com.markit.api.WatermarkPosition.TILED)
             .adjust(50, 50)

@@ -1,6 +1,6 @@
 package com.markit
 
-import com.markit.api.FileType
+import com.markit.api.ImageType
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
 import com.markit.exceptions.WatermarkingException
@@ -21,8 +21,8 @@ class ImageBasedWatermarkImageBasedWatermarkTest {
         val file = TestFileUtils.createJpegFile(TestFileUtils.outputDirectory + "test.jpeg")
 
         // When
-        val result = WatermarkService.imageBasedWatermarker()
-            .watermark(file, FileType.JPEG)
+        val result = WatermarkService.create()
+            .watermarkImage(file, ImageType.JPEG)
             .withImage(TestFileUtils.readFileFromClasspathAsBytes("logo.png")).size(25)
             .position(WatermarkPosition.TILED)
             .opacity(0.1f)
@@ -43,8 +43,8 @@ class ImageBasedWatermarkImageBasedWatermarkTest {
 
         // When & Then
         assertThrows<IllegalArgumentException> {
-            WatermarkService.imageBasedWatermarker()
-                .watermark(file, FileType.JPEG)
+            WatermarkService.create()
+                .watermarkImage(file, ImageType.JPEG)
                 .withImage(TestFileUtils.readFileFromClasspathAsBytes("logo.png")).size(25)
                 .position(WatermarkPosition.TILED)
                 .opacity(0.1f)
@@ -61,8 +61,8 @@ class ImageBasedWatermarkImageBasedWatermarkTest {
 
         // When & Then
         assertThrows<IllegalArgumentException> {
-            WatermarkService.imageBasedWatermarker()
-                .watermark(file, FileType.JPEG)
+            WatermarkService.create()
+                .watermarkImage(file, ImageType.JPEG)
                 .withImage(TestFileUtils.readFileFromClasspathAsBytes("logo.png")).size(25)
                 .position(WatermarkPosition.TILED)
                 .opacity(0.1f)
@@ -79,8 +79,8 @@ class ImageBasedWatermarkImageBasedWatermarkTest {
 
         // When & Then
         assertThrows<WatermarkingException> {
-            WatermarkService.imageBasedWatermarker()
-                .watermark(invalidFile, FileType.JPEG)
+            WatermarkService.create()
+                .watermarkImage(invalidFile, ImageType.JPEG)
                 .withImage(TestFileUtils.readFileFromClasspathAsBytes("logo.png")).size(25)
                 .position(WatermarkPosition.TILED)
                 .opacity(0.1f)

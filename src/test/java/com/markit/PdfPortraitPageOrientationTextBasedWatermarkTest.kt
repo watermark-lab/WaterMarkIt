@@ -38,29 +38,28 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Draw Method is Used then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker(
+        val result = WatermarkService.create(
                 Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 )
         )
-            .watermark(document)
-                    .withText("Top Left Watermark")
-                    .size(50)
-                    .position(WatermarkPosition.TOP_LEFT).adjust(45, 45)
-                    .method(WatermarkingMethod.DRAW)
-                    .pageFilter { it >= 1 }
-                    .color(Color.BLACK)
-                    .dpi(300)
+            .watermarkPDF(document)
+                .withText("Top Left Watermark").color(Color.BLACK)
+                    .watermark()
+                        .size(50)
+                        .position(WatermarkPosition.TOP_LEFT).adjust(45, 45)
+                        .method(WatermarkingMethod.DRAW)
+                        .pageFilter { it >= 1 }
+                        .dpi(300)
                 .and()
-                    .withText("Center Watermark")
-                    .size(150)
-                    .method(WatermarkingMethod.DRAW)
-                    .addTrademark()
-                    .rotation(45)
-                    .`when`(true)
-                    .documentFilter{document -> document.getNumberOfPages() > 2}
-                    .position(WatermarkPosition.CENTER)
-                    .color(Color.BLUE)
+                .withText("Center Watermark").addTrademark().color(Color.BLUE)
+                    .watermark()
+                        .size(150)
+                        .method(WatermarkingMethod.DRAW)
+                        .rotation(45)
+                        .`when`(true)
+                        .documentFilter{document -> document.getNumberOfPages() > 2}
+                        .position(WatermarkPosition.CENTER)
                 .apply()
 
         // Then
@@ -73,16 +72,15 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker()
-                .watermark(document)
-                .withText("Sample Watermark")
-                .size(40)
-                .method(WatermarkingMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
-                .position(WatermarkPosition.CENTER)
-                .rotation(45)
-                .addTrademark()
-                .opacity(0.2f)
-                .color(Color.RED)
+        val result = WatermarkService.create()
+                .watermarkPDF(document)
+                .withText("Sample Watermark").addTrademark().color(Color.RED)
+                    .watermark()
+                        .size(40)
+                        .method(WatermarkingMethod.OVERLAY) // Overlay mode isn't resource-consuming, so a thread pool isn't necessary.
+                        .position(WatermarkPosition.CENTER)
+                        .rotation(45)
+                        .opacity(0.2f)
                 .apply()
 
         // Then
@@ -95,21 +93,21 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
     @Throws(IOException::class)
     fun `given Portrait Pdf when Draw Method and TILED position is Used then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker(
+        val result = WatermarkService.create(
             Executors.newFixedThreadPool(
                 Runtime.getRuntime().availableProcessors()
             )
         )
-            .watermark(document)
-            .withText("WaterMarkIt").size(100)
-            .method(WatermarkingMethod.DRAW)
-            .position(WatermarkPosition.TILED)
-            .color(Color.RED)
-            .opacity(0.5f)
-            .addTrademark()
-            .rotation(25)
-            .dpi(300)
-            .apply()
+            .watermarkPDF(document)
+                .withText("WaterMarkIt").color(Color.RED).addTrademark()
+                    .watermark()
+                        .size(100)
+                        .method(WatermarkingMethod.DRAW)
+                        .position(WatermarkPosition.TILED)
+                        .opacity(0.5f)
+                        .rotation(25)
+                        .dpi(300)
+                .apply()
 
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
@@ -121,20 +119,20 @@ class PdfPortraitPageOrientationTextBasedWatermarkTest {
     @Throws(IOException::class)
     fun `given Pdf file when Draw Method and TILED position is Used then Make Watermarked Pdf`() {
         // When
-        val result = WatermarkService.textBasedWatermarker(
+        val result = WatermarkService.create(
             Executors.newFixedThreadPool(
                 Runtime.getRuntime().availableProcessors()
             )
         )
-            .watermark(document)
-            .withText("WaterMarkIt").size(100)
-            .method(WatermarkingMethod.DRAW)
-            .position(WatermarkPosition.TILED)
-            .color(Color.RED)
-            .opacity(0.1f)
-            .rotation(25)
-            .addTrademark()
-            .dpi(300)
+            .watermarkPDF(document)
+            .withText("WaterMarkIt").color(Color.RED).addTrademark()
+                .watermark()
+                    .size(100)
+                    .method(WatermarkingMethod.DRAW)
+                    .position(WatermarkPosition.TILED)
+                    .opacity(0.1f)
+                    .rotation(25)
+                    .dpi(300)
             .apply()
 
         // Then

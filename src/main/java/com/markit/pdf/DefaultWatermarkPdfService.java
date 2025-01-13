@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,20 +33,6 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         this.drawService = Optional.ofNullable(pdfWatermarker);
         this.overlayService = Optional.ofNullable(overlayService);
         this.executorService = Optional.ofNullable(es);
-    }
-
-    @Override
-    public byte[] watermark(byte[] sourceImageBytes, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = PDDocument.load(sourceImageBytes)) {
-            return watermark(document, attrs);
-        }
-    }
-
-    @Override
-    public byte[] watermark(File file, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = PDDocument.load(file)) {
-            return watermark(document, attrs);
-        }
     }
 
     @Override

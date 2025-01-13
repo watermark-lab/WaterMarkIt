@@ -1,6 +1,6 @@
 package com.markit
 
-import com.markit.api.FileType
+import com.markit.api.ImageType
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
 import com.markit.exceptions.WatermarkingException
@@ -25,12 +25,13 @@ class TextBasedWatermarkTextBasedWatermarkTest {
         val file = createJpegFile("test.jpeg");
 
         // When
-        val result = WatermarkService.textBasedWatermarker()
-                .watermark(file, FileType.JPEG)
+        val result = WatermarkService.create()
+            .watermarkImage(file, ImageType.JPEG)
                 .withText("Sample Watermark")
-                .size(30)
-                .position(WatermarkPosition.CENTER)
-                .adjust(5, 5)
+                    .watermark()
+                        .size(30)
+                        .position(WatermarkPosition.CENTER)
+                        .adjust(5, 5)
                 .apply()
 
         // Then
@@ -49,12 +50,13 @@ class TextBasedWatermarkTextBasedWatermarkTest {
         val file = TestFileUtils.createJpegFile(TestFileUtils.outputDirectory + "test.jpeg")
 
         // When
-        val result = WatermarkService.textBasedWatermarker()
-            .watermark(file, FileType.JPEG)
+        val result = WatermarkService.create()
+            .watermarkImage(file, ImageType.JPEG)
             .withText("Sample Watermark")
-            .size(30)
-            .position(WatermarkPosition.CENTER)
-            .adjust(5, 5)
+                .watermark()
+                    .size(30)
+                    .position(WatermarkPosition.CENTER)
+                    .adjust(5, 5)
             .apply(TestFileUtils.outputDirectory, "text-test.jpeg")
 
         // Then
@@ -72,12 +74,13 @@ class TextBasedWatermarkTextBasedWatermarkTest {
 
         // When & Then
         assertThrows<IllegalArgumentException> {
-            WatermarkService.textBasedWatermarker()
-                .watermark(file, FileType.JPEG)
+            WatermarkService.create()
+                .watermarkImage(file, ImageType.JPEG)
                 .withText("Sample Watermark")
-                .size(30)
-                .position(WatermarkPosition.CENTER)
-                .adjust(5, 5)
+                    .watermark()
+                        .size(30)
+                        .position(WatermarkPosition.CENTER)
+                        .adjust(5, 5)
                 .apply("./doesnt-exist/", "text-test.jpeg")
         }
         file.delete()
@@ -91,12 +94,13 @@ class TextBasedWatermarkTextBasedWatermarkTest {
 
         // When & Then
         assertThrows<IllegalArgumentException> {
-            WatermarkService.textBasedWatermarker()
-                .watermark(file, FileType.JPEG)
+            WatermarkService.create()
+                .watermarkImage(file, ImageType.JPEG)
                 .withText("Sample Watermark")
-                .size(30)
-                .position(WatermarkPosition.CENTER)
-                .adjust(5, 5)
+                    .watermark()
+                        .size(30)
+                        .position(WatermarkPosition.CENTER)
+                        .adjust(5, 5)
                 .apply("not a directory", "text-test.jpeg")
         }
         file.delete()
@@ -110,12 +114,13 @@ class TextBasedWatermarkTextBasedWatermarkTest {
 
         // When & Then
         assertThrows<WatermarkingException> {
-            WatermarkService.textBasedWatermarker()
-                .watermark(invalidFile, FileType.JPEG)
+            WatermarkService.create()
+                .watermarkImage(invalidFile, ImageType.JPEG)
                 .withText("Sample Watermark")
-                .size(30)
-                .position(WatermarkPosition.CENTER)
-                .adjust(5, 5)
+                    .watermark()
+                        .size(30)
+                        .position(WatermarkPosition.CENTER)
+                        .adjust(5, 5)
                 .apply(TestFileUtils.outputDirectory, "text-test.jpeg")
         }
         invalidFile.delete()
