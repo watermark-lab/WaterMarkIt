@@ -1,33 +1,21 @@
 package com.markit.api;
 
-import com.markit.exceptions.EmptyWatermarkObjectException;
-import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageConverter;
 import com.markit.pdf.WatermarkPdfServiceBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
-public class WatermarkPDFServiceImpl extends AbstractWatermarkService
+public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkPDFService>
         implements WatermarkPDFService, WatermarkPDFService.TextBasedPDFWatermarkBuilder, WatermarkPDFService.WatermarkPDFBuilder, WatermarkPDFService.WatermarkPositionStepPDFBuilder {
-    private static final Log logger = LogFactory.getLog(WatermarkPDFServiceImpl.class);
-    private final WatermarkHandler watermarkHandler;
-    private final List<WatermarkAttributes> watermarks = new ArrayList<>();
-    private WatermarkAttributes currentWatermark;
 
     public WatermarkPDFServiceImpl(PDDocument pdfDoc, Executor executor) {
         var watermarkPdfService = WatermarkPdfServiceBuilder.build(executor);
         currentWatermark = new WatermarkAttributes();
-        this.watermarkHandler = (watermarks) -> watermarkPdfService.watermark(pdfDoc, watermarks);
+        watermarkHandler = (watermarks) -> watermarkPdfService.watermark(pdfDoc, watermarks);
     }
 
     @Override
@@ -119,28 +107,5 @@ public class WatermarkPDFServiceImpl extends AbstractWatermarkService
         var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
         currentWatermark.setPositionAdjustment(adjustment);
         return this;
-    }
-
-    @Override
-    public WatermarkPDFService and() {
-        if (currentWatermark.getText().isEmpty() && currentWatermark.getImage().isEmpty()) {
-            logger.error("the watermark content is empty");
-            throw new EmptyWatermarkObjectException();
-        }
-        watermarks.add(currentWatermark);
-        currentWatermark = new WatermarkAttributes();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public byte[] apply() {
-        try {
-            and();
-            return this.watermarkHandler.apply(this.watermarks);
-        } catch (IOException e) {
-            logger.error("Failed to watermark file", e);
-            throw new WatermarkingException("Error watermarking the file", e);
-        }
     }
 }
