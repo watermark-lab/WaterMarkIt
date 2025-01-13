@@ -18,8 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Oleg Cheban
+ * @since 1.3.0
+ */
 @SuppressWarnings("unchecked")
-public class AbstractWatermarkService<S, B, TB> {
+public class AbstractWatermarkService<S, B, TB, PSB> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
@@ -74,6 +78,11 @@ public class AbstractWatermarkService<S, B, TB> {
 
     public B watermark() {
         return (B) this;
+    }
+
+    public PSB position(WatermarkPosition watermarkPosition) {
+        currentWatermark.setPosition(watermarkPosition);
+        return (PSB) this;
     }
 
     @NotNull

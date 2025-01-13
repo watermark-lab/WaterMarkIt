@@ -1,6 +1,5 @@
 package com.markit.api;
 
-import com.markit.image.ImageConverter;
 import com.markit.pdf.WatermarkPdfServiceBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import com.markit.api.WatermarkPDFService.*;
@@ -9,8 +8,13 @@ import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
-public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder>
-        implements WatermarkPDFService, TextBasedWatermarkBuilder, WatermarkPDFBuilder, WatermarkPositionStepPDFBuilder {
+/**
+ * @author Oleg Cheban
+ * @since 1.3.0
+ */
+public class WatermarkPDFServiceImpl
+        extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder>
+        implements WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder {
 
     public WatermarkPDFServiceImpl(PDDocument pdfDoc, Executor executor) {
         var watermarkPdfService = WatermarkPdfServiceBuilder.build(executor);
@@ -18,17 +22,9 @@ public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkP
         watermarkHandler = (watermarks) -> watermarkPdfService.watermark(pdfDoc, watermarks);
     }
 
-
-
     @Override
     public WatermarkPDFBuilder method(WatermarkingMethod watermarkingMethod) {
         currentWatermark.setMethod(watermarkingMethod);
-        return this;
-    }
-
-    @Override
-    public WatermarkPositionStepPDFBuilder position(WatermarkPosition watermarkPosition) {
-        currentWatermark.setPosition(watermarkPosition);
         return this;
     }
 

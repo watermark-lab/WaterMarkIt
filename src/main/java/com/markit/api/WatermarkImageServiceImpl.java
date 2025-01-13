@@ -5,7 +5,12 @@ import com.markit.api.WatermarkImageService.*;
 
 import java.io.File;
 
-public class WatermarkImageServiceImpl extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder>
+/**
+ * @author Oleg Cheban
+ * @since 1.3.0
+ */
+public class WatermarkImageServiceImpl
+        extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder>
         implements WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder {
 
     public WatermarkImageServiceImpl(byte[] fileBytes, ImageType imageType) {
@@ -18,11 +23,5 @@ public class WatermarkImageServiceImpl extends AbstractWatermarkService<Watermar
         this.currentWatermark = new WatermarkAttributes();
         var imageWatermarker = new DefaultImageWatermarker();
         this.watermarkHandler = (watermarks) -> imageWatermarker.watermark(file, imageType, watermarks);
-    }
-
-    @Override
-    public WatermarkPositionStepBuilder position(WatermarkPosition watermarkPosition) {
-        currentWatermark.setPosition(watermarkPosition);
-        return this;
     }
 }
