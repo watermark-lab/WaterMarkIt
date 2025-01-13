@@ -2,7 +2,6 @@ package com.markit.api.impl;
 
 import com.markit.api.AbstractWatermarkService;
 import com.markit.api.ImageType;
-import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkImageService;
 import com.markit.image.DefaultImageWatermarker;
 import com.markit.api.WatermarkImageService.*;
@@ -18,14 +17,23 @@ public class WatermarkImageServiceImpl
         implements WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder {
 
     public WatermarkImageServiceImpl(byte[] fileBytes, ImageType imageType) {
-        this.currentWatermark = new WatermarkAttributes();
-        var imageWatermarker = new DefaultImageWatermarker();
-        this.watermarkHandler = (watermarks) -> imageWatermarker.watermark(fileBytes, imageType, watermarks);
+        initializeWatermarkHandler(fileBytes, imageType);
     }
 
     public WatermarkImageServiceImpl(File file, ImageType imageType) {
-        this.currentWatermark = new WatermarkAttributes();
+        initializeWatermarkHandler(file, imageType);
+    }
+
+    private void initializeWatermarkHandler(Object fileSource, ImageType imageType) {
         var imageWatermarker = new DefaultImageWatermarker();
-        this.watermarkHandler = (watermarks) -> imageWatermarker.watermark(file, imageType, watermarks);
+        this.watermarkHandler = (watermarks) -> {
+            if (fileSource instanceof byte[]) {
+                return imageWatermarker.watermark((byte[]) fileSource, imageType, watermarks);
+            } else if (fileSource instanceof File) {
+                return imageWatermarker.watermark((File) fileSource, imageType, watermarks);
+            } else {
+                throw new IllegalArgumentException("Unsupported file source type: " + fileSource.getClass().getName());
+            }
+        };
     }
 }

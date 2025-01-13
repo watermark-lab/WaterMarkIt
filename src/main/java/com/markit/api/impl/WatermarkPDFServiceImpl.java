@@ -1,7 +1,6 @@
 package com.markit.api.impl;
 
 import com.markit.api.AbstractWatermarkService;
-import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkPDFService;
 import com.markit.api.WatermarkingMethod;
 import com.markit.pdf.WatermarkPdfServiceBuilder;
@@ -21,9 +20,10 @@ public class WatermarkPDFServiceImpl
         implements WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder {
 
     public WatermarkPDFServiceImpl(PDDocument pdfDoc, Executor executor) {
-        var watermarkPdfService = WatermarkPdfServiceBuilder.build(executor);
-        currentWatermark = new WatermarkAttributes();
-        watermarkHandler = (watermarks) -> watermarkPdfService.watermark(pdfDoc, watermarks);
+        watermarkHandler =
+                (watermarks) ->
+                        WatermarkPdfServiceBuilder.build(executor)
+                                .watermark(pdfDoc, watermarks);
     }
 
     @Override

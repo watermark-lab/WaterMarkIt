@@ -29,6 +29,10 @@ public abstract class AbstractWatermarkService<S, B, TB, PSB> {
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
     protected WatermarkAttributes currentWatermark;
 
+    public AbstractWatermarkService() {
+        this.currentWatermark = new WatermarkAttributes();
+    }
+
     public TB withText(String text) {
         currentWatermark.setText(text);
         return (TB) this;
