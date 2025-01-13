@@ -15,11 +15,38 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractWatermarkService<T> {
+@SuppressWarnings("unchecked")
+public class AbstractWatermarkService<S, B> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
     protected WatermarkAttributes currentWatermark;
+
+    public B size(int size) {
+        currentWatermark.setSize(size);
+        return (B) this;
+    }
+
+    public B opacity(float opacity) {
+        currentWatermark.setOpacity(opacity);
+        return (B) this;
+    }
+
+    public B rotation(int degree) {
+        currentWatermark.setRotation(degree);
+        return (B) this;
+    }
+
+    public B when(boolean condition) {
+        currentWatermark.setWatermarkEnabled(condition);
+        return (B) this;
+    }
+
+    public B adjust(int x, int y) {
+        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
+        currentWatermark.setPositionAdjustment(adjustment);
+        return (B) this;
+    }
 
     @NotNull
     public byte[] apply() {
@@ -32,14 +59,14 @@ public class AbstractWatermarkService<T> {
         }
     }
 
-    public T and() {
+    public S and() {
         if (currentWatermark.getText().isEmpty() && currentWatermark.getImage().isEmpty()) {
             logger.error("the watermark content is empty");
             throw new EmptyWatermarkObjectException();
         }
         watermarks.add(currentWatermark);
         currentWatermark = new WatermarkAttributes();
-        return (T) this;
+        return (S) this;
     }
 
     public Path apply(String directoryPath, String fileName) {

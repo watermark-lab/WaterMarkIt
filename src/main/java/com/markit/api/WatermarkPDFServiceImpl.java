@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
-public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkPDFService>
+public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFService.WatermarkPDFBuilder>
         implements WatermarkPDFService, WatermarkPDFService.TextBasedPDFWatermarkBuilder, WatermarkPDFService.WatermarkPDFBuilder, WatermarkPDFService.WatermarkPositionStepPDFBuilder {
 
     public WatermarkPDFServiceImpl(PDDocument pdfDoc, Executor executor) {
@@ -38,24 +38,6 @@ public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkP
     }
 
     @Override
-    public WatermarkPDFBuilder size(int size) {
-        currentWatermark.setSize(size);
-        return this;
-    }
-
-    @Override
-    public WatermarkPDFBuilder opacity(float opacity) {
-        currentWatermark.setOpacity(opacity);
-        return this;
-    }
-
-    @Override
-    public WatermarkPDFBuilder rotation(int degree) {
-        currentWatermark.setRotation(degree);
-        return this;
-    }
-
-    @Override
     public WatermarkPositionStepPDFBuilder position(WatermarkPosition watermarkPosition) {
         currentWatermark.setPosition(watermarkPosition);
         return this;
@@ -64,12 +46,6 @@ public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkP
     @Override
     public WatermarkPDFBuilder dpi(int dpi) {
         currentWatermark.setDpi(Optional.of((float) dpi));
-        return this;
-    }
-
-    @Override
-    public WatermarkPDFBuilder when(boolean condition) {
-        currentWatermark.setWatermarkEnabled(condition);
         return this;
     }
 
@@ -99,13 +75,6 @@ public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkP
 
     @Override
     public WatermarkPDFBuilder watermark() {
-        return this;
-    }
-
-    @Override
-    public WatermarkPDFBuilder adjust(int x, int y) {
-        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
-        currentWatermark.setPositionAdjustment(adjustment);
         return this;
     }
 }

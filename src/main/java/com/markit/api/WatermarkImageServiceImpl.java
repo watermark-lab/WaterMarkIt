@@ -7,7 +7,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Optional;
 
-public class WatermarkImageServiceImpl extends AbstractWatermarkService<WatermarkImageService>
+public class WatermarkImageServiceImpl extends AbstractWatermarkService<WatermarkImageService, WatermarkImageService.WatermarkImageBuilder>
         implements WatermarkImageService, WatermarkImageService.WatermarkImageBuilder, WatermarkImageService.TextBasedImageWatermarkBuilder, WatermarkImageService.WatermarkPositionStepBuilder {
 
     public WatermarkImageServiceImpl(byte[] fileBytes, ImageType imageType) {
@@ -36,32 +36,8 @@ public class WatermarkImageServiceImpl extends AbstractWatermarkService<Watermar
     }
 
     @Override
-    public WatermarkImageService.WatermarkImageBuilder size(int size) {
-        currentWatermark.setSize(size);
-        return this;
-    }
-
-    @Override
-    public WatermarkImageService.WatermarkImageBuilder opacity(float opacity) {
-        currentWatermark.setOpacity(opacity);
-        return this;
-    }
-
-    @Override
-    public WatermarkImageService.WatermarkImageBuilder rotation(int degree) {
-        currentWatermark.setRotation(degree);
-        return this;
-    }
-
-    @Override
     public WatermarkImageService.WatermarkPositionStepBuilder position(WatermarkPosition watermarkPosition) {
         currentWatermark.setPosition(watermarkPosition);
-        return this;
-    }
-
-    @Override
-    public WatermarkImageService.WatermarkImageBuilder when(boolean condition) {
-        currentWatermark.setWatermarkEnabled(condition);
         return this;
     }
 
@@ -79,13 +55,6 @@ public class WatermarkImageServiceImpl extends AbstractWatermarkService<Watermar
 
     @Override
     public WatermarkImageService.WatermarkImageBuilder watermark() {
-        return this;
-    }
-
-    @Override
-    public WatermarkImageService.WatermarkImageBuilder adjust(int x, int y) {
-        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
-        currentWatermark.setPositionAdjustment(adjustment);
         return this;
     }
 }
