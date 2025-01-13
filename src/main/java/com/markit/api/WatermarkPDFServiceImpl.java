@@ -3,14 +3,14 @@ package com.markit.api;
 import com.markit.image.ImageConverter;
 import com.markit.pdf.WatermarkPdfServiceBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import com.markit.api.WatermarkPDFService.*;
 
-import java.awt.*;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
-public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFService.WatermarkPDFBuilder>
-        implements WatermarkPDFService, WatermarkPDFService.TextBasedPDFWatermarkBuilder, WatermarkPDFService.WatermarkPDFBuilder, WatermarkPDFService.WatermarkPositionStepPDFBuilder {
+public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder>
+        implements WatermarkPDFService, TextBasedWatermarkBuilder, WatermarkPDFBuilder, WatermarkPositionStepPDFBuilder {
 
     public WatermarkPDFServiceImpl(PDDocument pdfDoc, Executor executor) {
         var watermarkPdfService = WatermarkPdfServiceBuilder.build(executor);
@@ -18,18 +18,7 @@ public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkP
         watermarkHandler = (watermarks) -> watermarkPdfService.watermark(pdfDoc, watermarks);
     }
 
-    @Override
-    public TextBasedPDFWatermarkBuilder withText(String text) {
-        currentWatermark.setText(text);
-        return this;
-    }
 
-    @Override
-    public WatermarkPDFBuilder withImage(byte[] image) {
-        var imageConverter = new ImageConverter();
-        currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
-        return this;
-    }
 
     @Override
     public WatermarkPDFBuilder method(WatermarkingMethod watermarkingMethod) {
@@ -58,23 +47,6 @@ public class WatermarkPDFServiceImpl extends AbstractWatermarkService<WatermarkP
     @Override
     public WatermarkPDFBuilder pageFilter(Predicate<Integer> predicate) {
         currentWatermark.setPagePredicate(predicate);
-        return this;
-    }
-
-    @Override
-    public TextBasedPDFWatermarkBuilder color(Color color) {
-        currentWatermark.setColor(color);
-        return this;
-    }
-
-    @Override
-    public TextBasedPDFWatermarkBuilder addTrademark() {
-        currentWatermark.setTrademark(true);
-        return this;
-    }
-
-    @Override
-    public WatermarkPDFBuilder watermark() {
         return this;
     }
 }

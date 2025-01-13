@@ -16,7 +16,7 @@ public interface WatermarkImageService {
      *
      * @param text The text for the watermark
      */
-    TextBasedImageWatermarkBuilder withText(String text);
+    TextBasedWatermarkBuilder withText(String text);
 
     /**
      * Sets the image to be used as the watermark
@@ -26,19 +26,19 @@ public interface WatermarkImageService {
     /**
      * Text-based watermarks builder
      */
-    interface TextBasedImageWatermarkBuilder {
+    interface TextBasedWatermarkBuilder {
         /**
          * Sets the color of the text
          *
          * @param color The color for the text
          * @see Color
          */
-        TextBasedImageWatermarkBuilder color(Color color);
+        TextBasedWatermarkBuilder color(Color color);
 
         /**
          * Adds a trademark symbol to the text
          */
-        TextBasedImageWatermarkBuilder addTrademark();
+        TextBasedWatermarkBuilder addTrademark();
 
         /**
          * Getting watermarks builder

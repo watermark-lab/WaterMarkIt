@@ -3,10 +3,12 @@ package com.markit.api;
 import com.markit.exceptions.ConvertBytesToBufferedImageException;
 import com.markit.exceptions.EmptyWatermarkObjectException;
 import com.markit.exceptions.WatermarkingException;
+import com.markit.image.ImageConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,13 +16,25 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("unchecked")
-public class AbstractWatermarkService<S, B> {
+public class AbstractWatermarkService<S, B, TB> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
     protected WatermarkAttributes currentWatermark;
+
+    public TB withText(String text) {
+        currentWatermark.setText(text);
+        return (TB) this;
+    }
+
+    public B withImage(byte[] image) {
+        var imageConverter = new ImageConverter();
+        currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
+        return (B) this;
+    }
 
     public B size(int size) {
         currentWatermark.setSize(size);
@@ -45,6 +59,20 @@ public class AbstractWatermarkService<S, B> {
     public B adjust(int x, int y) {
         var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
         currentWatermark.setPositionAdjustment(adjustment);
+        return (B) this;
+    }
+
+    public TB color(Color color) {
+        currentWatermark.setColor(color);
+        return (TB) this;
+    }
+
+    public TB addTrademark() {
+        currentWatermark.setTrademark(true);
+        return (TB) this;
+    }
+
+    public B watermark() {
         return (B) this;
     }
 

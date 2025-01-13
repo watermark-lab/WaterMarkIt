@@ -19,7 +19,7 @@ public interface WatermarkPDFService {
      *
      * @param text The text for the watermark
      */
-    TextBasedPDFWatermarkBuilder withText(String text);
+    TextBasedWatermarkBuilder withText(String text);
 
     /**
      * Sets the image to be used as the watermark
@@ -29,7 +29,7 @@ public interface WatermarkPDFService {
     /**
      * Text-based watermarks builder
      */
-    interface TextBasedPDFWatermarkBuilder {
+    interface TextBasedWatermarkBuilder {
 
         /**
          * Sets the color of the text
@@ -37,12 +37,12 @@ public interface WatermarkPDFService {
          * @param color The color for the watermark text
          * @see Color
          */
-        TextBasedPDFWatermarkBuilder color(Color color);
+        TextBasedWatermarkBuilder color(Color color);
 
         /**
          * Adds a trademark symbol to the text
          */
-        TextBasedPDFWatermarkBuilder addTrademark();
+        TextBasedWatermarkBuilder addTrademark();
 
         /**
          * Getting watermarks builder
