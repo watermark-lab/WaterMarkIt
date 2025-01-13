@@ -89,8 +89,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
                 CompletableFuture.runAsync(
                         () -> {
                             try {
-                                List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pIndex);
-                                if (!filteredAttrs.isEmpty()) drawService.get().watermark(document, pIndex, filteredAttrs);
+                                draw(document, pIndex, attrs);
                             } catch (IOException e) {
                                 logPageException(e, pIndex);
                             }
@@ -106,12 +105,16 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     private void sync(PDDocument document, int numberOfPages, List<WatermarkAttributes> attrs) {
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
             try {
-                List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pageIndex);
-                if (!filteredAttrs.isEmpty()) drawService.get().watermark(document, pageIndex, filteredAttrs);
+                draw(document, pageIndex, attrs);
             } catch (IOException e) {
                 logPageException(e, pageIndex);
             }
         }
+    }
+
+    private void draw(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
+        List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pageIndex);
+        if (!filteredAttrs.isEmpty()) drawService.get().watermark(document, pageIndex, filteredAttrs);
     }
 
     private static List<WatermarkAttributes> filterAttrsByPageIndex(List<WatermarkAttributes> attrs, int pIndex) {
