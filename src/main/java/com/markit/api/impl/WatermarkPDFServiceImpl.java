@@ -1,5 +1,9 @@
-package com.markit.api;
+package com.markit.api.impl;
 
+import com.markit.api.AbstractWatermarkService;
+import com.markit.api.WatermarkAttributes;
+import com.markit.api.WatermarkPDFService;
+import com.markit.api.WatermarkingMethod;
 import com.markit.pdf.WatermarkPdfServiceBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import com.markit.api.WatermarkPDFService.*;

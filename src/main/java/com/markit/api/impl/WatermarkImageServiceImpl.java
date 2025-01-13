@@ -1,5 +1,9 @@
-package com.markit.api;
+package com.markit.api.impl;
 
+import com.markit.api.AbstractWatermarkService;
+import com.markit.api.ImageType;
+import com.markit.api.WatermarkAttributes;
+import com.markit.api.WatermarkImageService;
 import com.markit.image.DefaultImageWatermarker;
 import com.markit.api.WatermarkImageService.*;
 

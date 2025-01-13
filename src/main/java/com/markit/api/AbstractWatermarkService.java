@@ -23,7 +23,7 @@ import java.util.Optional;
  * @since 1.3.0
  */
 @SuppressWarnings("unchecked")
-public class AbstractWatermarkService<S, B, TB, PSB> {
+public abstract class AbstractWatermarkService<S, B, TB, PSB> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();

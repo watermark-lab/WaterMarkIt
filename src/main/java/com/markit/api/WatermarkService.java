@@ -1,5 +1,6 @@
 package com.markit.api;
 
+import com.markit.api.impl.WatermarkServiceImpl;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
