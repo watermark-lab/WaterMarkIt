@@ -23,7 +23,7 @@ import java.util.Optional;
  * @since 1.3.0
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractWatermarkService<S, B, TB, PSB> {
+public abstract class AbstractWatermarkService<Service, Builder, TextBasedWatermarkBuilder, PositionStepBuilder> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
@@ -33,60 +33,60 @@ public abstract class AbstractWatermarkService<S, B, TB, PSB> {
         this.currentWatermark = new WatermarkAttributes();
     }
 
-    public TB withText(String text) {
+    public TextBasedWatermarkBuilder withText(String text) {
         currentWatermark.setText(text);
-        return (TB) this;
+        return (TextBasedWatermarkBuilder) this;
     }
 
-    public B withImage(byte[] image) {
+    public Builder withImage(byte[] image) {
         var imageConverter = new ImageConverter();
         currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
-        return (B) this;
+        return (Builder) this;
     }
 
-    public B size(int size) {
+    public TextBasedWatermarkBuilder color(Color color) {
+        currentWatermark.setColor(color);
+        return (TextBasedWatermarkBuilder) this;
+    }
+
+    public TextBasedWatermarkBuilder addTrademark() {
+        currentWatermark.setTrademark(true);
+        return (TextBasedWatermarkBuilder) this;
+    }
+
+    public Builder size(int size) {
         currentWatermark.setSize(size);
-        return (B) this;
+        return (Builder) this;
     }
 
-    public B opacity(float opacity) {
+    public Builder opacity(float opacity) {
         currentWatermark.setOpacity(opacity);
-        return (B) this;
+        return (Builder) this;
     }
 
-    public B rotation(int degree) {
+    public Builder rotation(int degree) {
         currentWatermark.setRotation(degree);
-        return (B) this;
+        return (Builder) this;
     }
 
-    public B when(boolean condition) {
+    public Builder when(boolean condition) {
         currentWatermark.setWatermarkEnabled(condition);
-        return (B) this;
+        return (Builder) this;
     }
 
-    public B adjust(int x, int y) {
+    public Builder adjust(int x, int y) {
         var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
         currentWatermark.setPositionAdjustment(adjustment);
-        return (B) this;
+        return (Builder) this;
     }
 
-    public TB color(Color color) {
-        currentWatermark.setColor(color);
-        return (TB) this;
+    public Builder watermark() {
+        return (Builder) this;
     }
 
-    public TB addTrademark() {
-        currentWatermark.setTrademark(true);
-        return (TB) this;
-    }
-
-    public B watermark() {
-        return (B) this;
-    }
-
-    public PSB position(WatermarkPosition watermarkPosition) {
+    public PositionStepBuilder position(WatermarkPosition watermarkPosition) {
         currentWatermark.setPosition(watermarkPosition);
-        return (PSB) this;
+        return (PositionStepBuilder) this;
     }
 
     @NotNull
@@ -100,26 +100,18 @@ public abstract class AbstractWatermarkService<S, B, TB, PSB> {
         }
     }
 
-    public S and() {
-        if (currentWatermark.getText().isEmpty() && currentWatermark.getImage().isEmpty()) {
-            logger.error("the watermark content is empty");
-            throw new EmptyWatermarkObjectException();
-        }
+    public Service and() {
+        validateCurrentWatermark();
         watermarks.add(currentWatermark);
         currentWatermark = new WatermarkAttributes();
-        return (S) this;
+        return (Service) this;
     }
 
     public Path apply(String directoryPath, String fileName) {
-        if (!new File(directoryPath).isDirectory()) {
-            logger.error(String.format("The directory does not exist or is not a directory: %s", directoryPath));
-            throw new IllegalArgumentException("The directory does not exist or is not a directory.");
-        }
-
+        validateDirectory(directoryPath);
         try {
             byte[] file = apply();
             Path filePath = Paths.get(directoryPath, fileName);
-
             return Files.write(filePath, file);
         } catch (IOException e) {
             logger.error("Failed to watermark file", e);
@@ -127,6 +119,20 @@ public abstract class AbstractWatermarkService<S, B, TB, PSB> {
         } catch (ConvertBytesToBufferedImageException e) {
             logger.error("Failed to convert bytes to buffered image", e);
             throw new WatermarkingException("Error converting bytes to buffered image", e);
+        }
+    }
+
+    private void validateCurrentWatermark() {
+        if (currentWatermark.getText().isEmpty() && currentWatermark.getImage().isEmpty()) {
+            logger.error("The watermark content is empty");
+            throw new EmptyWatermarkObjectException();
+        }
+    }
+
+    private void validateDirectory(String directoryPath) {
+        if (!new File(directoryPath).isDirectory()) {
+            logger.error(String.format("Invalid directory: %s", directoryPath));
+            throw new IllegalArgumentException("The directory does not exist or is not a directory.");
         }
     }
 }
