@@ -65,7 +65,7 @@ implementation 'io.github.watermark-lab:WaterMarkIt:1.3.0'
 
 ```java
 WatermarkService.create(
-                //it's a good idea to use a thread pool for multi-page documents.
+                //using a thread pool here isn't mandatory; use it only when necessary
                 Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 )
