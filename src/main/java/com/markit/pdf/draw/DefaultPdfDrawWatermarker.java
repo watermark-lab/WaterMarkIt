@@ -32,7 +32,6 @@ public class DefaultPdfDrawWatermarker implements PdfWatermarker {
 
     @Override
     public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
-
         var page = document.getPage(pageIndex);
         PDFRenderer pdfRenderer = new PDFRenderer(document);
         var image = pdfRenderer.renderImageWithDPI(pageIndex, getDPI(attrs));

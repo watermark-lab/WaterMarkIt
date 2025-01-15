@@ -48,6 +48,13 @@ public interface WatermarkPDFService {
          * Getting watermarks builder
          */
         WatermarkPDFBuilder watermark();
+
+        /**
+         * Applies the watermark to the file and returns the result as a byte array
+         *
+         * @return A byte array representing the watermarked file
+         */
+        byte[] apply();
     }
 
     /**

@@ -4,6 +4,7 @@ import com.markit.api.ImageType;
 import com.markit.api.WatermarkImageService;
 import com.markit.api.WatermarkPDFService;
 import com.markit.api.WatermarkService;
+import com.markit.exceptions.InvalidPDFFileException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -26,19 +27,19 @@ public class WatermarkServiceImpl implements WatermarkService.WatermarkServiceSe
 
     @Override
     public WatermarkPDFService watermarkPDF(byte[] fileBytes) {
-        try(PDDocument document = PDDocument.load(fileBytes)) {
-            return new WatermarkPDFServiceImpl(document, executor);
+        try {
+            return new WatermarkPDFServiceImpl(PDDocument.load(fileBytes), executor);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new InvalidPDFFileException(e);
         }
     }
 
     @Override
     public WatermarkPDFService watermarkPDF(File file) {
-        try(PDDocument document = PDDocument.load(file)) {
-            return new WatermarkPDFServiceImpl(document, executor);
+        try {
+            return new WatermarkPDFServiceImpl(PDDocument.load(file), executor);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new InvalidPDFFileException(e);
         }
     }
 
