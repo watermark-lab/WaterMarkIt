@@ -63,95 +63,62 @@ implementation 'io.github.watermark-lab:WaterMarkIt:1.2.4'
 
 ### Usage
 
-#### Text-based multiple watermarks
 ```java
-try (var document = new PDDocument()) {
-    document.addPage(new PDPage());
-    document.addPage(new PDPage());
-    document.addPage(new PDPage());    
-    
-    WatermarkService.textBasedWatermarker(
-                    //it's a good point to use a configured thread pool for multipage documents.
-                    Executors.newFixedThreadPool(
-                            Runtime.getRuntime().availableProcessors()
-                    )
-            )
-            .watermark(document)
-                .withText("CONFIDENTIAL").size(20)
-                .method(WatermarkingMethod.OVERLAY)
-                .position(WatermarkPosition.TOP_LEFT)
-                .color(Color.RED)
-            .and()
-                .withText("Copyright © 2024").size(10)
-                .method(WatermarkingMethod.OVERLAY)
-                .position(WatermarkPosition.BOTTOM_LEFT)
-                .color(Color.BLACK)
-                .opacity(0.5f)
-            .and()
-                .withText("Your Company Name").size(200)
-                .method(WatermarkingMethod.DRAW)
-                .position(WatermarkPosition.CENTER)
-                .dpi(200)
-                .rotation(25)
-                .addTrademark()
-                .color(Color.BLUE)
-            .apply();
-}
+WatermarkService.create(
+                //it's a good idea to use a thread pool for multi-page documents.
+                Executors.newFixedThreadPool(
+                        Runtime.getRuntime().availableProcessors()
+                )
+        )
+        .watermarkPDF(readFileFromClasspathAsBytes("ITIL.pdf")
+           .withImage(readFileFromClasspathAsBytes("logo.png"))
+               .position(WatermarkPosition.CENTER)
+               .opacity(0.2f)
+           .and()
+           .withText("WaterMarkIt")
+               .addTrademark()
+               .color(Color.BLUE)
+               .watermark()
+                   .size(110)
+                   .position(WatermarkPosition.TILED)
+                       .adjust(35, 0)
+                   .opacity(0.1f)
+                   .rotation(25)
+           .and()
+           .withText(LocalDateTime.now().toString())
+               .watermark()
+                   .position(WatermarkPosition.TOP_RIGHT)
+                       .adjust(0, -30)
+                   .size(50)
+        .apply()
 ```
-![Screenshot](https://i.imgur.com/ww4gtmbm.png)
-
-#### Tiled watermarks
-```java    
-WatermarkService.textBasedWatermarker()
-    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-    .withText("WaterMarkIt").size(100)
-    .method(WatermarkingMethod.DRAW)
-    .position(WatermarkPosition.TILED)
-    .color(Color.RED)
-    .opacity(0.1f)
-    .rotation(25)
-    .addTrademark()
-    .dpi(150)
-    .apply()
-```
-![Screenshot](https://github.com/user-attachments/assets/b07fa51c-dd64-4da7-994c-263968f6d6c6)
-
-#### Image-Based watermarks
-```java 
-WatermarkService.imageBasedWatermarker()
-    .watermark(readFileFromClasspathAsBytes("file.pdf"), FileType.PDF)
-    .withImage(readFileFromClasspathAsBytes("logo.png")).size(25)
-    .position(WatermarkPosition.TILED)
-    .opacity(0.1f)
-    .apply()
-```
-![Screenshot](https://github.com/user-attachments/assets/be223354-617a-4275-9779-64f246d585d1)
+![Screenshot](https://github.com/user-attachments/assets/5d573ee8-ddf3-4204-8c33-502099bb39eb)
 
 #### Watermarking conditions 
 ```java
 // skip the first page (the page index starts from 0)
-WatermarkService.textBasedWatermarker()
-    .watermark(document)
-    .withText("Text-based Watermark")
-    .pageFilter(index -> index >= 1)
+WatermarkService.create()
+    .watermarkPDF(document)
+        .withText("Text-based Watermark")
+            .pageFilter(index -> index >= 1)
     .apply()
 ```
 
 ```java
 // don't add a watermark for the owner of the file; the owner has access to the original file.
-WatermarkService.textBasedWatermarker()
-    .watermark(document)
-    .withText("Text-based Watermark")
-    .when(!isOwner)
+WatermarkService.create()
+    .watermarkPDF(document)
+        .withText("Text-based Watermark")
+            .when(!isOwner)
     .apply()
 ```
 
 ```java
 // Apply watermark only if the document has more than 3 pages
-WatermarkService.textBasedWatermarker()
-    .watermark(document)
-    .withText("Text-based Watermark")
-    .documentFilter(document -> document.getNumberOfPages() > 3)
+WatermarkService.create()
+    .watermarkPDF(document)
+        .withText("Text-based Watermark")
+            .documentFilter(document -> document.getNumberOfPages() > 3)
     .apply()  
 ```
 
