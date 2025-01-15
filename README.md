@@ -52,13 +52,13 @@ A lightweight Java library for adding watermarks to various file types, includin
 <dependency>
     <groupId>io.github.watermark-lab</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.2.4</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
 **For Gradle**, add the following to your `build.gradle`:
 ```kotlin
-implementation 'io.github.watermark-lab:WaterMarkIt:1.2.4'
+implementation 'io.github.watermark-lab:WaterMarkIt:1.3.0'
 ```
 
 ### Usage
