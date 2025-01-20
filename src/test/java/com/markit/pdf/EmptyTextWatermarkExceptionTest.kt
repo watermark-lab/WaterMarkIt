@@ -1,4 +1,4 @@
-package com.markit
+package com.markit.pdf
 
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
@@ -7,25 +7,17 @@ import com.markit.exceptions.EmptyWatermarkObjectException
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.common.PDRectangle
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.io.IOException
 
-class EmptyTextWatermarkExceptionTest {
-    private lateinit var document: PDDocument
-
+class EmptyTextWatermarkExceptionTest : BasePdfWatermarkTest() {
     @BeforeEach
-    fun initDocument() {
+    override fun initDocument() {
         document = PDDocument().apply {
             addPage(PDPage(PDRectangle.A4))
         }
-    }
-
-    @AfterEach
-    fun close() {
-        document.close()
     }
 
     @Test
@@ -34,10 +26,10 @@ class EmptyTextWatermarkExceptionTest {
         assertThrows<EmptyWatermarkObjectException> {
             WatermarkService.create()
                 .watermarkPDF(document)
-                .withText("")
-                    .watermark()
-                        .position(WatermarkPosition.CENTER)
-                        .method(WatermarkingMethod.DRAW)
+                    .withText("")
+                        .watermark()
+                            .position(WatermarkPosition.CENTER)
+                            .method(WatermarkingMethod.DRAW)
                 .apply()
         }
     }

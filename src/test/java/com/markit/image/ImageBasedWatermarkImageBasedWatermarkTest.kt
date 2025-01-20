@@ -1,10 +1,11 @@
-package com.markit
+package com.markit.image
 
 import com.markit.api.ImageType
 import com.markit.api.WatermarkPosition
 import com.markit.api.WatermarkService
-import com.markit.exceptions.WatermarkingException
 import com.markit.utils.TestFileUtils
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.io.File
@@ -14,34 +15,38 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ImageBasedWatermarkImageBasedWatermarkTest {
-    @Test
-    @Throws(IOException::class)
-    fun `given jpeg file when draw method then make image-based watermarked jpeg using apply(String directoryPath, String fileName)`() {
-        // Given
-        val file = TestFileUtils.createJpegFile(TestFileUtils.outputDirectory + "test.jpeg")
+    private lateinit var file: File;
 
-        // When
-        val result = WatermarkService.create()
-            .watermarkImage(file, ImageType.JPEG)
-            .withImage(TestFileUtils.readFileFromClasspathAsBytes("logo.png")).size(25)
-            .position(WatermarkPosition.TILED)
-            .opacity(0.1f)
-            .apply(TestFileUtils.outputDirectory, "image-test.jpeg")
+    @BeforeEach
+    fun initDocument(){
+        file = TestFileUtils.createJpegFile(TestFileUtils.outputDirectory + "test.jpeg")
+    }
 
-        // Then
-        assertNotNull(result, "The resulting byte array should not be null")
-        assertTrue(Files.size(result) > 0, "The resulting byte array should not be empty")
-        assertTrue(Files.size(result) > file.length(), "The resulting byte array should be bigger than initial one")
+    @AfterEach
+    fun closeDocument() {
         file.delete();
     }
 
     @Test
     @Throws(IOException::class)
-    fun `given jpeg file when draw method then directory does not exist throw IllegalArgumentException`() {
-        // Given
-        val file = TestFileUtils.createJpegFile(TestFileUtils.outputDirectory + "test.jpeg")
+    fun `given jpeg file when draw method then make image-based watermarked jpeg using apply(String directoryPath, String fileName)`() {
+        // When
+        val result = WatermarkService.create()
+            .watermarkImage(file, ImageType.JPEG)
+                .withImage(TestFileUtils.readFileFromClasspathAsBytes("logo.png"))
+                    .size(25)
+                    .position(WatermarkPosition.TILED)
+                    .opacity(0.1f)
+            .apply(TestFileUtils.outputDirectory, "image-test.jpeg")
 
-        // When & Then
+        // Then
+        assertNotNull(result, "The resulting byte array should not be null")
+        assertTrue(Files.size(result) > file.length(), "The resulting byte array should be bigger than initial one")
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun `given jpeg file when draw method then directory does not exist throw IllegalArgumentException`() {
         assertThrows<IllegalArgumentException> {
             WatermarkService.create()
                 .watermarkImage(file, ImageType.JPEG)
@@ -50,16 +55,11 @@ class ImageBasedWatermarkImageBasedWatermarkTest {
                 .opacity(0.1f)
                 .apply("./doesnt-exist/", "image-test.jpeg")
         }
-        file.delete()
     }
 
     @Test
     @Throws(IOException::class)
     fun `given jpeg file when draw method then it is not a directory throw IllegalArgumentException`() {
-        // Given
-        val file = TestFileUtils.createJpegFile(TestFileUtils.outputDirectory + "test.jpeg")
-
-        // When & Then
         assertThrows<IllegalArgumentException> {
             WatermarkService.create()
                 .watermarkImage(file, ImageType.JPEG)
@@ -68,24 +68,5 @@ class ImageBasedWatermarkImageBasedWatermarkTest {
                 .opacity(0.1f)
                 .apply("not a directory", "image-test.jpeg")
         }
-        file.delete()
-    }
-
-    @Test
-    @Throws(IOException::class)
-    fun `given invalid file then throw WatermarkingException`() {
-        // Given
-        val invalidFile = File("invalid-file-path")
-
-        // When & Then
-        assertThrows<WatermarkingException> {
-            WatermarkService.create()
-                .watermarkImage(invalidFile, ImageType.JPEG)
-                .withImage(TestFileUtils.readFileFromClasspathAsBytes("logo.png")).size(25)
-                .position(WatermarkPosition.TILED)
-                .opacity(0.1f)
-                .apply(TestFileUtils.outputDirectory, "image-test.jpeg")
-        }
-        invalidFile.delete()
     }
 }

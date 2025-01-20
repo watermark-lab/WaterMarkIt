@@ -1,24 +1,19 @@
-package com.markit
+package com.markit.pdf
 
 import com.markit.api.WatermarkingMethod
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.common.PDRectangle
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.io.File
 import java.io.IOException
-import java.nio.file.Files
 import kotlin.test.assertTrue
 
-class PdfLandscapePageOrientationTextBasedWatermarkTest {
-    private lateinit var landscapeDocument: PDDocument
-
+class LandscapePageOrientationTextBasedWatermarkTest : BasePdfWatermarkTest() {
     @BeforeEach
-    fun initDocument() {
-        landscapeDocument = PDDocument().apply {
+    override fun initDocument() {
+        document = PDDocument().apply {
             val landscapePage = PDPage(PDRectangle.A4).apply {
                 mediaBox = PDRectangle(PDRectangle.A4.height, PDRectangle.A4.width)
             }
@@ -26,17 +21,12 @@ class PdfLandscapePageOrientationTextBasedWatermarkTest {
         }
     }
 
-    @AfterEach
-    fun close(){
-        landscapeDocument.close()
-    }
-
     @Test
     @Throws(IOException::class)
     fun `given Landscape Pdf when Draw Method then Make Watermarked Pdf`() {
         // When
         val result = WatermarkService.create()
-                .watermarkPDF(landscapeDocument)
+                .watermarkPDF(document)
                 .withText("Sample Watermark")
                     .watermark()
                         .method(WatermarkingMethod.DRAW)
@@ -52,7 +42,7 @@ class PdfLandscapePageOrientationTextBasedWatermarkTest {
     fun `given Landscape Pdf when Overlay Method then Make Watermarked Pdf`() {
         // When
         val result = WatermarkService.create()
-                .watermarkPDF(landscapeDocument)
+                .watermarkPDF(document)
                 .withText("Sample Watermark")
                     .watermark()
                         .size(50)
@@ -62,10 +52,5 @@ class PdfLandscapePageOrientationTextBasedWatermarkTest {
         // Then
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
         //outputFile(result, "OverlayLandscapePdf.pdf")
-    }
-
-    private fun outputFile(result: ByteArray, filename: String) {
-        val outputFile = File(filename)
-        Files.write(outputFile.toPath(), result)
     }
 }

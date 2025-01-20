@@ -4,7 +4,6 @@ import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStream
-import java.nio.file.Files
 import javax.imageio.ImageIO
 
 object TestFileUtils {
@@ -33,11 +32,5 @@ object TestFileUtils {
         val classLoader = Thread.currentThread().contextClassLoader
         val inputStream: InputStream? = classLoader.getResourceAsStream(fileName)
         return inputStream?.readBytes()
-    }
-
-    @JvmStatic
-    fun outputFile(result: ByteArray, filename: String) {
-        val outputFile = File(filename)
-        Files.write(outputFile.toPath(), result)
     }
 }
