@@ -1,6 +1,8 @@
 package com.markit.api;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.file.Path;
 
 /**
@@ -20,8 +22,22 @@ public interface WatermarkImageService {
 
     /**
      * Sets the image to be used as the watermark
+     * @param image the byte array representation of the image
      */
     WatermarkImageBuilder withImage(byte[] image);
+
+    /**
+     * Sets the image to be used as the watermark
+     * @param image the BufferedImage representation of the image
+     * @see BufferedImage
+     */
+    WatermarkImageBuilder withImage(BufferedImage image);
+
+    /**
+     * Sets the image to be used as the watermark
+     * @param image the File object representing the image
+     */
+    WatermarkImageBuilder withImage(File image);
 
     /**
      * Text-based watermarks builder

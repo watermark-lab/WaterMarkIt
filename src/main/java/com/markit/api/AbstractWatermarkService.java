@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,6 +40,17 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
     }
 
     public Builder withImage(byte[] image) {
+        var imageConverter = new ImageConverter();
+        currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
+        return (Builder) this;
+    }
+
+    public Builder withImage(BufferedImage image) {
+        currentWatermark.setImage(Optional.of(image));
+        return (Builder) this;
+    }
+
+    public Builder withImage(File image) {
         var imageConverter = new ImageConverter();
         currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
         return (Builder) this;
