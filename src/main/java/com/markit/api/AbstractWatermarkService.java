@@ -77,7 +77,7 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
     }
 
     public Builder rotation(int degree) {
-        currentWatermark.setRotation(degree);
+        currentWatermark.setRotationDegrees(degree);
         return (Builder) this;
     }
 

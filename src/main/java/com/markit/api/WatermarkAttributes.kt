@@ -13,7 +13,7 @@ data class WatermarkAttributes (
     var opacity: Float = 0.4f,
     var dpi: Optional<Float> = Optional.empty(),
     var trademark: Boolean = false,
-    var rotation: Int = 0,
+    var rotationDegrees: Int = 0,
     var method: WatermarkingMethod = WatermarkingMethod.DRAW,
     var position: WatermarkPosition = WatermarkPosition.CENTER,
     var positionAdjustment: WatermarkPositionCoordinates.Coordinates = WatermarkPositionCoordinates.Coordinates(0, 0),

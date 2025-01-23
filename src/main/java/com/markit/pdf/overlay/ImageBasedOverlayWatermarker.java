@@ -20,24 +20,30 @@ public class ImageBasedOverlayWatermarker {
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight(), (int) imageWidth, (int) imageHeight);
         float x = coordinates.get(0).getX();
         float y = coordinates.get(0).getY();
-        if (attr.getRotation() != 0){
-            Matrix rotationMatrix = defineRotationMatrix(x, y, imageWidth, imageHeight, attr.getRotation());
+        if (attr.getRotationDegrees() != 0){
+            Matrix rotationMatrix = setTransformationMatrix(x, y, imageWidth, imageHeight, attr.getRotationDegrees());
             contentStream.saveGraphicsState();
             contentStream.transform(rotationMatrix);
         }
         contentStream.drawImage(imageXObject, x, y, imageWidth, imageHeight);
-        if (attr.getRotation() != 0) {
+        if (attr.getRotationDegrees() != 0) {
             contentStream.restoreGraphicsState();
         }
     }
 
-    private Matrix defineRotationMatrix(float x, float y, float width, float height, int rotation) {
-        var m = new Matrix();
+    private Matrix setTransformationMatrix(float x, float y, float width, float height, int rotationDegrees) {
+        var matrix = new Matrix();
         float translateX = x + (width / 2);
         float translateY = y + (height / 2);
-        m.translate(translateX, translateY);
-        m.rotate(Math.toRadians(rotation));
-        m.translate(-translateX, -translateY);
-        return m;
+        matrix.translate(translateX, translateY);
+        rotate(matrix, rotationDegrees);
+        matrix.translate(-translateX, -translateY);
+        return matrix;
+    }
+
+    private void rotate(Matrix matrix, int rotationDegrees){
+        if (rotationDegrees != 0){
+            matrix.rotate(Math.toRadians(rotationDegrees));
+        }
     }
 }

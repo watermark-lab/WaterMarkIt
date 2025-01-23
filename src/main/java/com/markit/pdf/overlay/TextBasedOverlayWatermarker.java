@@ -29,7 +29,7 @@ public class TextBasedOverlayWatermarker {
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight (), (int) textWidth, (int) textHeight);
         float x = coordinates.get(0).getX() + textWidth / 2;
         float y = coordinates.get(0).getY() + textHeight / 2;
-        contentStream.setTextMatrix(defineRotationMatrix(x, y, textWidth, textHeight, attr.getRotation()));
+        contentStream.setTextMatrix(setRotationMatrix(x, y, textWidth, textHeight, attr.getRotationDegrees()));
         contentStream.showText(attr.getText());
         contentStream.endText();
 
@@ -38,11 +38,17 @@ public class TextBasedOverlayWatermarker {
         }
     }
 
-    private Matrix defineRotationMatrix(float x, float y, float textWidth, float textHeight, int rotation){
-        var m = new Matrix();
-        m.translate(x, y);
-        m.rotate(Math.toRadians(rotation));
-        m.translate(-textWidth / 2, -textHeight / 2); // Translate back to the original position
-        return m;
+    private Matrix setRotationMatrix(float x, float y, float textWidth, float textHeight, int rotationDegrees){
+        var matrix = new Matrix();
+        matrix.translate(x, y);
+        rotate(matrix, rotationDegrees);
+        matrix.translate(-textWidth / 2, -textHeight / 2);
+        return matrix;
+    }
+
+    private void rotate(Matrix matrix, int rotationDegrees){
+        if (rotationDegrees != 0){
+            matrix.rotate(Math.toRadians(rotationDegrees));
+        }
     }
 }

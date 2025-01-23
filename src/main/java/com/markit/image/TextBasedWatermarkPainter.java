@@ -33,7 +33,7 @@ public class TextBasedWatermarkPainter {
     }
 
     private void drawWatermark(Graphics2D g2d, TextLayout watermarkLayout, WatermarkAttributes attr, Rectangle2D rect, int x, int y, Font baseFont, int baseFontSize) {
-        applyWithOptionalRotation(g2d, attr.getRotation(), x, y, rect, () -> {
+        applyWithOptionalRotation(g2d, attr.getRotationDegrees(), x, y, rect, () -> {
             watermarkLayout.draw(g2d, x, y);
 
             if (attr.getTrademark()) {

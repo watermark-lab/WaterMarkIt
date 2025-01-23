@@ -30,7 +30,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
             attrs.forEach(attr -> {
                 try {
-                    contentStream.setGraphicsStateParameters(defineOpacity(attr.getOpacity()));
+                    contentStream.setGraphicsStateParameters(setOpacity(attr.getOpacity()));
                     if (attr.getImage().isPresent()){
                         var image = LosslessFactory.createFromImage(document, attr.getImage().get());
                         imageBasedOverlayWatermarker.overlay(contentStream, image, page.getMediaBox(), attr);
@@ -44,7 +44,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
         }
     }
 
-    private PDExtendedGraphicsState defineOpacity(float opacity){
+    private PDExtendedGraphicsState setOpacity(float opacity){
         var transparencyState = new PDExtendedGraphicsState();
         transparencyState.setNonStrokingAlphaConstant(opacity);
         return transparencyState;

@@ -17,7 +17,7 @@ public class ImageBasedWatermarkPainter {
         int watermarkWidth = (int) (watermarkImage.getWidth() * (attr.getSize() / 100.0));
         int watermarkHeight = (int) (watermarkImage.getHeight() * (attr.getSize() / 100.0));
         var coordinates = positioner.defineXY(attr, image.getWidth(), image.getHeight(), watermarkWidth, watermarkHeight);
-        coordinates.forEach(v->drawWatermark(g2d, watermarkImage, v.getX(), v.getY(), watermarkWidth, watermarkHeight, attr.getRotation()));
+        coordinates.forEach(v->drawWatermark(g2d, watermarkImage, v.getX(), v.getY(), watermarkWidth, watermarkHeight, attr.getRotationDegrees()));
     }
 
     private void configureGraphics(Graphics2D g2d, AlphaComposite alphaChannel) {

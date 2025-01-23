@@ -15,17 +15,27 @@ import java.io.IOException;
 public class TrademarkHandler {
     private static final String TRADEMARK_SYMBOL = "®";
 
-    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, float textWidth, float textHeight, float xCenter, float yCenter, PDType0Font font, int fontSize) throws IOException {
+    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, float textWidth, float textHeight, float x, float y, PDType0Font font, int fontSize) throws IOException {
         final int trademarkFontSize = fontSize / 2;
         contentStream.beginText();
         contentStream.setFont(font, trademarkFontSize);
         contentStream.setNonStrokingColor(attr.getColor());
-        Matrix trademarkTransform = new Matrix();
-        trademarkTransform.translate(xCenter, yCenter);
-        trademarkTransform.rotate(Math.toRadians(attr.getRotation()));
-        trademarkTransform.translate(textWidth / 2, textHeight / 2); // Move to top-right corner
-        contentStream.setTextMatrix(trademarkTransform);
+        contentStream.setTextMatrix(setTransformationMatrix(x, y, textWidth, textHeight, attr.getRotationDegrees()));
         contentStream.showText(TRADEMARK_SYMBOL);
         contentStream.endText();
+    }
+
+    private Matrix setTransformationMatrix(float x, float y, float width, float height, int rotationDegrees) {
+        Matrix matrix = new Matrix();
+        matrix.translate(x, y);
+        rotate(matrix, rotationDegrees);
+        matrix.translate(width / 2, height / 2);
+        return matrix;
+    }
+
+    private void rotate(Matrix matrix, int rotationDegrees){
+        if (rotationDegrees != 0){
+            matrix.rotate(Math.toRadians(rotationDegrees));
+        }
     }
 }
