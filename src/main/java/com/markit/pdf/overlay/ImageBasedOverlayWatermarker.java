@@ -4,6 +4,7 @@ import com.markit.api.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.util.Matrix;
 
 import java.io.IOException;
 
@@ -19,6 +20,24 @@ public class ImageBasedOverlayWatermarker {
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight(), (int) imageWidth, (int) imageHeight);
         float x = coordinates.get(0).getX();
         float y = coordinates.get(0).getY();
+        if (attr.getRotation() != 0){
+            Matrix rotationMatrix = defineRotationMatrix(x, y, imageWidth, imageHeight, attr.getRotation());
+            contentStream.saveGraphicsState();
+            contentStream.transform(rotationMatrix);
+        }
         contentStream.drawImage(imageXObject, x, y, imageWidth, imageHeight);
+        if (attr.getRotation() != 0) {
+            contentStream.restoreGraphicsState();
+        }
+    }
+
+    private Matrix defineRotationMatrix(float centerX, float centerY, float width, float height, int rotation) {
+        var m = new Matrix();
+        float translateX = centerX + (width / 2);
+        float translateY = centerY + (height / 2);
+        m.translate(translateX, translateY);
+        m.rotate(Math.toRadians(rotation));
+        m.translate(-translateX, -translateY);
+        return m;
     }
 }
