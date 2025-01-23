@@ -5,10 +5,12 @@ import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
 import com.markit.pdf.draw.PdfWatermarker;
+import com.markit.pdf.overlay.FontLoader;
 import com.markit.pdf.overlay.OverlayPdfWatermarker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -63,8 +65,19 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         int numberOfPages = document.getNumberOfPages();
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
             List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pageIndex);
-            if (!filteredAttrs.isEmpty()) overlayService.get().watermark(document, pageIndex, filteredAttrs);
+            if (!filteredAttrs.isEmpty()){
+                var font = loadFont(document, attrs);
+                overlayService.get().watermark(document, pageIndex, filteredAttrs, font);
+            }
         }
+    }
+
+    private Optional<PDType0Font> loadFont(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
+        if (attrs.stream().anyMatch(a -> !a.getText().isEmpty())){
+            var fontLoader = new FontLoader();
+            return Optional.ofNullable(fontLoader.loadArialFont(document));
+        }
+        return Optional.empty();
     }
 
     private void draw(PDDocument document, List<WatermarkAttributes> attrs) {

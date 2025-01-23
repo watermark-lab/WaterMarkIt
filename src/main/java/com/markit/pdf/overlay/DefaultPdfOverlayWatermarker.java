@@ -3,11 +3,13 @@ package com.markit.pdf.overlay;
 import com.markit.api.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Oleg Cheban
@@ -24,9 +26,8 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
     }
 
     @Override
-    public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
+    public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs, Optional<PDType0Font> font) throws IOException {
         var page = document.getPage(pageIndex);
-        var fontLoader = new FontLoader();
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
             attrs.forEach(attr -> {
                 try {
@@ -35,7 +36,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
                         var image = LosslessFactory.createFromImage(document, attr.getImage().get());
                         imageBasedOverlayWatermarker.overlay(contentStream, image, page.getMediaBox(), attr);
                     } else {
-                        textBasedOverlayWatermarker.overlay(contentStream, page.getMediaBox(), fontLoader.loadArialFont(document), attr);
+                        textBasedOverlayWatermarker.overlay(contentStream, page.getMediaBox(), font, attr);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
