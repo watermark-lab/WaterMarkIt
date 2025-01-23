@@ -11,44 +11,44 @@ import java.util.List;
 public class OverlayMethodPositionCoordinates extends PositionCoordinates {
     private final int pageWidth;
     private final int pageHeight;
-    private final int textWidth;
-    private final int textHeight;
+    private final int watermarkWidth;
+    private final int watermarkHeight;
     private final int EDGE_SIZE = 10;
 
     public OverlayMethodPositionCoordinates(int iw, int ih, int ww, int wh) {
         this.pageWidth = iw;
         this.pageHeight = ih;
-        this.textWidth = ww;
-        this.textHeight = wh;
+        this.watermarkWidth = ww;
+        this.watermarkHeight = wh;
     }
 
     @Override
     public Coordinates center(){
-        return new Coordinates((pageWidth - textWidth) / 2,(pageHeight - textHeight) / 2);
+        return new Coordinates((pageWidth - watermarkWidth) / 2,(pageHeight - watermarkHeight) / 2);
     }
 
     @Override
     public Coordinates topLeft(){
-        return new Coordinates(EDGE_SIZE, pageHeight - textHeight - EDGE_SIZE);
+        return new Coordinates(EDGE_SIZE, pageHeight - watermarkHeight - EDGE_SIZE);
     }
 
     @Override
     public Coordinates topRight() {
-        return new Coordinates(pageWidth - textWidth - EDGE_SIZE,pageHeight - textHeight - EDGE_SIZE);
+        return new Coordinates(pageWidth - watermarkWidth - EDGE_SIZE,pageHeight - watermarkHeight - EDGE_SIZE);
     }
 
     @Override
     public Coordinates bottomLeft() {
-        return new Coordinates(EDGE_SIZE, textHeight);
+        return new Coordinates(EDGE_SIZE, watermarkHeight);
     }
 
     @Override
     public Coordinates bottomRight() {
-        return new Coordinates(pageWidth - textWidth - EDGE_SIZE,textHeight);
+        return new Coordinates(pageWidth - watermarkWidth - EDGE_SIZE, watermarkHeight);
     }
 
     @Override
     public List<Coordinates> tiled() {
-        throw new RuntimeException("overlay tiled position hasn't implemented yet");
+        throw new RuntimeException("a tiled position for overlay mode hasn't been implemented yet");
     }
 }

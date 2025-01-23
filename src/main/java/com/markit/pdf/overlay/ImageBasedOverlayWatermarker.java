@@ -31,10 +31,10 @@ public class ImageBasedOverlayWatermarker {
         }
     }
 
-    private Matrix defineRotationMatrix(float centerX, float centerY, float width, float height, int rotation) {
+    private Matrix defineRotationMatrix(float x, float y, float width, float height, int rotation) {
         var m = new Matrix();
-        float translateX = centerX + (width / 2);
-        float translateY = centerY + (height / 2);
+        float translateX = x + (width / 2);
+        float translateY = y + (height / 2);
         m.translate(translateX, translateY);
         m.rotate(Math.toRadians(rotation));
         m.translate(-translateX, -translateY);

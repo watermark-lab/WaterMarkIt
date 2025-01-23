@@ -38,9 +38,9 @@ public class TextBasedOverlayWatermarker {
         }
     }
 
-    private Matrix defineRotationMatrix(float centerX, float centerY, float textWidth, float textHeight, int rotation){
+    private Matrix defineRotationMatrix(float x, float y, float textWidth, float textHeight, int rotation){
         var m = new Matrix();
-        m.translate(centerX, centerY);
+        m.translate(x, y);
         m.rotate(Math.toRadians(rotation));
         m.translate(-textWidth / 2, -textHeight / 2); // Translate back to the original position
         return m;
