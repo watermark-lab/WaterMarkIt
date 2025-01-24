@@ -13,17 +13,22 @@ import java.awt.image.BufferedImage;
  * @since 1.0
  */
 public class TextBasedWatermarkPainter {
-    public void draw(Graphics2D g2d, BufferedImage image, int baseFontSize, WatermarkAttributes attr, WatermarkPositioner positioner) {
+    public void draw(Graphics2D g2d, BufferedImage image, WatermarkAttributes attr, WatermarkPositioner positioner) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, attr.getOpacity());
-        var baseFont = new Font("Arial", Font.BOLD, baseFontSize);
-        configureGraphics(g2d, alphaChannel, attr.getColor(), baseFont);
-
+        var fontSize = calculateFontSize(attr.getSize(), image.getWidth(), image.getHeight());
+        var font = new Font("Arial", Font.BOLD, fontSize);
+        configureGraphics(g2d, alphaChannel, attr.getColor(), font);
         FontRenderContext frc = g2d.getFontRenderContext();
-        TextLayout watermarkLayout = new TextLayout(attr.getText(), baseFont, frc);
+        TextLayout watermarkLayout = new TextLayout(attr.getText(), font, frc);
         Rectangle2D rect = watermarkLayout.getBounds();
 
         var coordinates = positioner.defineXY(attr, image.getWidth(), image.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
-        coordinates.forEach(v -> drawWatermark(g2d, watermarkLayout, attr, rect, v.getX(), v.getY(), baseFont, baseFontSize));
+        coordinates.forEach(v -> drawWatermark(g2d, watermarkLayout, attr, rect, v.getX(), v.getY(), font, fontSize));
+    }
+
+    private int calculateFontSize(int textSize, int imageWidth, int imageHeight) {
+        if (textSize > 0) return textSize;
+        return Math.min(imageWidth, imageHeight) / 10;
     }
 
     private void configureGraphics(Graphics2D g2d, AlphaComposite alphaChannel, Color color, Font font) {

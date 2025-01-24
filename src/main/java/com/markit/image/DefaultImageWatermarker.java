@@ -48,22 +48,15 @@ public class DefaultImageWatermarker implements ImageWatermarker {
 
     public byte[] watermark(BufferedImage sourceImage, ImageType imageType, List<WatermarkAttributes> attrs) {
         var g2d = sourceImage.createGraphics();
-        int imageWidth = sourceImage.getWidth();
-        int imageHeight = sourceImage.getHeight();
         attrs.forEach(attr -> {
             if (attr.getImage().isPresent()){
                 imageBasedWatermarkPainter.draw(g2d, sourceImage, attr, watermarkPositioner);
             } else {
-                textBasedWatermarkPainter.draw(g2d, sourceImage, calculateFontSize(attr.getSize(), imageWidth, imageHeight), attr, watermarkPositioner);
+                textBasedWatermarkPainter.draw(g2d, sourceImage, attr, watermarkPositioner);
             }
         });
         g2d.dispose();
         return imageConverter.convertToByteArray(sourceImage, imageType);
-    }
-
-    public int calculateFontSize(int textSize, int imageWidth, int imageHeight) {
-        if (textSize > 0) return textSize;
-        return Math.min(imageWidth, imageHeight) / 10;
     }
 
     public boolean isByteArrayEmpty(byte[] byteArray) {
