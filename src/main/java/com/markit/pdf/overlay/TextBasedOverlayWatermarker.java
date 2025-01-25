@@ -1,6 +1,7 @@
 package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
+import com.markit.api.WatermarkPositionCoordinates;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
@@ -26,20 +27,23 @@ public class TextBasedOverlayWatermarker {
         }
 
         final int fontSize = attr.getSize() == 0 ? TEXT_SIZE : attr.getSize();
-        contentStream.beginText();
-        contentStream.setFont(PDType1Font.TIMES_BOLD, fontSize);
-        contentStream.setNonStrokingColor(attr.getColor());
         float textWidth = font.get().getStringWidth(attr.getText()) / 1000 * fontSize;
         float textHeight = font.get().getFontDescriptor().getCapHeight() / 1000 * fontSize;
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight (), (int) textWidth, (int) textHeight);
-        float x = coordinates.get(0).getX() + textWidth / 2;
-        float y = coordinates.get(0).getY() + textHeight / 2;
-        contentStream.setTextMatrix(setRotationMatrix(x, y, textWidth, textHeight, attr.getRotationDegrees()));
-        contentStream.showText(attr.getText());
-        contentStream.endText();
 
-        if (attr.getTrademark()) {
-            trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, x, y, font.get(), fontSize);
+        for (WatermarkPositionCoordinates.Coordinates c : coordinates) {
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.TIMES_BOLD, fontSize);
+            contentStream.setNonStrokingColor(attr.getColor());
+            float x = c.getX() + textWidth / 2;
+            float y = c.getY() + textHeight / 2;
+            contentStream.setTextMatrix(setRotationMatrix(x, y, textWidth, textHeight, attr.getRotationDegrees()));
+            contentStream.showText(attr.getText());
+            contentStream.endText();
+
+            if (attr.getTrademark()) {
+                trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, x, y, font.get(), fontSize);
+            }
         }
     }
 

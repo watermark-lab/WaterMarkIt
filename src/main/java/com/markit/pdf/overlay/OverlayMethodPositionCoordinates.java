@@ -2,6 +2,7 @@ package com.markit.pdf.overlay;
 
 import com.markit.api.PositionCoordinates;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,15 @@ public class OverlayMethodPositionCoordinates extends PositionCoordinates {
 
     @Override
     public List<Coordinates> tiled() {
-        throw new RuntimeException("a tiled position for overlay mode hasn't been implemented yet");
+        int numHorizontal = (int) Math.ceil((double) pageWidth / watermarkWidth);
+        int numVertical = (int) Math.ceil((double) pageHeight / watermarkHeight);
+        int spacing = 20;
+        List<Coordinates> list = new ArrayList<>();
+        for (int i = 0; i < numHorizontal; i++) {
+            for (int j = 0; j < numVertical; j++) {
+                list.add(new Coordinates((i * watermarkWidth) - i, (j * watermarkHeight) + (j * spacing)));
+            }
+        }
+        return list;
     }
 }

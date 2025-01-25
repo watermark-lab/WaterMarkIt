@@ -1,6 +1,7 @@
 package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
+import com.markit.api.WatermarkPositionCoordinates;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -18,16 +19,18 @@ public class ImageBasedOverlayWatermarker {
         float imageWidth = (int) (imageXObject.getWidth() * (attr.getSize() / 100.0));
         float imageHeight = (int) (imageXObject.getHeight() * (attr.getSize() / 100.0));
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight(), (int) imageWidth, (int) imageHeight);
-        float x = coordinates.get(0).getX();
-        float y = coordinates.get(0).getY();
-        if (attr.getRotationDegrees() != 0){
-            Matrix rotationMatrix = setTransformationMatrix(x, y, imageWidth, imageHeight, attr.getRotationDegrees());
-            contentStream.saveGraphicsState();
-            contentStream.transform(rotationMatrix);
-        }
-        contentStream.drawImage(imageXObject, x, y, imageWidth, imageHeight);
-        if (attr.getRotationDegrees() != 0) {
-            contentStream.restoreGraphicsState();
+        for (WatermarkPositionCoordinates.Coordinates c : coordinates) {
+            float x = c.getX();
+            float y = c.getY();
+            if (attr.getRotationDegrees() != 0){
+                Matrix rotationMatrix = setTransformationMatrix(x, y, imageWidth, imageHeight, attr.getRotationDegrees());
+                contentStream.saveGraphicsState();
+                contentStream.transform(rotationMatrix);
+            }
+            contentStream.drawImage(imageXObject, x, y, imageWidth, imageHeight);
+            if (attr.getRotationDegrees() != 0) {
+                contentStream.restoreGraphicsState();
+            }
         }
     }
 
