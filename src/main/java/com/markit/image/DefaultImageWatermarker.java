@@ -24,13 +24,6 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         this.watermarkPositioner = new WatermarkPositioner();
     }
 
-    public DefaultImageWatermarker(ImageConverter imageConverter, TextBasedWatermarkPainter textBasedWatermarkPainter, ImageBasedWatermarkPainter imageBasedWatermarkPainter, WatermarkPositioner watermarkPositioner) {
-        this.imageConverter = imageConverter;
-        this.textBasedWatermarkPainter = textBasedWatermarkPainter;
-        this.imageBasedWatermarkPainter = imageBasedWatermarkPainter;
-        this.watermarkPositioner = watermarkPositioner;
-    }
-
     @Override
     public byte[] watermark(byte[] sourceImageBytes, ImageType imageType, List<WatermarkAttributes> attrs) {
         if (isByteArrayEmpty(sourceImageBytes)) {
