@@ -28,7 +28,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
                 .withImage(readFileFromClasspathAsBytes("logo.png"))
                     .size(25)
                     .rotation(180)
-                    .position(WatermarkPosition.TILED)
+                    .position(WatermarkPosition.TILED).end()
             .apply()
 
         // Then
@@ -46,7 +46,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
                 .withImage(readFileFromClasspathAsBytes("logo.png"))
                     .size(15)
                     .dpi(100)
-                    .position(WatermarkPosition.CENTER)
+                    .position(WatermarkPosition.CENTER).end()
             .apply()
 
         // Then
@@ -65,6 +65,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
                     .size(25)
                     .position(com.markit.api.WatermarkPosition.TILED)
                         .adjust(50, 50)
+                        .end()
             .apply()
 
         // Then

@@ -4,7 +4,13 @@ package com.markit.api
  * @author Oleg Cheban
  * @since 1.0
  */
-abstract class PositionCoordinates : WatermarkPositionCoordinates {
+abstract class PositionCoordinates(
+    protected val pageWidth: Int,
+    protected val pageHeight: Int,
+    protected val watermarkWidth: Int,
+    protected val watermarkHeight: Int
+) : WatermarkPositionCoordinates {
+
     fun getCoordinatesForAttributes(attr: WatermarkAttributes): List<WatermarkPositionCoordinates.Coordinates> {
         var coordinates = when (attr.position) {
             WatermarkPosition.CENTER -> listOf(center())
@@ -12,7 +18,7 @@ abstract class PositionCoordinates : WatermarkPositionCoordinates {
             WatermarkPosition.TOP_RIGHT -> listOf(topRight())
             WatermarkPosition.BOTTOM_LEFT -> listOf(bottomLeft())
             WatermarkPosition.BOTTOM_RIGHT -> listOf(bottomRight())
-            WatermarkPosition.TILED -> tiled()
+            WatermarkPosition.TILED -> tiled(attr)
         }
         if (attr.positionAdjustment.x != 0 || attr.positionAdjustment.y != 0) {
             coordinates = coordinates.map {
@@ -23,5 +29,18 @@ abstract class PositionCoordinates : WatermarkPositionCoordinates {
             }
         }
         return coordinates
+    }
+
+    override fun tiled(attr: WatermarkAttributes): List<WatermarkPositionCoordinates.Coordinates> {
+        val numHorizontal = (pageWidth + watermarkWidth - 1) / watermarkWidth
+        val numVertical = (pageHeight + watermarkHeight - 1) / watermarkHeight
+        return (0 until numHorizontal).flatMap { i ->
+            (0 until numVertical).map { j ->
+                WatermarkPositionCoordinates.Coordinates(
+                    (i * watermarkWidth) + (i * attr.horizontalSpacing),
+                    (j * watermarkHeight) + (j * attr.verticalSpacing)
+                )
+            }
+        }
     }
 }

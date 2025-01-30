@@ -140,6 +140,31 @@ public interface WatermarkImageService {
          * @param x The horizontal offset in pixels
          * @param y The vertical offset in pixels
          */
-        WatermarkImageBuilder adjust(int x, int y);
+        WatermarkPositionStepBuilder adjust(int x, int y);
+
+        /**
+         * Sets the vertical spacing between multiple tiled watermarks on the page.
+         * This is only relevant when the watermark is tiled.
+         *
+         * @param spacing The spacing between tiles in pixels along the vertical axis.
+         *                A larger value increases the distance between adjacent watermarks vertically.
+         * @return The current instance of {@code WatermarkPDFBuilder} for method chaining.
+         */
+        WatermarkPositionStepBuilder verticalSpacing(int spacing);
+
+        /**
+         * Sets the horizontal spacing between multiple tiled watermarks on the page.
+         * This is only relevant when the watermark is tiled.
+         *
+         * @param spacing The spacing between tiles in pixels along the horizontal axis.
+         *                A larger value increases the distance between adjacent watermarks horizontally.
+         * @return The current instance of {@code WatermarkPDFBuilder} for method chaining.
+         */
+        WatermarkPositionStepBuilder horizontalSpacing(int spacing);
+
+        /**
+         * Finish working with WatermarkPositionStepBuilder and bock to WatermarkImageBuilder
+         */
+        WatermarkImageBuilder end();
     }
 }

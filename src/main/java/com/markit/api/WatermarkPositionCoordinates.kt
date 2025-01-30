@@ -11,6 +11,6 @@ interface WatermarkPositionCoordinates {
     fun topRight(): Coordinates
     fun bottomLeft(): Coordinates
     fun bottomRight(): Coordinates
-    fun tiled(): List<Coordinates>
+    fun tiled(attr: WatermarkAttributes): List<Coordinates>
     data class Coordinates(val x: Int, val y: Int)
 }

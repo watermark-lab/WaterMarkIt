@@ -33,7 +33,7 @@ class PdfPageRotationTextBasedWatermarkTest : BasePdfWatermarkTest() {
             .withText("Sample Watermark")
                 .watermark()
                     .size(50)
-                    .position(WatermarkPosition.CENTER)
+                    .position(WatermarkPosition.CENTER).end()
                     .method(WatermarkingMethod.DRAW)
             .apply()
 
@@ -52,7 +52,7 @@ class PdfPageRotationTextBasedWatermarkTest : BasePdfWatermarkTest() {
             .withText("Sample Watermark")
                 .watermark()
                     .size(50)
-                    .position(WatermarkPosition.CENTER)
+                    .position(WatermarkPosition.CENTER).end()
                     .method(WatermarkingMethod.OVERLAY)
             .apply()
 

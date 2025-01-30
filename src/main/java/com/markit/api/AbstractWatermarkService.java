@@ -86,12 +86,6 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
         return (Builder) this;
     }
 
-    public Builder adjust(int x, int y) {
-        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
-        currentWatermark.setPositionAdjustment(adjustment);
-        return (Builder) this;
-    }
-
     public Builder watermark() {
         return (Builder) this;
     }
@@ -99,6 +93,26 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
     public PositionStepBuilder position(WatermarkPosition watermarkPosition) {
         currentWatermark.setPosition(watermarkPosition);
         return (PositionStepBuilder) this;
+    }
+
+    public PositionStepBuilder adjust(int x, int y) {
+        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
+        currentWatermark.setPositionAdjustment(adjustment);
+        return (PositionStepBuilder) this;
+    }
+
+    public PositionStepBuilder verticalSpacing(int spacing) {
+        currentWatermark.setVerticalSpacing(spacing);
+        return (PositionStepBuilder) this;
+    }
+
+    public PositionStepBuilder horizontalSpacing(int spacing) {
+        currentWatermark.setHorizontalSpacing(spacing);
+        return (PositionStepBuilder) this;
+    }
+
+    public Builder end() {
+        return (Builder) this;
     }
 
     @NotNull
