@@ -86,10 +86,6 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
         return (Builder) this;
     }
 
-    public Builder watermark() {
-        return (Builder) this;
-    }
-
     public PositionStepBuilder position(WatermarkPosition watermarkPosition) {
         currentWatermark.setPosition(watermarkPosition);
         return (PositionStepBuilder) this;

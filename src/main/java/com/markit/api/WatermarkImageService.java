@@ -59,7 +59,7 @@ public interface WatermarkImageService {
         /**
          * Getting watermarks builder
          */
-        WatermarkImageBuilder watermark();
+        WatermarkImageBuilder end();
 
         /**
          * Applies the watermark to the file and returns the result as a byte array
@@ -133,7 +133,7 @@ public interface WatermarkImageService {
     /**
      * Interface for adjusting the position of watermarks
      */
-    interface WatermarkPositionStepBuilder extends WatermarkImageBuilder {
+    interface WatermarkPositionStepBuilder {
         /**
          * Adjusts the position of the watermark relative to its default location
          *

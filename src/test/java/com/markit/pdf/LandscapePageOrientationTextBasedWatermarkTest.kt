@@ -28,7 +28,7 @@ class LandscapePageOrientationTextBasedWatermarkTest : BasePdfWatermarkTest() {
         val result = WatermarkService.create()
                 .watermarkPDF(document)
                 .withText("Sample Watermark")
-                    .watermark()
+                    .end()
                         .method(WatermarkingMethod.DRAW)
                 .apply()
 
@@ -44,7 +44,7 @@ class LandscapePageOrientationTextBasedWatermarkTest : BasePdfWatermarkTest() {
         val result = WatermarkService.create()
                 .watermarkPDF(document)
                 .withText("Sample Watermark")
-                    .watermark()
+                    .end()
                         .size(50)
                         .method(WatermarkingMethod.OVERLAY)
                 .apply()

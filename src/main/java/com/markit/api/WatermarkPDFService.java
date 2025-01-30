@@ -47,7 +47,7 @@ public interface WatermarkPDFService {
         /**
          * Getting watermarks builder
          */
-        WatermarkPDFBuilder watermark();
+        WatermarkPDFBuilder end();
 
         /**
          * Applies the watermark to the file and returns the result as a byte array
