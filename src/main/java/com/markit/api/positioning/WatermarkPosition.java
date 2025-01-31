@@ -1,4 +1,4 @@
-package com.markit.api;
+package com.markit.api.positioning;
 
 /**
  * @author Oleg Cheban

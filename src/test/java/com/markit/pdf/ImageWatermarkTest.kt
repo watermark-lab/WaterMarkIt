@@ -1,6 +1,6 @@
 package com.markit.pdf
 
-import com.markit.api.WatermarkPosition
+import com.markit.api.positioning.WatermarkPosition
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -63,7 +63,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
             .watermarkPDF(document)
                 .withImage(readFileFromClasspathAsBytes("logo.png"))
                     .size(25)
-                    .position(com.markit.api.WatermarkPosition.TILED)
+                    .position(WatermarkPosition.TILED)
                         .adjust(50, 50)
                         .end()
             .apply()

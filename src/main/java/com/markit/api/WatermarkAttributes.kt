@@ -1,5 +1,7 @@
 package com.markit.api
 
+import com.markit.api.positioning.WatermarkPosition
+import com.markit.api.positioning.WatermarkPositionCoordinates
 import org.apache.pdfbox.pdmodel.PDDocument
 import java.awt.Color
 import java.awt.image.BufferedImage

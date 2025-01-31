@@ -1,12 +1,11 @@
-package com.markit.api.impl;
+package com.markit.api.pdf;
 
 import com.markit.api.AbstractWatermarkService;
-import com.markit.api.WatermarkPDFService;
 import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ClosePDFDocumentException;
 import com.markit.pdf.WatermarkPdfServiceBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import com.markit.api.WatermarkPDFService.*;
+import com.markit.api.pdf.WatermarkPDFService.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -18,11 +17,11 @@ import java.util.function.Predicate;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public class WatermarkPDFServiceImpl
+public class StandardWatermarkPDFService
         extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder>
         implements WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder {
     private final PDDocument document;
-    public WatermarkPDFServiceImpl(PDDocument pdfDoc, Executor executor) {
+    public StandardWatermarkPDFService(PDDocument pdfDoc, Executor executor) {
         this.document = pdfDoc;
         watermarkHandler =
                 (watermarks) ->

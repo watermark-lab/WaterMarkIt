@@ -1,5 +1,7 @@
 package com.markit.api;
 
+import com.markit.api.positioning.WatermarkPosition;
+import com.markit.api.positioning.WatermarkPositionCoordinates;
 import com.markit.exceptions.ConvertBytesToBufferedImageException;
 import com.markit.exceptions.EmptyWatermarkObjectException;
 import com.markit.exceptions.WatermarkingException;

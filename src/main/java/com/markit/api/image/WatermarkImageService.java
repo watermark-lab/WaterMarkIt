@@ -1,4 +1,6 @@
-package com.markit.api;
+package com.markit.api.image;
+
+import com.markit.api.positioning.WatermarkPosition;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -163,7 +165,7 @@ public interface WatermarkImageService {
         WatermarkPositionStepBuilder horizontalSpacing(int spacing);
 
         /**
-         * Finish working with WatermarkPositionStepBuilder and bock to WatermarkImageBuilder
+         * Finish working with WatermarkPositionStepBuilder and back to WatermarkImageBuilder
          */
         WatermarkImageBuilder end();
     }

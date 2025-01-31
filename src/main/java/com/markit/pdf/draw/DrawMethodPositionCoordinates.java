@@ -1,6 +1,6 @@
 package com.markit.pdf.draw;
 
-import com.markit.api.PositionCoordinates;
+import com.markit.api.positioning.PositionCoordinates;
 
 /**
  * @author Oleg Cheban

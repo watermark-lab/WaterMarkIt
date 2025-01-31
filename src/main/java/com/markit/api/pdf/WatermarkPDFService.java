@@ -1,5 +1,7 @@
-package com.markit.api;
+package com.markit.api.pdf;
 
+import com.markit.api.positioning.WatermarkPosition;
+import com.markit.api.WatermarkingMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
@@ -183,7 +185,7 @@ public interface WatermarkPDFService {
         WatermarkPositionStepPDFBuilder horizontalSpacing(int spacing);
 
         /**
-         * Finish working with WatermarkPositionStepPDFBuilder and bock to WatermarkPDFBuilder
+         * Finish working with WatermarkPositionStepPDFBuilder and back to WatermarkPDFBuilder
          */
         WatermarkPDFBuilder end();
     }

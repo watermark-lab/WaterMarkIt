@@ -1,9 +1,9 @@
-package com.markit.api.impl;
+package com.markit.api;
 
-import com.markit.api.ImageType;
-import com.markit.api.WatermarkImageService;
-import com.markit.api.WatermarkPDFService;
-import com.markit.api.WatermarkService;
+import com.markit.api.image.WatermarkImageService;
+import com.markit.api.image.StandardWatermarkImageService;
+import com.markit.api.pdf.WatermarkPDFService;
+import com.markit.api.pdf.StandardWatermarkPDFService;
 import com.markit.exceptions.InvalidPDFFileException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -15,20 +15,20 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class WatermarkServiceImpl implements WatermarkService.WatermarkServiceSelector {
+public class StandardWatermarkService implements WatermarkService.WatermarkServiceSelector {
     private Executor executor;
 
-    public WatermarkServiceImpl() {
+    public StandardWatermarkService() {
     }
 
-    public WatermarkServiceImpl(Executor e) {
+    public StandardWatermarkService(Executor e) {
         this.executor = e;
     }
 
     @Override
     public WatermarkPDFService watermarkPDF(byte[] fileBytes) {
         try {
-            return new WatermarkPDFServiceImpl(PDDocument.load(fileBytes), executor);
+            return new StandardWatermarkPDFService(PDDocument.load(fileBytes), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
@@ -37,7 +37,7 @@ public class WatermarkServiceImpl implements WatermarkService.WatermarkServiceSe
     @Override
     public WatermarkPDFService watermarkPDF(File file) {
         try {
-            return new WatermarkPDFServiceImpl(PDDocument.load(file), executor);
+            return new StandardWatermarkPDFService(PDDocument.load(file), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
@@ -45,16 +45,16 @@ public class WatermarkServiceImpl implements WatermarkService.WatermarkServiceSe
 
     @Override
     public WatermarkPDFService watermarkPDF(PDDocument document) {
-        return new WatermarkPDFServiceImpl(document, executor);
+        return new StandardWatermarkPDFService(document, executor);
     }
 
     @Override
     public WatermarkImageService watermarkImage(byte[] fileBytes, ImageType imageType) {
-        return new WatermarkImageServiceImpl(fileBytes, imageType);
+        return new StandardWatermarkImageService(fileBytes, imageType);
     }
 
     @Override
     public WatermarkImageService watermarkImage(File file, ImageType imageType) {
-        return new WatermarkImageServiceImpl(file, imageType);
+        return new StandardWatermarkImageService(file, imageType);
     }
 }

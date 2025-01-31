@@ -1,4 +1,6 @@
-package com.markit.api
+package com.markit.api.positioning
+
+import com.markit.api.WatermarkAttributes
 
 /**
  *

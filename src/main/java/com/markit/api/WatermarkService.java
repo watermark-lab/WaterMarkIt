@@ -1,6 +1,7 @@
 package com.markit.api;
 
-import com.markit.api.impl.WatermarkServiceImpl;
+import com.markit.api.image.WatermarkImageService;
+import com.markit.api.pdf.WatermarkPDFService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -15,12 +16,12 @@ import java.util.concurrent.Executor;
  */
 public interface WatermarkService {
     static WatermarkServiceSelector create() {
-        return new WatermarkServiceImpl();
+        return new StandardWatermarkService();
     }
 
     static WatermarkServiceSelector create(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new WatermarkServiceImpl(executor);
+        return new StandardWatermarkService(executor);
     }
 
     interface WatermarkServiceSelector {

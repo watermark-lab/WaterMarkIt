@@ -1,6 +1,6 @@
 package com.markit.pdf
 
-import com.markit.api.WatermarkPosition
+import com.markit.api.positioning.WatermarkPosition
 import com.markit.api.WatermarkService
 import com.markit.api.WatermarkingMethod
 import com.markit.exceptions.EmptyWatermarkObjectException
