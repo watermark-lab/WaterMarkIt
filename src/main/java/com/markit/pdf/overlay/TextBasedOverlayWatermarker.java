@@ -21,19 +21,16 @@ public class TextBasedOverlayWatermarker {
         this.positioner = positioner;
     }
 
-    public void overlay(PDPageContentStream contentStream, PDRectangle pdRectangle, Optional<PDType0Font> font, WatermarkAttributes attr) throws IOException {
-        if (font.isEmpty()){
-            throw new IllegalStateException("Font is not present");
-        }
-
+    public void overlay(PDPageContentStream contentStream, PDRectangle pdRectangle, WatermarkAttributes attr) throws IOException {
+        final var font =  PDType1Font.TIMES_BOLD;
         final int fontSize = attr.getSize() == 0 ? TEXT_SIZE : attr.getSize();
-        float textWidth = font.get().getStringWidth(attr.getText()) / 1000 * fontSize;
-        float textHeight = font.get().getFontDescriptor().getCapHeight() / 1000 * fontSize;
+        float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;
+        float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight (), (int) textWidth, (int) textHeight);
 
         for (WatermarkPositionCoordinates.Coordinates c : coordinates) {
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.TIMES_BOLD, fontSize);
+            contentStream.setFont(font, fontSize);
             contentStream.setNonStrokingColor(attr.getColor());
             float x = c.getX() + textWidth / 2;
             float y = c.getY() + textHeight / 2;
@@ -42,7 +39,7 @@ public class TextBasedOverlayWatermarker {
             contentStream.endText();
 
             if (attr.getTrademark()) {
-                trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, x, y, font.get(), fontSize);
+                trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, x, y, font, fontSize);
             }
         }
     }

@@ -2,7 +2,7 @@ package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class TrademarkHandler {
     private static final String TRADEMARK_SYMBOL = "®";
 
-    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, float textWidth, float textHeight, float x, float y, PDType0Font font, int fontSize) throws IOException {
+    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, float textWidth, float textHeight, float x, float y, PDType1Font font, int fontSize) throws IOException {
         final int trademarkFontSize = fontSize / 2;
         contentStream.beginText();
         contentStream.setFont(font, trademarkFontSize);

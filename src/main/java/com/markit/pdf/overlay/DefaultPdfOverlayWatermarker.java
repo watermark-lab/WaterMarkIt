@@ -26,7 +26,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
     }
 
     @Override
-    public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs, Optional<PDType0Font> font) throws IOException {
+    public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         var page = document.getPage(pageIndex);
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
             attrs.forEach(attr -> {
@@ -36,7 +36,7 @@ public class DefaultPdfOverlayWatermarker implements OverlayPdfWatermarker {
                         var image = LosslessFactory.createFromImage(document, attr.getImage().get());
                         imageBasedOverlayWatermarker.overlay(contentStream, image, page.getMediaBox(), attr);
                     } else {
-                        textBasedOverlayWatermarker.overlay(contentStream, page.getMediaBox(), font, attr);
+                        textBasedOverlayWatermarker.overlay(contentStream, page.getMediaBox(), attr);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
