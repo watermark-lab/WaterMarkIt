@@ -1,5 +1,5 @@
 [![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
-[![javadoc](https://img.shields.io/badge/javadoc-1.3.0-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
+[![javadoc](https://img.shields.io/badge/javadoc-1.3.1-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
 [![Code climate](https://api.codeclimate.com/v1/badges/0cd17315421a1bec3587/maintainability)](https://codeclimate.com/github/OlegCheban/WaterMarkIt/maintainability)
 [![Hits-of-Code](https://hitsofcode.com/github/OlegCheban/WaterMarkIt?branch=master)](https://hitsofcode.com/github/OlegCheban/WaterMarkIt/view?branch=master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
@@ -55,13 +55,13 @@ A lightweight Java library for adding watermarks to various file types, includin
 <dependency>
     <groupId>io.github.watermark-lab</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
 **For Gradle**, add the following to your `build.gradle`:
 ```kotlin
-implementation 'io.github.watermark-lab:WaterMarkIt:1.3.0'
+implementation 'io.github.watermark-lab:WaterMarkIt:1.3.1'
 ```
 
 ### Usage
@@ -75,24 +75,26 @@ WatermarkService.create(
         )
         .watermarkPDF(readFileFromClasspathAsBytes("ITIL.pdf")
            .withImage(readFileFromClasspathAsBytes("logo.png"))
-               .position(WatermarkPosition.CENTER)
-               .opacity(0.2f)
-           .and()
+           .position(WatermarkPosition.CENTER).end()
+           .opacity(0.2f)
+        .and()
            .withText("WaterMarkIt")
-               .addTrademark()
                .color(Color.BLUE)
-               .watermark()
-                   .size(110)
-                   .position(WatermarkPosition.TILED)
-                       .adjust(35, 0)
-                   .opacity(0.1f)
-                   .rotation(25)
-           .and()
-           .withText(LocalDateTime.now().toString())
-               .watermark()
-                   .position(WatermarkPosition.TOP_RIGHT)
-                       .adjust(0, -30)
-                   .size(50)
+               .addTrademark()
+               .end()
+           .size(110)
+           .position(WatermarkPosition.TILED)
+               .adjust(35, 0)
+               .horizontalSpacing(10)
+               .end()
+           .opacity(0.1f)
+           .rotation(25)
+        .and()
+           .withText(LocalDateTime.now().toString()).end()
+           .size(50)
+           .position(WatermarkPosition.TOP_RIGHT)
+               .adjust(0, -30)
+               .end()
         .apply()
 ```
 ![Screenshot](https://github.com/user-attachments/assets/5d573ee8-ddf3-4204-8c33-502099bb39eb)
@@ -102,7 +104,7 @@ WatermarkService.create(
 // skip the first page (the page index starts from 0)
 WatermarkService.create()
     .watermarkPDF(document)
-        .withText("Text-based Watermark")
+        .withText("Text-based Watermark").end()
             .pageFilter(index -> index >= 1)
     .apply()
 ```
@@ -111,7 +113,7 @@ WatermarkService.create()
 // don't add a watermark for the owner of the file; the owner has access to the original file.
 WatermarkService.create()
     .watermarkPDF(document)
-        .withText("Text-based Watermark")
+        .withText("Text-based Watermark").end()
             .when(!isOwner)
     .apply()
 ```
@@ -120,7 +122,7 @@ WatermarkService.create()
 // Apply watermark only if the document has more than 3 pages
 WatermarkService.create()
     .watermarkPDF(document)
-        .withText("Text-based Watermark")
+        .withText("Text-based Watermark").end()
             .documentFilter(document -> document.getNumberOfPages() > 3)
     .apply()  
 ```
