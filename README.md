@@ -35,7 +35,7 @@ A lightweight Java library for adding watermarks to various file types, includin
   - TIFF
   - BMP
  
-- **Drawn Watermarks**: The library provides the WatermarkingMethod.DRAW method to add watermarks to PDF files that can't be easily removed. This mode renders an image based on a PDF page and replaces all layers of the page with the image.
+- **Drawn Watermarks**: The library provides the `WatermarkingMethod.DRAW` method to add watermarks to PDF files that can't be easily removed. This mode renders an image based on a PDF page and replaces all layers of the page with the image.
 
 - **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkingMethod.DRAW` method and multi-page files such as PDFs, enabling parallel watermarking with a separate thread for each page.
 
