@@ -25,7 +25,9 @@ A lightweight Java library for adding watermarks to various file types, includin
   - Opacity
   - Trademark
   - DPI
- 
+
+- **Page orientation support**: Full support for both portrait and landscape orientations.
+
 - **Supported Formats**:
   - PDF
   - JPEG
@@ -33,12 +35,9 @@ A lightweight Java library for adding watermarks to various file types, includin
   - TIFF
   - BMP
  
-- **Unremovable Watermarks**: Ensures that watermarks applied to PDF files are designed to be unremovable. The library provides the `WatermarkingMethod.DRAW` method to address the issue, whereas the `WatermarkingMethod.OVERLAY` one adds a separate layer that can be easily removed.
+- **Drawn Watermarks**: The library provides the WatermarkingMethod.DRAW method to add watermarks to PDF files that can't be easily removed. This mode renders an image based on a PDF page and replaces all layers of the page with the image.
 
-- **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkingMethod.DRAW` approach and multi-page files such as PDFs, enabling parallel watermarking with a separate thread for each page.
-
-- **Page orientation support**: Full support for both portrait and landscape orientations.
-
+- **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkingMethod.DRAW` method and multi-page files such as PDFs, enabling parallel watermarking with a separate thread for each page.
 
 ## Getting Started
 
@@ -73,8 +72,8 @@ WatermarkService.create(
                         Runtime.getRuntime().availableProcessors()
                 )
         )
-        .watermarkPDF(readFileFromClasspathAsBytes("ITIL.pdf")
-           .withImage(readFileFromClasspathAsBytes("logo.png"))
+        .watermarkPDF(new File("path/to/file.pdf"))
+           .withImage(new File("path/to/watermark.png"))
            .position(WatermarkPosition.CENTER).end()
            .opacity(0.2f)
         .and()
