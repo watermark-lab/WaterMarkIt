@@ -1,4 +1,4 @@
-package com.markit.servicelocator;
+package com.markit.api;
 
 /**
  * @author Oleg Cheban
