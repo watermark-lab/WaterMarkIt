@@ -1,9 +1,9 @@
 package com.markit.api;
 
 import com.markit.api.image.WatermarkImageService;
-import com.markit.api.image.StandardWatermarkImageService;
+import com.markit.api.image.DefaultWatermarkImageService;
 import com.markit.api.pdf.WatermarkPDFService;
-import com.markit.api.pdf.StandardWatermarkPDFService;
+import com.markit.api.pdf.DefaultWatermarkPDFService;
 import com.markit.exceptions.InvalidPDFFileException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -15,20 +15,20 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class StandardWatermarkService implements WatermarkService.WatermarkServiceSelector {
+public class DefaultWatermarkService implements WatermarkService.WatermarkServiceSelector {
     private Executor executor;
 
-    public StandardWatermarkService() {
+    public DefaultWatermarkService() {
     }
 
-    public StandardWatermarkService(Executor e) {
+    public DefaultWatermarkService(Executor e) {
         this.executor = e;
     }
 
     @Override
     public WatermarkPDFService watermarkPDF(byte[] fileBytes) {
         try {
-            return new StandardWatermarkPDFService(PDDocument.load(fileBytes), executor);
+            return new DefaultWatermarkPDFService(PDDocument.load(fileBytes), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
@@ -37,7 +37,7 @@ public class StandardWatermarkService implements WatermarkService.WatermarkServi
     @Override
     public WatermarkPDFService watermarkPDF(File file) {
         try {
-            return new StandardWatermarkPDFService(PDDocument.load(file), executor);
+            return new DefaultWatermarkPDFService(PDDocument.load(file), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
@@ -45,16 +45,16 @@ public class StandardWatermarkService implements WatermarkService.WatermarkServi
 
     @Override
     public WatermarkPDFService watermarkPDF(PDDocument document) {
-        return new StandardWatermarkPDFService(document, executor);
+        return new DefaultWatermarkPDFService(document, executor);
     }
 
     @Override
     public WatermarkImageService watermarkImage(byte[] fileBytes, ImageType imageType) {
-        return new StandardWatermarkImageService(fileBytes, imageType);
+        return new DefaultWatermarkImageService(fileBytes, imageType);
     }
 
     @Override
     public WatermarkImageService watermarkImage(File file, ImageType imageType) {
-        return new StandardWatermarkImageService(file, imageType);
+        return new DefaultWatermarkImageService(file, imageType);
     }
 }

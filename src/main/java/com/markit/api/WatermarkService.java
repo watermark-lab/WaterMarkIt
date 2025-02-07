@@ -16,12 +16,12 @@ import java.util.concurrent.Executor;
  */
 public interface WatermarkService {
     static WatermarkServiceSelector create() {
-        return new StandardWatermarkService();
+        return new DefaultWatermarkService();
     }
 
     static WatermarkServiceSelector create(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
-        return new StandardWatermarkService(executor);
+        return new DefaultWatermarkService(executor);
     }
 
     interface WatermarkServiceSelector {

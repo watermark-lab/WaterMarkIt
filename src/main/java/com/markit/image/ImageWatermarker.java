@@ -2,6 +2,7 @@ package com.markit.image;
 
 import com.markit.api.ImageType;
 import com.markit.api.WatermarkAttributes;
+import com.markit.servicelocator.Prioritizable;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
-public interface ImageWatermarker {
+public interface ImageWatermarker extends Prioritizable {
 
     /**
      * Adds a text watermark to the given image.

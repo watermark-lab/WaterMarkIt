@@ -2,8 +2,8 @@ package com.markit.api.image;
 
 import com.markit.api.AbstractWatermarkService;
 import com.markit.api.ImageType;
-import com.markit.image.DefaultImageWatermarker;
 import com.markit.api.image.WatermarkImageService.*;
+import com.markit.image.ImageWatermarkerFactory;
 
 import java.io.File;
 
@@ -11,20 +11,21 @@ import java.io.File;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public class StandardWatermarkImageService
+public class DefaultWatermarkImageService
         extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder>
         implements WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder {
 
-    public StandardWatermarkImageService(byte[] fileBytes, ImageType imageType) {
+    public DefaultWatermarkImageService(byte[] fileBytes, ImageType imageType) {
         initializeWatermarkHandler(fileBytes, imageType);
     }
 
-    public StandardWatermarkImageService(File file, ImageType imageType) {
+    public DefaultWatermarkImageService(File file, ImageType imageType) {
         initializeWatermarkHandler(file, imageType);
     }
 
     private void initializeWatermarkHandler(Object fileSource, ImageType imageType) {
-        var imageWatermarker = new DefaultImageWatermarker();
+        var imageWatermarker = ImageWatermarkerFactory.getInstance().getService();
+
         this.watermarkHandler = (watermarks) -> {
             if (fileSource instanceof byte[]) {
                 return imageWatermarker.watermark((byte[]) fileSource, imageType, watermarks);

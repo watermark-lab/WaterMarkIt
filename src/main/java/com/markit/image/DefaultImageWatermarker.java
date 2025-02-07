@@ -25,6 +25,11 @@ public class DefaultImageWatermarker implements ImageWatermarker {
     }
 
     @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
+    }
+
+    @Override
     public byte[] watermark(byte[] sourceImageBytes, ImageType imageType, List<WatermarkAttributes> attrs) {
         if (isByteArrayEmpty(sourceImageBytes)) {
             return sourceImageBytes;
