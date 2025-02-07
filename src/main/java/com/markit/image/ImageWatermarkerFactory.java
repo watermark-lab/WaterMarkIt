@@ -13,7 +13,7 @@ import java.util.TreeSet;
  */
 public class ImageWatermarkerFactory {
     private static final ImageWatermarkerFactory instance = new ImageWatermarkerFactory();
-    private static final SortedSet<ImageWatermarker> services = new TreeSet<>((o1, o2) -> -1 * Integer.compare(o1.getPriority(), o2.getPriority()));
+    private final SortedSet<ImageWatermarker> services = new TreeSet<>((o1, o2) -> -1 * Integer.compare(o1.getPriority(), o2.getPriority()));
 
     public static ImageWatermarkerFactory getInstance() {
         return instance;
