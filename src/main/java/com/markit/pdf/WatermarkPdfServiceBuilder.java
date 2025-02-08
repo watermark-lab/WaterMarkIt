@@ -2,7 +2,7 @@ package com.markit.pdf;
 
 import com.markit.image.ImageConverter;
 import com.markit.image.ImageWatermarkerFactory;
-import com.markit.pdf.draw.DefaultPdfDrawWatermarker;
+import com.markit.pdf.draw.DefaultDrawPdfWatermarker;
 import com.markit.pdf.overlay.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +14,7 @@ public class WatermarkPdfServiceBuilder {
         var imageWatermarker = ImageWatermarkerFactory.getInstance().getService();
 
         //var imageWatermarker = new DefaultImageWatermarker();
-        var drawPdfWatermarker = new DefaultPdfDrawWatermarker(imageWatermarker, new ImageConverter());
+        var drawPdfWatermarker = new DefaultDrawPdfWatermarker();
 
         var watermarkPositioner = new WatermarkPositioner();
         var imageBasedOverlayWatermarker = new ImageBasedOverlayWatermarker(watermarkPositioner);

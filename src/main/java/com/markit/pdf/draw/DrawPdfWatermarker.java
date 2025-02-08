@@ -13,7 +13,7 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
-public interface PdfWatermarker {
+public interface DrawPdfWatermarker {
 
     /**
      * Draw a text watermark to a specific page of a PDF document.

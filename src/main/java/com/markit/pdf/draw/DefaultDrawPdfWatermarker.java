@@ -3,7 +3,7 @@ package com.markit.pdf.draw;
 import com.markit.api.ImageType;
 import com.markit.api.WatermarkAttributes;
 import com.markit.image.ImageConverter;
-import com.markit.image.ImageWatermarker;
+import com.markit.image.ImageWatermarkerFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -19,30 +19,40 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class DefaultPdfDrawWatermarker implements PdfWatermarker {
-
+public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
     private final static float DEFAULT_DPI = 300f;
-    private final ImageWatermarker imageWatermarker;
-    private final ImageConverter imageConverter;
 
-    public DefaultPdfDrawWatermarker(ImageWatermarker imageWatermarker, ImageConverter imageConverter) {
-        this.imageWatermarker = imageWatermarker;
-        this.imageConverter = imageConverter;
+    public DefaultDrawPdfWatermarker() {
     }
 
     @Override
     public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
+        var imageConverter = new ImageConverter();
         var page = document.getPage(pageIndex);
-        PDFRenderer pdfRenderer = new PDFRenderer(document);
+        var pdfRenderer = new PDFRenderer(document);
         var image = pdfRenderer.renderImageWithDPI(pageIndex, getDPI(attrs));
-        var watermarkedImageBytes = imageWatermarker.watermark(imageConverter.convertToByteArray(image, ImageType.JPEG), ImageType.JPEG, attrs);
+
+        // Apply watermark to the rendered image
+        var watermarkedImageBytes = ImageWatermarkerFactory.getInstance()
+                .getService()
+                .watermark(
+                        imageConverter.convertToByteArray(image, ImageType.JPEG),
+                        ImageType.JPEG,
+                        attrs
+                );
+
+        // Create a PDImageXObject from the watermarked image bytes
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");
+
+        // Replace the original image in the PDF with the watermarked image
         replaceImageInPDF(
                 document,
                 pdImage,
                 page,
-                page.getCropBox().getLowerLeftX(), page.getCropBox().getLowerLeftY(),
-                page.getCropBox().getWidth(), page.getCropBox().getHeight()
+                page.getCropBox().getLowerLeftX(),
+                page.getCropBox().getLowerLeftY(),
+                page.getCropBox().getWidth(),
+                page.getCropBox().getHeight()
         );
     }
 

@@ -4,7 +4,7 @@ import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
-import com.markit.pdf.draw.PdfWatermarker;
+import com.markit.pdf.draw.DrawPdfWatermarker;
 import com.markit.pdf.overlay.OverlayPdfWatermarker;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,12 +25,12 @@ import java.util.stream.Collectors;
  */
 public class DefaultWatermarkPdfService implements WatermarkPdfService {
     private static final Log logger = LogFactory.getLog(DefaultWatermarkPdfService.class);
-    private final Optional<PdfWatermarker> drawService;
+    private final Optional<DrawPdfWatermarker> drawService;
     private final Optional<OverlayPdfWatermarker> overlayService;
     private final Optional<Executor> executorService;
 
-    public DefaultWatermarkPdfService(PdfWatermarker pdfWatermarker, OverlayPdfWatermarker overlayService, Executor es) {
-        this.drawService = Optional.ofNullable(pdfWatermarker);
+    public DefaultWatermarkPdfService(DrawPdfWatermarker drawPdfWatermarker, OverlayPdfWatermarker overlayService, Executor es) {
+        this.drawService = Optional.ofNullable(drawPdfWatermarker);
         this.overlayService = Optional.ofNullable(overlayService);
         this.executorService = Optional.ofNullable(es);
     }
