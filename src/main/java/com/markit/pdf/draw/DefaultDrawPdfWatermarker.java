@@ -3,7 +3,8 @@ package com.markit.pdf.draw;
 import com.markit.api.ImageType;
 import com.markit.api.WatermarkAttributes;
 import com.markit.image.ImageConverter;
-import com.markit.image.ImageWatermarkerFactory;
+import com.markit.image.ImageWatermarker;
+import com.markit.servicelocator.ServiceFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -19,10 +20,16 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
     private final static float DEFAULT_DPI = 300f;
 
     public DefaultDrawPdfWatermarker() {
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 
     @Override
@@ -31,15 +38,13 @@ public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
         var page = document.getPage(pageIndex);
         var pdfRenderer = new PDFRenderer(document);
         var image = pdfRenderer.renderImageWithDPI(pageIndex, getDPI(attrs));
+        var imageWatermarker = (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
 
         // Apply watermark to the rendered image
-        var watermarkedImageBytes = ImageWatermarkerFactory.getInstance()
-                .getService()
-                .watermark(
+        var watermarkedImageBytes = imageWatermarker.watermark(
                         imageConverter.convertToByteArray(image, ImageType.JPEG),
                         ImageType.JPEG,
-                        attrs
-                );
+                        attrs);
 
         // Create a PDImageXObject from the watermarked image bytes
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");

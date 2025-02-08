@@ -3,9 +3,9 @@ package com.markit.pdf;
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ExecutorNotFoundException;
-import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
 import com.markit.pdf.draw.DrawPdfWatermarker;
 import com.markit.pdf.overlay.OverlayPdfWatermarker;
+import com.markit.servicelocator.ServiceFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -23,24 +23,17 @@ import java.util.stream.Collectors;
  * @author Oleg Cheban
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class DefaultWatermarkPdfService implements WatermarkPdfService {
     private static final Log logger = LogFactory.getLog(DefaultWatermarkPdfService.class);
-    private final Optional<DrawPdfWatermarker> drawService;
-    private final Optional<OverlayPdfWatermarker> overlayService;
     private final Optional<Executor> executorService;
 
-    public DefaultWatermarkPdfService(DrawPdfWatermarker drawPdfWatermarker, OverlayPdfWatermarker overlayService, Executor es) {
-        this.drawService = Optional.ofNullable(drawPdfWatermarker);
-        this.overlayService = Optional.ofNullable(overlayService);
+    public DefaultWatermarkPdfService(Executor es) {
         this.executorService = Optional.ofNullable(es);
     }
 
     @Override
     public byte[] watermark(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
-        if (drawService.isEmpty() || overlayService.isEmpty()){
-            logger.error("Incorrect configuration. An empty service");
-            throw new WatermarkPdfServiceNotFoundException();
-        }
         applyWatermark(document, attrs, WatermarkingMethod.DRAW, this::draw);
         applyWatermark(document, attrs, WatermarkingMethod.OVERLAY, this::overlay);
         removeSecurity(document);
@@ -60,11 +53,12 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     }
 
     private void overlay(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
+        var overlayService = (OverlayPdfWatermarker) ServiceFactory.getInstance().getService(OverlayPdfWatermarker.class);
         int numberOfPages = document.getNumberOfPages();
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
             List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pageIndex);
             if (!filteredAttrs.isEmpty()){
-                overlayService.get().watermark(document, pageIndex, filteredAttrs);
+                overlayService.watermark(document, pageIndex, filteredAttrs);
             }
         }
     }
@@ -115,8 +109,9 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     }
 
     private void draw(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
+        var drawService = (DrawPdfWatermarker) ServiceFactory.getInstance().getService(DrawPdfWatermarker.class);
         List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pageIndex);
-        if (!filteredAttrs.isEmpty()) drawService.get().watermark(document, pageIndex, filteredAttrs);
+        if (!filteredAttrs.isEmpty()) drawService.watermark(document, pageIndex, filteredAttrs);
     }
 
     private static List<WatermarkAttributes> filterAttrsByPageIndex(List<WatermarkAttributes> attrs, int pIndex) {

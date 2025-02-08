@@ -3,7 +3,7 @@ package com.markit.api.pdf;
 import com.markit.api.AbstractWatermarkService;
 import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ClosePDFDocumentException;
-import com.markit.pdf.WatermarkPdfServiceBuilder;
+import com.markit.pdf.DefaultWatermarkPdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import com.markit.api.pdf.WatermarkPDFService.*;
 import org.jetbrains.annotations.NotNull;
@@ -23,10 +23,8 @@ public class DefaultWatermarkPDFService
     private final PDDocument document;
     public DefaultWatermarkPDFService(PDDocument pdfDoc, Executor executor) {
         this.document = pdfDoc;
-        watermarkHandler =
-                (watermarks) ->
-                        WatermarkPdfServiceBuilder.build(executor)
-                                .watermark(pdfDoc, watermarks);
+        watermarkHandler = (watermarks) ->
+                new DefaultWatermarkPdfService(executor).watermark(pdfDoc, watermarks);
     }
 
     @Override

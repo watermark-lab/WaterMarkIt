@@ -3,7 +3,8 @@ package com.markit.api.image;
 import com.markit.api.AbstractWatermarkService;
 import com.markit.api.ImageType;
 import com.markit.api.image.WatermarkImageService.*;
-import com.markit.image.ImageWatermarkerFactory;
+import com.markit.image.ImageWatermarker;
+import com.markit.servicelocator.ServiceFactory;
 
 import java.io.File;
 
@@ -11,6 +12,7 @@ import java.io.File;
  * @author Oleg Cheban
  * @since 1.3.0
  */
+@SuppressWarnings("unchecked")
 public class DefaultWatermarkImageService
         extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder>
         implements WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder {
@@ -24,7 +26,7 @@ public class DefaultWatermarkImageService
     }
 
     private void initializeWatermarkHandler(Object fileSource, ImageType imageType) {
-        var imageWatermarker = ImageWatermarkerFactory.getInstance().getService();
+        var imageWatermarker = (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
 
         this.watermarkHandler = (watermarks) -> {
             if (fileSource instanceof byte[]) {

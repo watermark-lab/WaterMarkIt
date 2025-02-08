@@ -2,7 +2,7 @@ package com.markit.image;
 
 import com.markit.api.ImageType;
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.Prioritizable;
+import com.markit.servicelocator.Prioritizable;
 
 import java.io.File;
 import java.io.IOException;

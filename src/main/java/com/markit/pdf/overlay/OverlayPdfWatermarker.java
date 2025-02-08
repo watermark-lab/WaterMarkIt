@@ -2,6 +2,7 @@ package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkingMethod;
+import com.markit.servicelocator.Prioritizable;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
-public interface OverlayPdfWatermarker {
+public interface OverlayPdfWatermarker extends Prioritizable {
     /**
      * Overlay a text watermark to a specific page of a PDF document.
      *
