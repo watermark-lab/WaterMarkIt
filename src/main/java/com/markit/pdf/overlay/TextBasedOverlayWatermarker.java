@@ -4,12 +4,10 @@ import com.markit.api.WatermarkAttributes;
 import com.markit.api.positioning.WatermarkPositionCoordinates;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class TextBasedOverlayWatermarker {
     private static final int TEXT_SIZE = 20;
@@ -21,10 +19,11 @@ public class TextBasedOverlayWatermarker {
         this.positioner = positioner;
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public void overlay(PDPageContentStream contentStream, PDRectangle pdRectangle, WatermarkAttributes attr) throws IOException {
         final var font =  PDType1Font.TIMES_BOLD;
         final int fontSize = attr.getSize() == 0 ? TEXT_SIZE : attr.getSize();
-        float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;
+        float textWidth = font.getStringWidth(attr.getText().get()) / 1000 * fontSize;
         float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight (), (int) textWidth, (int) textHeight);
 
@@ -35,7 +34,7 @@ public class TextBasedOverlayWatermarker {
             float x = c.getX() + textWidth / 2;
             float y = c.getY() + textHeight / 2;
             contentStream.setTextMatrix(setRotationMatrix(x, y, textWidth, textHeight, attr.getRotationDegrees()));
-            contentStream.showText(attr.getText());
+            contentStream.showText(attr.getText().get());
             contentStream.endText();
 
             if (attr.getTrademark()) {

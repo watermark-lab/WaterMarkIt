@@ -9,7 +9,7 @@ import java.util.*
 import java.util.function.Predicate
 
 data class WatermarkAttributes (
-    var text: String = "",
+    var text: Optional<String> = Optional.empty(),
     var size: Int = 100,
     var color: Color = Color.BLACK,
     var opacity: Float = 0.4f,

@@ -37,7 +37,7 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
     }
 
     public TextBasedWatermarkBuilder withText(String text) {
-        currentWatermark.setText(text);
+        currentWatermark.setText(Optional.ofNullable(text));
         return (TextBasedWatermarkBuilder) this;
     }
 

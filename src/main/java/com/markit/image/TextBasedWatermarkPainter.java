@@ -13,13 +13,15 @@ import java.awt.image.BufferedImage;
  * @since 1.0
  */
 public class TextBasedWatermarkPainter {
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public void draw(Graphics2D g2d, BufferedImage image, WatermarkAttributes attr, WatermarkPositioner positioner) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, attr.getOpacity());
         var fontSize = calculateFontSize(attr.getSize(), image.getWidth(), image.getHeight());
         var font = new Font("Arial", Font.BOLD, fontSize);
         configureGraphics(g2d, alphaChannel, attr.getColor(), font);
         FontRenderContext frc = g2d.getFontRenderContext();
-        TextLayout watermarkLayout = new TextLayout(attr.getText(), font, frc);
+        TextLayout watermarkLayout = new TextLayout(attr.getText().get(), font, frc);
         Rectangle2D rect = watermarkLayout.getBounds();
 
         var coordinates = positioner.defineXY(attr, image.getWidth(), image.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
