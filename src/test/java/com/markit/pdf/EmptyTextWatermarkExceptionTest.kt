@@ -26,7 +26,7 @@ class EmptyTextWatermarkExceptionTest : BasePdfWatermarkTest() {
         assertThrows<EmptyWatermarkObjectException> {
             WatermarkService.create()
                 .watermarkPDF(document)
-                    .withText("")
+                    .withText(null)
                         .end()
                             .position(WatermarkPosition.CENTER).end()
                             .method(WatermarkingMethod.DRAW)
