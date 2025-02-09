@@ -8,6 +8,10 @@ import java.awt.image.BufferedImage
 import java.util.*
 import java.util.function.Predicate
 
+/**
+ * @author Oleg Cheban
+ * @since 1.0
+ */
 data class WatermarkAttributes (
     var text: String = "",
     var size: Int = 100,
