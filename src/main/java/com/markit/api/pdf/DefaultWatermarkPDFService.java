@@ -35,7 +35,7 @@ public class DefaultWatermarkPDFService
 
     @Override
     public WatermarkPDFBuilder dpi(int dpi) {
-        currentWatermark.setDpi(Optional.of((float) dpi));
+        currentWatermark.setDpi((float) dpi);
         return this;
     }
 

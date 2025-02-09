@@ -22,7 +22,7 @@ import java.util.List;
  */
 @SuppressWarnings("unchecked")
 public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
-    private final static float DEFAULT_DPI = 300f;
+    private final static float DEFAULT_DPI = 301f;
 
     public DefaultDrawPdfWatermarker() {
     }
@@ -63,8 +63,8 @@ public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
 
     private float getDPI(List<WatermarkAttributes> attrs){
         return attrs.stream()
-                .flatMap(v -> v.getDpi().stream())
-                .max(Comparator.naturalOrder())
+                .map(WatermarkAttributes::getDpi)
+                .min(Comparator.naturalOrder())
                 .orElse(DEFAULT_DPI);
     }
 

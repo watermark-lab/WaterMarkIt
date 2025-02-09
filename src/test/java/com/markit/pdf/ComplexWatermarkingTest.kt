@@ -35,6 +35,7 @@ class ComplexWatermarkingTest : BasePdfWatermarkTest() {
             .watermarkPDF(document)
                 .withImage(readFileFromClasspathAsBytes("logo.png"))
                 .position(WatermarkPosition.CENTER).end()
+                .dpi(130)
                 .opacity(0.2f)
             .and()
                 .withText("WaterMarkIt")

@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Optional;
  * @since 1.3.0
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractWatermarkService<Service, Builder, TextBasedWatermarkBuilder, PositionStepBuilder> {
+public abstract class AbstractWatermarkService<Service, WatermarkBuilder, TextBasedWatermarkBuilder, PositionStepBuilder> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
@@ -37,28 +38,33 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
     }
 
     public TextBasedWatermarkBuilder withText(String text) {
-        currentWatermark.setText(Optional.ofNullable(text));
+        Objects.requireNonNull(text);
+        currentWatermark.setText(text);
         return (TextBasedWatermarkBuilder) this;
     }
 
-    public Builder withImage(byte[] image) {
+    public WatermarkBuilder withImage(byte[] image) {
+        Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
         currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
-        return (Builder) this;
+        return (WatermarkBuilder) this;
     }
 
-    public Builder withImage(BufferedImage image) {
+    public WatermarkBuilder withImage(BufferedImage image) {
+        Objects.requireNonNull(image);
         currentWatermark.setImage(Optional.of(image));
-        return (Builder) this;
+        return (WatermarkBuilder) this;
     }
 
-    public Builder withImage(File image) {
+    public WatermarkBuilder withImage(File image) {
+        Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
         currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
-        return (Builder) this;
+        return (WatermarkBuilder) this;
     }
 
     public TextBasedWatermarkBuilder color(Color color) {
+        Objects.requireNonNull(color);
         currentWatermark.setColor(color);
         return (TextBasedWatermarkBuilder) this;
     }
@@ -68,27 +74,28 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
         return (TextBasedWatermarkBuilder) this;
     }
 
-    public Builder size(int size) {
+    public WatermarkBuilder size(int size) {
         currentWatermark.setSize(size);
-        return (Builder) this;
+        return (WatermarkBuilder) this;
     }
 
-    public Builder opacity(float opacity) {
+    public WatermarkBuilder opacity(float opacity) {
         currentWatermark.setOpacity(opacity);
-        return (Builder) this;
+        return (WatermarkBuilder) this;
     }
 
-    public Builder rotation(int degree) {
+    public WatermarkBuilder rotation(int degree) {
         currentWatermark.setRotationDegrees(degree);
-        return (Builder) this;
+        return (WatermarkBuilder) this;
     }
 
-    public Builder when(boolean condition) {
+    public WatermarkBuilder when(boolean condition) {
         currentWatermark.setWatermarkEnabled(condition);
-        return (Builder) this;
+        return (WatermarkBuilder) this;
     }
 
     public PositionStepBuilder position(WatermarkPosition watermarkPosition) {
+        Objects.requireNonNull(watermarkPosition);
         currentWatermark.setPosition(watermarkPosition);
         return (PositionStepBuilder) this;
     }
@@ -109,8 +116,8 @@ public abstract class AbstractWatermarkService<Service, Builder, TextBasedWaterm
         return (PositionStepBuilder) this;
     }
 
-    public Builder end() {
-        return (Builder) this;
+    public WatermarkBuilder end() {
+        return (WatermarkBuilder) this;
     }
 
     @NotNull

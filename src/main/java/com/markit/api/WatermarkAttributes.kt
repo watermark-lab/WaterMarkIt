@@ -9,11 +9,11 @@ import java.util.*
 import java.util.function.Predicate
 
 data class WatermarkAttributes (
-    var text: Optional<String> = Optional.empty(),
+    var text: String = "",
     var size: Int = 100,
     var color: Color = Color.BLACK,
     var opacity: Float = 0.4f,
-    var dpi: Optional<Float> = Optional.empty(),
+    var dpi: Float = 300f,
     var trademark: Boolean = false,
     var rotationDegrees: Int = 0,
     var method: WatermarkingMethod = WatermarkingMethod.DRAW,
