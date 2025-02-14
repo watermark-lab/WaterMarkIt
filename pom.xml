@@ -45,6 +45,7 @@
         <junit.version>5.11.0</junit.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <kotlin.version>2.0.20</kotlin.version>
+        <spotless.version>2.44.2</spotless.version>
     </properties>
 
     <dependencies>
@@ -185,6 +186,49 @@
                     <compilerArgs>
                         <arg>-Werror</arg>
                     </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>install</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>1.17.0</version>
+                            <style>GOOGLE</style>
+                            <reflowLongStrings>true</reflowLongStrings>
+                            <formatJavadoc>false</formatJavadoc>
+                        </googleJavaFormat>
+                        <indent>
+                            <tabs>true</tabs>
+                            <spacesPerTab>2</spacesPerTab>
+                        </indent>
+                        <removeUnusedImports/>
+                    </java>
+                    <kotlin>
+                        <includes>
+                            <include>src/main/java/**/*.kt</include>
+                            <include>src/test/java/**/*.kt</include>
+                        </includes>
+                        <ktfmt>
+                            <version>0.51</version>
+                            <style>KOTLINLANG</style>
+                            <maxWidth>120</maxWidth>
+                            <blockIndent>4</blockIndent>
+                            <continuationIndent>8</continuationIndent>
+                            <removeUnusedImports>false</removeUnusedImports>
+                            <manageTrailingCommas>true</manageTrailingCommas>
+                        </ktfmt>
+                    </kotlin>
                 </configuration>
             </plugin>
         </plugins>
