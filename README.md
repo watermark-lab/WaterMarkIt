@@ -126,7 +126,7 @@ WatermarkService.create()
     .apply()  
 ```
 
-### Service Loader Mechanism
+### Extensibility and Customization
 
 The library uses Java's ServiceLoader mechanism to load implementations of various services. All services implement the `Prioritizable` interface, which allows custom implementations to override default ones by specifying a higher priority value.
 
