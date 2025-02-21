@@ -142,8 +142,8 @@ Example: Overriding the PDF watermarker service
 public class CustomPdfWatermarker implements DrawPdfWatermarker {
     @Override
     public int getPriority() {
-        // Return a value higher than default (1) to take precedence
-        return 10;
+        // Return a value higher than default to take precedence
+        return Prioritizable.DEFAULT_PRIORITY + 1;
     }
     
     @Override
