@@ -126,6 +126,39 @@ WatermarkService.create()
     .apply()  
 ```
 
+### Service Loader Mechanism
+
+The library uses Java's ServiceLoader mechanism to load implementations of various services. All services implement the `Prioritizable` interface, which allows custom implementations to override default ones by specifying a higher priority value.
+
+#### Overriding Services
+To override a service:
+1. Create your own implementation of the desired service interface
+2. Implement the `getPriority()` method to return a value higher than the default implementation
+3. Register your implementation in the `META-INF/services` directory
+
+Example: Overriding the PDF watermarker service
+
+```java
+public class CustomPdfWatermarker implements DrawPdfWatermarker {
+    @Override
+    public int getPriority() {
+        // Return a value higher than default (1) to take precedence
+        return 10;
+    }
+    
+    @Override
+    public void watermark(PDDocument document, int pageIndex, 
+                         List<WatermarkAttributes> attrs) throws IOException {
+        // Custom watermarking implementation
+    }
+}
+```
+
+Then create a file `META-INF/services/com.markit.pdf.draw.DrawPdfWatermarker` containing:
+```
+com.example.CustomPdfWatermarker
+```
+
 ### Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
