@@ -98,7 +98,7 @@ WatermarkService.create(
 ```
 ![Screenshot](https://github.com/user-attachments/assets/5d573ee8-ddf3-4204-8c33-502099bb39eb)
 
-#### Watermarking conditions 
+### Watermarking conditions 
 ```java
 // skip the first page (the page index starts from 0)
 WatermarkService.create()
@@ -128,15 +128,11 @@ WatermarkService.create()
 
 ### Extensibility and Customization
 
-The library uses Java's ServiceLoader mechanism to load implementations of various services. All services implement the `Prioritizable` interface, which allows custom implementations to override default ones by specifying a higher priority value.
+The library uses Java's ServiceLoader mechanism to load implementations of various services. You can override the services that implement the `Prioritizable` interface.
 
-#### Overriding Services
-To override a service:
 1. Create your own implementation of the desired service interface
 2. Implement the `getPriority()` method to return a value higher than the default implementation
 3. Register your implementation in the `META-INF/services` directory
-
-Example: Overriding the PDF watermarker service
 
 ```java
 public class CustomPdfWatermarker implements DrawPdfWatermarker {
@@ -147,8 +143,7 @@ public class CustomPdfWatermarker implements DrawPdfWatermarker {
     }
     
     @Override
-    public void watermark(PDDocument document, int pageIndex, 
-                         List<WatermarkAttributes> attrs) throws IOException {
+    public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         // Custom watermarking implementation
     }
 }
