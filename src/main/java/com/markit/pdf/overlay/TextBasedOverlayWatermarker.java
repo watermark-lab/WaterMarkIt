@@ -30,23 +30,23 @@ public class TextBasedOverlayWatermarker {
             contentStream.beginText();
             contentStream.setFont(font, fontSize);
             contentStream.setNonStrokingColor(attr.getColor());
-            float x = c.getX() + textWidth / 2;
-            float y = c.getY() + textHeight / 2;
-            contentStream.setTextMatrix(setRotationMatrix(x, y, textWidth, textHeight, attr.getRotationDegrees()));
+            contentStream.setTextMatrix(setRotationMatrix(c, textWidth, textHeight, attr.getRotationDegrees()));
             contentStream.showText(attr.getText());
             contentStream.endText();
 
             if (attr.getTrademark()) {
-                trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, x, y, font, fontSize);
+                trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, c, font, fontSize);
             }
         }
     }
 
-    private Matrix setRotationMatrix(float x, float y, float textWidth, float textHeight, int rotationDegrees){
+    private Matrix setRotationMatrix(WatermarkPositionCoordinates.Coordinates c, float textWidth, float textHeight, int rotationDegrees){
+        float translateX = c.getX() + textWidth / 2;
+        float translateY = c.getY() + textHeight / 2;
         var matrix = new Matrix();
-        matrix.translate(x, y);
+        matrix.translate(translateX, translateY);
         rotate(matrix, rotationDegrees);
-        matrix.translate(-textWidth / 2, -textHeight / 2);
+        matrix.translate(-textWidth/2, -textHeight/2);
         return matrix;
     }
 

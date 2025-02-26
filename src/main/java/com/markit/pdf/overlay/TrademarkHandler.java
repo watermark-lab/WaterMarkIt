@@ -1,6 +1,7 @@
 package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
+import com.markit.api.positioning.WatermarkPositionCoordinates;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
@@ -15,21 +16,29 @@ import java.io.IOException;
 public class TrademarkHandler {
     private static final String TRADEMARK_SYMBOL = "®";
 
-    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, float textWidth, float textHeight, float x, float y, PDType1Font font, int fontSize) throws IOException {
+    public void overlayTrademark(
+            PDPageContentStream contentStream,
+            WatermarkAttributes attr,
+            float textWidth,
+            float textHeight,
+            WatermarkPositionCoordinates.Coordinates c,
+            PDType1Font font,
+            int fontSize) throws IOException {
+
         final int trademarkFontSize = fontSize / 2;
         contentStream.beginText();
         contentStream.setFont(font, trademarkFontSize);
         contentStream.setNonStrokingColor(attr.getColor());
-        contentStream.setTextMatrix(setTransformationMatrix(x, y, textWidth, textHeight, attr.getRotationDegrees()));
+        contentStream.setTextMatrix(setTransformationMatrix(c, textWidth, textHeight, attr.getRotationDegrees()));
         contentStream.showText(TRADEMARK_SYMBOL);
         contentStream.endText();
     }
 
-    private Matrix setTransformationMatrix(float x, float y, float width, float height, int rotationDegrees) {
+    private Matrix setTransformationMatrix(WatermarkPositionCoordinates.Coordinates c, float textWidth, float textHeight, int rotationDegrees) {
         Matrix matrix = new Matrix();
-        matrix.translate(x, y);
+        matrix.translate(c.getX(), c.getY());
         rotate(matrix, rotationDegrees);
-        matrix.translate(width / 2, height / 2);
+        matrix.translate(textWidth / 2, textHeight / 2);
         return matrix;
     }
 

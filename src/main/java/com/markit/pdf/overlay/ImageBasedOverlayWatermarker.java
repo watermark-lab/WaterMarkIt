@@ -21,24 +21,23 @@ public class ImageBasedOverlayWatermarker {
         float imageHeight = (int) (imageXObject.getHeight() * (attr.getSize() / 100.0));
         var coordinates = positioner.defineXY(attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight(), (int) imageWidth, (int) imageHeight);
         for (WatermarkPositionCoordinates.Coordinates c : coordinates) {
-            float x = c.getX();
-            float y = c.getY();
+
             if (attr.getRotationDegrees() != 0){
-                Matrix rotationMatrix = setTransformationMatrix(x, y, imageWidth, imageHeight, attr.getRotationDegrees());
+                Matrix rotationMatrix = setTransformationMatrix(c, imageWidth, imageHeight, attr.getRotationDegrees());
                 contentStream.saveGraphicsState();
                 contentStream.transform(rotationMatrix);
             }
-            contentStream.drawImage(imageXObject, x, y, imageWidth, imageHeight);
+            contentStream.drawImage(imageXObject, c.getX(), c.getY(), imageWidth, imageHeight);
             if (attr.getRotationDegrees() != 0) {
                 contentStream.restoreGraphicsState();
             }
         }
     }
 
-    private Matrix setTransformationMatrix(float x, float y, float width, float height, int rotationDegrees) {
+    private Matrix setTransformationMatrix(WatermarkPositionCoordinates.Coordinates c, float width, float height, int rotationDegrees) {
         var matrix = new Matrix();
-        float translateX = x + (width / 2);
-        float translateY = y + (height / 2);
+        float translateX = c.getX() + (width / 2);
+        float translateY = c.getY() + (height / 2);
         matrix.translate(translateX, translateY);
         rotate(matrix, rotationDegrees);
         matrix.translate(-translateX, -translateY);
