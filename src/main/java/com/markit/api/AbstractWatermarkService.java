@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * @author Oleg Cheban
@@ -46,20 +47,22 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder, TextBa
     public WatermarkBuilder withImage(byte[] image) {
         Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
-        currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
-        return (WatermarkBuilder) this;
+        return withImage(() -> imageConverter.convertToBufferedImage(image));
     }
 
     public WatermarkBuilder withImage(BufferedImage image) {
         Objects.requireNonNull(image);
-        currentWatermark.setImage(Optional.of(image));
-        return (WatermarkBuilder) this;
+        return withImage(() -> image);
     }
 
     public WatermarkBuilder withImage(File image) {
         Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
-        currentWatermark.setImage(Optional.of(imageConverter.convertToBufferedImage(image)));
+        return withImage(() -> imageConverter.convertToBufferedImage(image));
+    }
+
+    private WatermarkBuilder withImage(Supplier<BufferedImage> imageSupplier) {
+        currentWatermark.setImage(Optional.of(imageSupplier.get()));
         return (WatermarkBuilder) this;
     }
 
