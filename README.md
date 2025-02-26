@@ -24,7 +24,7 @@ A lightweight Java library for adding watermarks to various file types, includin
   - Opacity
   - DPI
 
-- **Trademarks**: A capability to add the trademark symbol to text-based watermarks.
+- **Trademarks**: A capability to add the trademark symbol ® to text-based watermarks.
 
 - **Page orientation support**: Full support for both portrait and landscape orientations.
 

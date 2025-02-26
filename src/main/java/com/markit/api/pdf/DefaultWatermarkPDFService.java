@@ -9,7 +9,6 @@ import com.markit.api.pdf.WatermarkPDFService.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
@@ -20,7 +19,9 @@ import java.util.function.Predicate;
 public class DefaultWatermarkPDFService
         extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder>
         implements WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder {
+
     private final PDDocument document;
+
     public DefaultWatermarkPDFService(PDDocument pdfDoc, Executor executor) {
         this.document = pdfDoc;
         watermarkHandler = (watermarks) ->

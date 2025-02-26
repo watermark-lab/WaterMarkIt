@@ -5,5 +5,6 @@ package com.markit.api;
  * @since 1.0
  */
 public enum WatermarkingMethod {
-    DRAW, OVERLAY
+    DRAW,
+    OVERLAY
 }

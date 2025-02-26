@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class ImageBasedOverlayWatermarker {
     private final WatermarkPositioner positioner;
+
     public ImageBasedOverlayWatermarker(WatermarkPositioner positioner) {
         this.positioner = positioner;
     }

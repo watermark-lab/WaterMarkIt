@@ -11,16 +11,10 @@ import java.util.List;
  * @since 1.0
  */
 public class WatermarkPositioner {
+
     public List<WatermarkPositionCoordinates.Coordinates> defineXY(
-            WatermarkAttributes attr,
-            int imageWidth,
-            int imageHeight,
-            int watermarkWidth,
-            int watermarkHeight) {
-        return new DrawMethodPositionCoordinates(
-                imageWidth,
-                imageHeight,
-                watermarkWidth,
-                watermarkHeight).getCoordinatesForAttributes(attr);
+            WatermarkAttributes attr, int imageWidth, int imageHeight, int watermarkWidth, int watermarkHeight) {
+        return new DrawMethodPositionCoordinates(imageWidth, imageHeight, watermarkWidth, watermarkHeight)
+                .getCoordinatesForAttributes(attr);
     }
 }

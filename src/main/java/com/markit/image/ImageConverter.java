@@ -19,6 +19,7 @@ import java.util.function.Supplier;
  */
 public class ImageConverter {
     private final String ERR_MSG = "I/O error during image conversion";
+
     public BufferedImage convertToBufferedImage(byte[] imageBytes) {
         return convert(() -> {
             try {

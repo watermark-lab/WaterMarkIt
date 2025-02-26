@@ -10,6 +10,7 @@ import java.util.*;
  * @since 1.3.2
  */
 public class DefaultServiceLocator {
+
     public static <T> List<T> find(Class<T> interfaceType) {
         List<T> allInstances = new ArrayList<>();
         final Iterator<T> services = ServiceLoader.load(interfaceType, Thread.currentThread().getContextClassLoader()).iterator();
