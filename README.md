@@ -17,25 +17,22 @@ A lightweight Java library for adding watermarks to various file types, includin
   - Image-based watermarks
 
 - **Customizable Watermarks**: Customize various aspects of your watermark, including:
-  - Text
   - Color
   - Size
   - Position
   - Rotation
   - Opacity
-  - Trademark
   - DPI
+
+- **Trademarks**: A capability to add the trademark symbol to text-based watermarks.
 
 - **Page orientation support**: Full support for both portrait and landscape orientations.
 
 - **Supported Formats**:
   - PDF
-  - JPEG
-  - PNG
-  - TIFF
-  - BMP
- 
-- **Drawn Watermarks**: The library provides the `WatermarkingMethod.DRAW` method to add watermarks to PDF files that can't be easily removed. This mode renders an image based on a PDF page and replaces all layers of the page with the image.
+  - Various image formats (JPEG, PNG, etc.)
+  
+- **Drawn Watermarks**: The library provides the `WatermarkingMethod.DRAW` method to add watermarks to PDF files that can't be easily removed. This mode generates an image from a PDF page, applies watermarks to the image, and replaces all layers of the page with the modified image.
 
 - **Multithreading**: Leverages a thread pool for efficient watermarking. Particularly useful for the `WatermarkingMethod.DRAW` method and multi-page files such as PDFs, enabling parallel watermarking with a separate thread for each page.
 
