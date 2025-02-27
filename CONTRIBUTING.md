@@ -114,38 +114,29 @@ Push your changes to your forked repository:
 - Follow the Kotlin Coding Conventions.
 - Use data class for simple data structures.
 
-Maven and Build Configuration
-Keep the pom.xml file clean and well-organized.
+### Maven and Build Configuration
+- Keep the `pom.xml` file clean and well-organized
+- Use the provided [Maven plugins](https://maven.apache.org/plugins/) for formatting and static analysis
+- Ensure all dependencies are up-to-date and compatible with Java 11
 
-Use the provided Maven plugins for formatting and static analysis.
+### Testing
+- Write unit tests for all new functionality using [JUnit 5](https://junit.org/junit5/)
+- Ensure all tests pass before submitting a pull request:
+  ```bash
+  mvn test
+  ```
+- Use descriptive test method names that explain the purpose of the test
 
-Ensure all dependencies are up-to-date and compatible with Java 11.
+### Code Review Process
+- After submitting a pull request, the maintainers will review your changes
+- Address any feedback or requested changes promptly
+- Once approved, your changes will be merged into the main branch
 
-Testing
-Write unit tests for all new functionality using JUnit 5.
-
-Ensure all tests pass before submitting a pull request:
-
-bash
-Copy
-mvn test
-Use descriptive test method names that explain the purpose of the test.
-
-Code Review Process
-After submitting a pull request, the maintainers will review your changes.
-
-Address any feedback or requested changes promptly.
-
-Once approved, your changes will be merged into the main branch.
-
-Additional Resources
-GitHub Flow Guide
-
-Google Java Style Guide
-
-Kotlin Coding Conventions
-
-Maven Documentation
+### Additional Resources
+- [GitHub Flow Guide](https://guides.github.com/introduction/flow/)
+- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
+- [Kotlin Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html)
+- [Maven Documentation](https://maven.apache.org/guides/)
 
 Thank you for contributing to WaterMarkIt! Your efforts help make this project better for everyone. If you have any questions, feel free to reach out to the maintainers.
 
