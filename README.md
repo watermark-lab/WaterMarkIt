@@ -155,3 +155,9 @@ com.example.CustomPdfWatermarker
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
 - **commons-logging**: [Apache Commons Logging](https://commons.apache.org/proper/commons-logging/) - A simple logging facade for Java.
+
+## Contributing
+
+We welcome contributions from the community! If you'd like to contribute to WaterMarkIt, please read our [Contributing Guide](CONTRIBUTING.md) for details on how to get started, our coding standards, and the pull request process.
+
+Your contributions help make WaterMarkIt better for everyone!
