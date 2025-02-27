@@ -48,7 +48,7 @@ Thank you for your interest in contributing to WaterMarkIt! This guide will walk
 1. Ensure you have Java 11 or higher installed. You can check your Java version by running:
    ```bash
    java -version   
-2. Install [Maven](https://maven.apache.org/) if you don't already have it. You can download it from the Maven website.
+2. Install [Maven](https://maven.apache.org/) if you don't already have it.
 3. Build the project using Maven:
    ```bash
    mvn clean install
@@ -74,28 +74,20 @@ Add new tests if you are introducing new functionality or modifying existing beh
 Stage your changes:
 
 ```bash
-git add .
+  git add .
 ```
 
 Commit your changes with a descriptive commit message:
 
 ```bash
-git commit -m "Add: Your descriptive commit message"
+  git commit -m "Your descriptive commit message"
 ```
-
-Use the following prefixes for your commit messages:
-
-- `Add:` For new features or functionality
-- `Fix:` For bug fixes
-- `Update:` For updates to existing features
-- `Refactor:` For code refactoring
-- `Docs:` For documentation changes
 
 ### Pushing Changes
 Push your changes to your forked repository:
 
 ```bash
-git push origin feature/your-feature-name
+  git push origin feature/your-feature-name
 ```
 
 ### Creating a Pull Request
@@ -104,41 +96,23 @@ git push origin feature/your-feature-name
 3. Fill out the pull request template with a clear description of your changes
 4. Submit the pull request and wait for feedback from the maintainers
 
-Code Formatting and Style Guidelines
-General Formatting Rules
-Use 4 spaces for indentation (no tabs).
+## Code Formatting and Style Guidelines
+### General Formatting Rules
+   - Use 4 spaces for indentation (no tabs).
+   - Ensure all files end with a newline.
 
-Ensure all files end with a newline.
+### Java Code Style
+- Follow the Google Java Style Guide for Java code.
+- Use camelCase for variable and method names.
+- Use PascalCase for class names.
+- Use UPPER_SNAKE_CASE for constants.
+- Always include Javadoc comments for public classes, methods, and fields.
+- Use @Override annotations for overridden methods.
+- Don't use Java POJO, use Kotlin data classes instead.
 
-Use Unix-style line endings (LF).
-
-Java Code Style
-Follow the Google Java Style Guide for Java code.
-
-Use camelCase for variable and method names.
-
-Use PascalCase for class names.
-
-Use UPPER_SNAKE_CASE for constants.
-
-Always include Javadoc comments for public classes, methods, and fields.
-
-Use @Override annotations for overridden methods.
-
-Use @NotNull and @Nullable annotations where applicable.
-
-Kotlin Code Style
-Follow the Kotlin Coding Conventions.
-
-Use camelCase for variable and function names.
-
-Use PascalCase for class names.
-
-Use UPPER_SNAKE_CASE for constants.
-
-Prefer val over var for immutable variables.
-
-Use data class for simple data structures.
+### Kotlin Code Style
+- Follow the Kotlin Coding Conventions.
+- Use data class for simple data structures.
 
 Maven and Build Configuration
 Keep the pom.xml file clean and well-organized.
