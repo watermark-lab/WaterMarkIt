@@ -48,7 +48,7 @@ Thank you for your interest in contributing to WaterMarkIt! This guide will walk
 1. Ensure you have Java 11 or higher installed. You can check your Java version by running:
    ```bash
    java -version   
-2. Install Maven if you don't already have it. You can download it from the Maven website.
+2. Install [Maven](https://maven.apache.org/) if you don't already have it. You can download it from the Maven website.
 3. Build the project using Maven:
    ```bash
    mvn clean install
