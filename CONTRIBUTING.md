@@ -59,9 +59,9 @@ Thank you for your interest in contributing to WaterMarkIt! This guide will walk
 ### Creating a Branch
 Before making changes, create a new branch for your work:
 
-```bash
-git checkout -b feature/your-feature-name
-```
+   ```bash
+      git checkout -b feature/your-feature-name
+   ```
 
 Use a descriptive branch name that reflects the purpose of your changes.
 
