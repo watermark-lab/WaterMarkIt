@@ -36,7 +36,7 @@ public class TrademarkHandler {
 
     private Matrix setTransformationMatrix(WatermarkPositionCoordinates.Coordinates c, float textWidth, float textHeight, int rotationDegrees) {
         Matrix matrix = new Matrix();
-        matrix.translate(c.getX(), c.getY());
+        matrix.translate(c.getX() + textWidth / 2, c.getY() + textHeight / 2);
         rotate(matrix, rotationDegrees);
         matrix.translate(textWidth / 2, textHeight / 2);
         return matrix;
