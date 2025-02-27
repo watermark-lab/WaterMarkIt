@@ -3,23 +3,26 @@
 Thank you for your interest in contributing to WaterMarkIt! This guide will walk you through the process of setting up the project, making contributions, and ensuring your code adheres to the project's formatting and style guidelines.
 
 ## Table of Contents
-1. [Getting Started](#getting-started)
-  - [Forking the Repository](#forking-the-repository)
-  - [Cloning the Repository](#cloning-the-repository)
-  - [Setting Up the Development Environment](#setting-up-the-development-environment)
-2. [Making Contributions](#making-contributions)
-  - [Creating a Branch](#creating-a-branch)
-  - [Making Changes](#making-changes)
-  - [Committing Changes](#committing-changes)
-  - [Pushing Changes](#pushing-changes)
-  - [Creating a Pull Request](#creating-a-pull-request)
-3. [Code Formatting and Style Guidelines](#code-formatting-and-style-guidelines)
-  - [General Formatting Rules](#general-formatting-rules)
-  - [Java Code Style](#java-code-style)
-  - [Kotlin Code Style](#kotlin-code-style)  
-4. [Testing](#testing)
-5. [Code Review Process](#code-review-process)
-6. [Additional Resources](#additional-resources)
+- [Getting Started](#getting-started)
+   - [Forking the Repository](#forking-the-repository)
+   - [Cloning the Repository](#cloning-the-repository)
+   - [Setting Up the Development Environment](#setting-up-the-development-environment)
+   
+- [Making Contributions](#making-contributions)
+   - [Creating a Branch](#creating-a-branch)
+   - [Making Changes](#making-changes)
+   - [Committing Changes](#committing-changes)
+   - [Pushing Changes](#pushing-changes)
+   - [Creating a Pull Request](#creating-a-pull-request)
+   
+- [Code Formatting and Style Guidelines](#code-formatting-and-style-guidelines)
+   - [General Formatting Rules](#general-formatting-rules)
+   - [Java Code Style](#java-code-style)
+   - [Kotlin Code Style](#kotlin-code-style)
+
+- [Testing](#testing)
+- [Code Review Process](#code-review-process)
+- [Additional Resources](#additional-resources)
 
 ---
 
