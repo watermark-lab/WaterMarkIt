@@ -54,57 +54,55 @@ Thank you for your interest in contributing to WaterMarkIt! This guide will walk
    mvn clean install
 4. Set up your IDE (e.g., IntelliJ IDEA, Eclipse) to use the project's Maven configuration.
 
-Making Contributions
-Creating a Branch
+## Making Contributions
+
+### Creating a Branch
 Before making changes, create a new branch for your work:
 
-bash
-Copy
+```bash
 git checkout -b feature/your-feature-name
+```
+
 Use a descriptive branch name that reflects the purpose of your changes.
 
-Making Changes
+### Making Changes
 Make your changes to the codebase. Ensure you follow the Code Formatting and Style Guidelines.
 
 Add new tests if you are introducing new functionality or modifying existing behavior.
 
-Committing Changes
+### Committing Changes
 Stage your changes:
 
-bash
-Copy
+```bash
 git add .
+```
+
 Commit your changes with a descriptive commit message:
 
-bash
-Copy
+```bash
 git commit -m "Add: Your descriptive commit message"
+```
+
 Use the following prefixes for your commit messages:
 
-Add: For new features or functionality.
+- `Add:` For new features or functionality
+- `Fix:` For bug fixes
+- `Update:` For updates to existing features
+- `Refactor:` For code refactoring
+- `Docs:` For documentation changes
 
-Fix: For bug fixes.
-
-Update: For updates to existing features.
-
-Refactor: For code refactoring.
-
-Docs: For documentation changes.
-
-Pushing Changes
+### Pushing Changes
 Push your changes to your forked repository:
 
-bash
-Copy
+```bash
 git push origin feature/your-feature-name
-Creating a Pull Request
-Go to your forked repository on GitHub.
+```
 
-Click the "Compare & pull request" button next to your branch.
-
-Fill out the pull request template with a clear description of your changes.
-
-Submit the pull request and wait for feedback from the maintainers.
+### Creating a Pull Request
+1. Go to your forked repository on GitHub
+2. Click the "Compare & pull request" button next to your branch
+3. Fill out the pull request template with a clear description of your changes
+4. Submit the pull request and wait for feedback from the maintainers
 
 Code Formatting and Style Guidelines
 General Formatting Rules
