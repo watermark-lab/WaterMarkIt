@@ -18,8 +18,10 @@ abstract class PositionCoordinates(
             WatermarkPosition.CENTER -> listOf(center())
             WatermarkPosition.TOP_LEFT -> listOf(topLeft())
             WatermarkPosition.TOP_RIGHT -> listOf(topRight())
+            WatermarkPosition.TOP_CENTER -> listOf(topCenter())
             WatermarkPosition.BOTTOM_LEFT -> listOf(bottomLeft())
             WatermarkPosition.BOTTOM_RIGHT -> listOf(bottomRight())
+            WatermarkPosition.BOTTOM_CENTER -> listOf(bottomCenter())
             WatermarkPosition.TILED -> tiled(attr)
         }
         if (attr.positionAdjustment.x != 0 || attr.positionAdjustment.y != 0) {
