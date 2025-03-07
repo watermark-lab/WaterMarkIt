@@ -1,7 +1,8 @@
 package com.markit.image;
 
-import com.markit.api.FileType;
+import com.markit.api.ImageType;
 import com.markit.api.WatermarkAttributes;
+import com.markit.servicelocator.Prioritizable;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,25 +14,25 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
-public interface ImageWatermarker {
+public interface ImageWatermarker extends Prioritizable {
 
     /**
      * Adds a text watermark to the given image.
      *
      * @param sourceImageBytes The image in byte array format.
-     * @param fileType The file type of image
+     * @param imageType The file type of image
      * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked image.
      */
-    byte[] watermark(byte[] sourceImageBytes, FileType fileType, List<WatermarkAttributes> attrs) throws IOException;
+    byte[] watermark(byte[] sourceImageBytes, ImageType imageType, List<WatermarkAttributes> attrs) throws IOException;
 
     /**
      * Adds a text watermark to the given image.
      *
      * @param file The source file of image.
-     * @param fileType The file type of image
+     * @param imageType The file type of image
      * @param attrs The attributes of watermark
      * @return A byte array representing the watermarked image.
      */
-    byte[] watermark(File file, FileType fileType, List<WatermarkAttributes> attrs) throws IOException;
+    byte[] watermark(File file, ImageType imageType, List<WatermarkAttributes> attrs) throws IOException;
 }

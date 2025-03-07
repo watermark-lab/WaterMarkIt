@@ -2,18 +2,15 @@ package com.markit.pdf;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.WatermarkingMethod;
-import com.markit.exceptions.AsyncWatermarkPdfException;
 import com.markit.exceptions.ExecutorNotFoundException;
-import com.markit.exceptions.WatermarkPdfServiceNotFoundException;
-import com.markit.pdf.draw.PdfWatermarker;
+import com.markit.pdf.draw.DrawPdfWatermarker;
 import com.markit.pdf.overlay.OverlayPdfWatermarker;
+import com.markit.servicelocator.ServiceFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,44 +23,17 @@ import java.util.stream.Collectors;
  * @author Oleg Cheban
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class DefaultWatermarkPdfService implements WatermarkPdfService {
     private static final Log logger = LogFactory.getLog(DefaultWatermarkPdfService.class);
-    private final Optional<PdfWatermarker> drawService;
-    private final Optional<OverlayPdfWatermarker> overlayService;
     private final Optional<Executor> executorService;
 
-    public DefaultWatermarkPdfService(PdfWatermarker pdfWatermarker, OverlayPdfWatermarker overlayService, Executor es) {
-        this.drawService = Optional.ofNullable(pdfWatermarker);
-        this.overlayService = Optional.ofNullable(overlayService);
+    public DefaultWatermarkPdfService(Executor es) {
         this.executorService = Optional.ofNullable(es);
-    }
-
-    public DefaultWatermarkPdfService(PdfWatermarker pdfWatermarker, OverlayPdfWatermarker overlayService) {
-        this.drawService = Optional.ofNullable(pdfWatermarker);
-        this.overlayService = Optional.ofNullable(overlayService);
-        this.executorService = Optional.empty();
-    }
-
-    @Override
-    public byte[] watermark(byte[] sourceImageBytes, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = PDDocument.load(sourceImageBytes)) {
-            return watermark(document, attrs);
-        }
-    }
-
-    @Override
-    public byte[] watermark(File file, List<WatermarkAttributes> attrs) throws IOException {
-        try(PDDocument document = PDDocument.load(file)) {
-            return watermark(document, attrs);
-        }
     }
 
     @Override
     public byte[] watermark(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
-        if (drawService.isEmpty() || overlayService.isEmpty()){
-            logger.error("Incorrect configuration. An empty service");
-            throw new WatermarkPdfServiceNotFoundException();
-        }
         applyWatermark(document, attrs, WatermarkingMethod.DRAW, this::draw);
         applyWatermark(document, attrs, WatermarkingMethod.OVERLAY, this::overlay);
         removeSecurity(document);
@@ -73,6 +43,8 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     private void applyWatermark(PDDocument document, List<WatermarkAttributes> attrs,
                                 WatermarkingMethod method, PdfWatermarkHandler action) throws IOException {
         var filteredAttrs = attrs.stream()
+                .filter(WatermarkAttributes::getWatermarkEnabled)
+                .filter(attr -> attr.getDocumentPredicate().test(document))
                 .filter(attr -> attr.getMethod().equals(method))
                 .collect(Collectors.toList());
         if (!filteredAttrs.isEmpty()) {
@@ -81,23 +53,26 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     }
 
     private void overlay(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
+        var overlayService = (OverlayPdfWatermarker) ServiceFactory.getInstance().getService(OverlayPdfWatermarker.class);
         int numberOfPages = document.getNumberOfPages();
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            overlayService.get().watermark(document, pageIndex, attrs);
+            List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pageIndex);
+            if (!filteredAttrs.isEmpty()){
+                overlayService.watermark(document, pageIndex, filteredAttrs);
+            }
         }
     }
 
-    private void draw(PDDocument document, List<WatermarkAttributes> attrs) throws IOException {
-        PDFRenderer pdfRenderer = new PDFRenderer(document);
+    private void draw(PDDocument document, List<WatermarkAttributes> attrs) {
         int numberOfPages = document.getNumberOfPages();
         if (executorService.isEmpty()) {
-            sync(document, pdfRenderer, numberOfPages, attrs);
+            sync(document, numberOfPages, attrs);
         } else {
-            async(document, pdfRenderer, numberOfPages, attrs);
+            async(document, numberOfPages, attrs);
         }
     }
 
-    private void async(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, List<WatermarkAttributes> attrs){
+    private void async(PDDocument document, int numberOfPages, List<WatermarkAttributes> attrs){
         if (executorService.isEmpty()){
             logger.error("An empty executor");
             throw new ExecutorNotFoundException();
@@ -105,16 +80,14 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
 
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            int finalPageIndex = pageIndex;
+            final int pIndex = pageIndex;
             futures.add(
                 CompletableFuture.runAsync(
                         () -> {
                             try {
-                                drawService.get().watermark(document, pdfRenderer, finalPageIndex, attrs);
+                                draw(document, pIndex, attrs);
                             } catch (IOException e) {
-                                logger.error(String.format(
-                                        "An error occurred during watermarking on page number %d", finalPageIndex), e);
-                                throw new AsyncWatermarkPdfException(e);
+                                logPageException(e, pIndex);
                             }
                         },
                         executorService.get()
@@ -125,10 +98,30 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
         allOf.join();
     }
 
-    private void sync(PDDocument document, PDFRenderer pdfRenderer, int numberOfPages, List<WatermarkAttributes> attrs) throws IOException {
+    private void sync(PDDocument document, int numberOfPages, List<WatermarkAttributes> attrs) {
         for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++) {
-            drawService.get().watermark(document, pdfRenderer, pageIndex, attrs);
+            try {
+                draw(document, pageIndex, attrs);
+            } catch (IOException e) {
+                logPageException(e, pageIndex);
+            }
         }
+    }
+
+    private void draw(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
+        var drawService = (DrawPdfWatermarker) ServiceFactory.getInstance().getService(DrawPdfWatermarker.class);
+        List<WatermarkAttributes> filteredAttrs = filterAttrsByPageIndex(attrs, pageIndex);
+        if (!filteredAttrs.isEmpty()) drawService.watermark(document, pageIndex, filteredAttrs);
+    }
+
+    private static List<WatermarkAttributes> filterAttrsByPageIndex(List<WatermarkAttributes> attrs, int pIndex) {
+        return attrs.stream()
+                .filter(attr -> attr.getPagePredicate().test(pIndex))
+                .collect(Collectors.toList());
+    }
+
+    private void logPageException(Exception e, int pageIndex){
+        logger.error(String.format("An error occurred during watermarking on page number %d", pageIndex), e);
     }
 
     private byte[] convertPDDocumentToByteArray(PDDocument document) throws IOException {

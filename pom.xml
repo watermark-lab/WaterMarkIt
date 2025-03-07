@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.olegcheban</groupId>
+    <groupId>io.github.watermark-lab</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.2</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -38,13 +38,16 @@
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
-        <pdfbox.version>2.0.19</pdfbox.version>
+        <pdfbox.version>2.0.32</pdfbox.version>
         <ai-imageio-core.version>1.4.0</ai-imageio-core.version>
         <jai-imageio-jpeg2000.version>1.3.0</jai-imageio-jpeg2000.version>
         <jbig2-imageio.version>3.0.3</jbig2-imageio.version>
+        <junit.version>5.11.0</junit.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <kotlin.version>2.0.20</kotlin.version>
+        <spotless.version>2.44.2</spotless.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
@@ -69,7 +72,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.11.0</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -82,11 +85,6 @@
             <artifactId>kotlin-test</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
 
