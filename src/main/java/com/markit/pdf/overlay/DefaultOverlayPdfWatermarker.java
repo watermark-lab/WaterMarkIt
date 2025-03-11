@@ -50,7 +50,7 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
 
     private PDExtendedGraphicsState setOpacity(int opacity) {
         var transparencyState = new PDExtendedGraphicsState();
-        transparencyState.setNonStrokingAlphaConstant((float) (opacity / 100));
+        transparencyState.setNonStrokingAlphaConstant((float) (opacity / 100.0));
         return transparencyState;
     }
 }

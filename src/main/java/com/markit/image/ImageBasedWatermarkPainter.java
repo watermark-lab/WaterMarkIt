@@ -14,7 +14,7 @@ public class ImageBasedWatermarkPainter {
 
     public void draw(Graphics2D g2d, BufferedImage image, WatermarkAttributes attr, WatermarkPositioner positioner) {
         BufferedImage watermarkImage = attr.getImage().get();
-        var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, attr.getOpacity());
+        var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (attr.getOpacity() / 100.0));
         configureGraphics(g2d, alphaChannel);
         int watermarkWidth = (int) (watermarkImage.getWidth() * (attr.getSize() / 100.0));
         int watermarkHeight = (int) (watermarkImage.getHeight() * (attr.getSize() / 100.0));
