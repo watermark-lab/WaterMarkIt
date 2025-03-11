@@ -82,7 +82,7 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder, TextBa
         return (WatermarkBuilder) this;
     }
 
-    public WatermarkBuilder opacity(float opacity) {
+    public WatermarkBuilder opacity(int opacity) {
         currentWatermark.setOpacity(opacity);
         return (WatermarkBuilder) this;
     }

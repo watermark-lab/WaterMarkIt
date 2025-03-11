@@ -84,7 +84,7 @@ public interface WatermarkImageService {
         /**
          * Sets the opacity of the watermark
          */
-        WatermarkImageBuilder opacity(float opacity);
+        WatermarkImageBuilder opacity(int opacity);
 
         /**
          * Sets the rotation of the watermark

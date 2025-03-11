@@ -80,7 +80,7 @@ public interface WatermarkPDFService {
         /**
          * Sets the opacity of the watermark
          */
-        WatermarkPDFBuilder opacity(float opacity);
+        WatermarkPDFBuilder opacity(int opacity);
 
         /**
          * Sets the rotation of the watermark
