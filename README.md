@@ -64,7 +64,7 @@ implementation 'io.github.watermark-lab:WaterMarkIt:1.3.2'
 
 ```java
 WatermarkService.create(
-                //using a thread pool here isn't mandatory; use it only when necessary
+                //use a thread pool when necessary - for instance, for large PDF documents with many pages 
                 Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 )
