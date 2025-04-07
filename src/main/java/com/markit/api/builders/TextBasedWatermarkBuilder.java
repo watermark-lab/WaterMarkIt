@@ -23,14 +23,7 @@ public interface TextBasedWatermarkBuilder<T> {
     TextBasedWatermarkBuilder<T> addTrademark();
 
     /**
-     * Getting watermarks builder
+     * Finish working with TextBasedWatermarkBuilder and back to the WatermarkBuilder
      */
     T end();
-
-    /**
-     * Applies the watermark to the file and returns the result as a byte array
-     *
-     * @return A byte array representing the watermarked file
-     */
-    byte[] apply();
 }

@@ -37,7 +37,7 @@ public interface PositionStepBuilder<T> {
     PositionStepBuilder<T> horizontalSpacing(int spacing);
 
     /**
-     * Finish working with WatermarkPositionStepPDFBuilder and back to WatermarkPDFBuilder
+     * Finish working with PositionStepBuilder and back to the WatermarkBuilder
      */
     T end();
 }
