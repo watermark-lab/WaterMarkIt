@@ -17,8 +17,8 @@ import java.util.function.Predicate;
  * @since 1.3.0
  */
 public class DefaultWatermarkPDFService
-        extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder>
-        implements WatermarkPDFService, WatermarkPDFBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepPDFBuilder {
+        extends AbstractWatermarkService<WatermarkPDFService, WatermarkPDFBuilder>
+        implements WatermarkPDFService, WatermarkPDFBuilder {
 
     private final PDDocument document;
 

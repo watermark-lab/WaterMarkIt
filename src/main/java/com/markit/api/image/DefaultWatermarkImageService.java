@@ -14,8 +14,8 @@ import java.io.File;
  */
 @SuppressWarnings("unchecked")
 public class DefaultWatermarkImageService
-        extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder>
-        implements WatermarkImageService, WatermarkImageBuilder, TextBasedWatermarkBuilder, WatermarkPositionStepBuilder {
+        extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder>
+        implements WatermarkImageService, WatermarkImageBuilder {
 
     public DefaultWatermarkImageService(byte[] fileBytes, ImageType imageType) {
         initializeWatermarkHandler(fileBytes, imageType);

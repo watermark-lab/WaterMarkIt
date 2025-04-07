@@ -1,5 +1,6 @@
 package com.markit.api;
 
+import com.markit.api.positioning.PositionStepBuilder;
 import com.markit.api.positioning.WatermarkPosition;
 import com.markit.api.positioning.WatermarkPositionCoordinates;
 import com.markit.exceptions.ConvertBytesToBufferedImageException;
@@ -28,7 +29,8 @@ import java.util.function.Supplier;
  * @since 1.3.0
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractWatermarkService<Service, WatermarkBuilder, TextBasedWatermarkBuilder, PositionStepBuilder> {
+public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
+        implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
@@ -38,10 +40,10 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder, TextBa
         this.currentWatermark = new WatermarkAttributes();
     }
 
-    public TextBasedWatermarkBuilder withText(String text) {
+    public TextBasedWatermarkBuilder<WatermarkBuilder> withText(String text) {
         Objects.requireNonNull(text);
         currentWatermark.setText(text);
-        return (TextBasedWatermarkBuilder) this;
+        return this;
     }
 
     public WatermarkBuilder withImage(byte[] image) {
@@ -66,15 +68,15 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder, TextBa
         return (WatermarkBuilder) this;
     }
 
-    public TextBasedWatermarkBuilder color(Color color) {
+    public TextBasedWatermarkBuilder<WatermarkBuilder> color(Color color) {
         Objects.requireNonNull(color);
         currentWatermark.setColor(color);
-        return (TextBasedWatermarkBuilder) this;
+        return this;
     }
 
-    public TextBasedWatermarkBuilder addTrademark() {
+    public TextBasedWatermarkBuilder<WatermarkBuilder> addTrademark() {
         currentWatermark.setTrademark(true);
-        return (TextBasedWatermarkBuilder) this;
+        return this;
     }
 
     public WatermarkBuilder size(int size) {
@@ -97,26 +99,26 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder, TextBa
         return (WatermarkBuilder) this;
     }
 
-    public PositionStepBuilder position(WatermarkPosition watermarkPosition) {
+    public PositionStepBuilder<WatermarkBuilder> position(WatermarkPosition watermarkPosition) {
         Objects.requireNonNull(watermarkPosition);
         currentWatermark.setPosition(watermarkPosition);
-        return (PositionStepBuilder) this;
+        return this;
     }
 
-    public PositionStepBuilder adjust(int x, int y) {
+    public PositionStepBuilder<WatermarkBuilder> adjust(int x, int y) {
         var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
         currentWatermark.setPositionAdjustment(adjustment);
-        return (PositionStepBuilder) this;
+        return this;
     }
 
-    public PositionStepBuilder verticalSpacing(int spacing) {
+    public PositionStepBuilder<WatermarkBuilder> verticalSpacing(int spacing) {
         currentWatermark.setVerticalSpacing(spacing);
-        return (PositionStepBuilder) this;
+        return this;
     }
 
-    public PositionStepBuilder horizontalSpacing(int spacing) {
+    public PositionStepBuilder<WatermarkBuilder> horizontalSpacing(int spacing) {
         currentWatermark.setHorizontalSpacing(spacing);
-        return (PositionStepBuilder) this;
+        return this;
     }
 
     public WatermarkBuilder end() {
