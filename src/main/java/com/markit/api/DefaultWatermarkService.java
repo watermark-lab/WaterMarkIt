@@ -1,9 +1,9 @@
 package com.markit.api;
 
-import com.markit.api.image.WatermarkImageService;
-import com.markit.api.image.DefaultWatermarkImageService;
-import com.markit.api.pdf.WatermarkPDFService;
-import com.markit.api.pdf.DefaultWatermarkPDFService;
+import com.markit.api.formats.image.WatermarkImageService;
+import com.markit.api.formats.image.DefaultWatermarkImageService;
+import com.markit.api.formats.pdf.WatermarkPDFService;
+import com.markit.api.formats.pdf.DefaultWatermarkPDFService;
 import com.markit.exceptions.InvalidPDFFileException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.Executor;
  * @author Oleg Cheban
  * @since 1.0
  */
-public class DefaultWatermarkService implements WatermarkService.WatermarkServiceSelector {
+public class DefaultWatermarkService implements WatermarkService.FileFormatSelector {
     private Executor executor;
 
     public DefaultWatermarkService() {

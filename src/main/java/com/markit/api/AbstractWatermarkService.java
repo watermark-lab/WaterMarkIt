@@ -1,6 +1,7 @@
 package com.markit.api;
 
-import com.markit.api.positioning.PositionStepBuilder;
+import com.markit.api.builders.PositionStepBuilder;
+import com.markit.api.builders.TextBasedWatermarkBuilder;
 import com.markit.api.positioning.WatermarkPosition;
 import com.markit.api.positioning.WatermarkPositionCoordinates;
 import com.markit.exceptions.ConvertBytesToBufferedImageException;

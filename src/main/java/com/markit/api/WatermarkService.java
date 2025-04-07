@@ -1,7 +1,7 @@
 package com.markit.api;
 
-import com.markit.api.image.WatermarkImageService;
-import com.markit.api.pdf.WatermarkPDFService;
+import com.markit.api.formats.image.WatermarkImageService;
+import com.markit.api.formats.pdf.WatermarkPDFService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -15,16 +15,16 @@ import java.util.concurrent.Executor;
  * @since 1.0
  */
 public interface WatermarkService {
-    static WatermarkServiceSelector create() {
+    static FileFormatSelector create() {
         return new DefaultWatermarkService();
     }
 
-    static WatermarkServiceSelector create(Executor executor) {
+    static FileFormatSelector create(Executor executor) {
         Objects.requireNonNull(executor, "executor is required");
         return new DefaultWatermarkService(executor);
     }
 
-    interface WatermarkServiceSelector {
+    interface FileFormatSelector {
         /**
          * Sets the PDF file to be watermarked using a byte array.
          */
