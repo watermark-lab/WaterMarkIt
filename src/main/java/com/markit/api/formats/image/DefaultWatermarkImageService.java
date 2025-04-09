@@ -29,13 +29,18 @@ public class DefaultWatermarkImageService
         var imageWatermarker = (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
 
         this.watermarkHandler = (watermarks) -> {
-            if (fileSource instanceof byte[]) {
-                return imageWatermarker.watermark((byte[]) fileSource, imageType, watermarks);
-            } else if (fileSource instanceof File) {
-                return imageWatermarker.watermark((File) fileSource, imageType, watermarks);
-            } else {
-                throw new IllegalArgumentException("Unsupported file source type: " + fileSource.getClass().getName());
+            try {
+                if (fileSource instanceof byte[]) {
+                    return imageWatermarker.watermark((byte[]) fileSource, imageType, watermarks);
+                } else if (fileSource instanceof File) {
+                    return imageWatermarker.watermark((File) fileSource, imageType, watermarks);
+                } else {
+                    throw new IllegalArgumentException("Unsupported file source type: " + fileSource.getClass().getName());
+                }
+            } catch (ConvertBytesToBufferedImageException e) {
+                throw new WatermarkingException("Error converting bytes to buffered image", e);
             }
         };
     }
+
 }

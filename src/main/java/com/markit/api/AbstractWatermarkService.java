@@ -138,14 +138,14 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
     }
 
     public Service and() {
-        validateCurrentWatermark();
+        ValidationUtils.validateCurrentWatermark(currentWatermark);
         watermarks.add(currentWatermark);
         currentWatermark = new WatermarkAttributes();
         return (Service) this;
     }
 
     public Path apply(String directoryPath, String fileName) {
-        validateDirectory(directoryPath);
+        ValidationUtils.validateDirectory(directoryPath);
         try {
             byte[] file = apply();
             Path filePath = Paths.get(directoryPath, fileName);
@@ -159,17 +159,4 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
         }
     }
 
-    private void validateCurrentWatermark() {
-        if (currentWatermark.getText().isEmpty() && currentWatermark.getImage().isEmpty()) {
-            logger.error("The watermark content is empty");
-            throw new EmptyWatermarkObjectException();
-        }
-    }
-
-    private void validateDirectory(String directoryPath) {
-        if (!new File(directoryPath).isDirectory()) {
-            logger.error(String.format("Invalid directory: %s", directoryPath));
-            throw new IllegalArgumentException("The directory does not exist or is not a directory.");
-        }
-    }
 }
