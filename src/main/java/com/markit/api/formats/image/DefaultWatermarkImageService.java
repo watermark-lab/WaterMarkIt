@@ -3,6 +3,8 @@ package com.markit.api.formats.image;
 import com.markit.api.AbstractWatermarkService;
 import com.markit.api.ImageType;
 import com.markit.api.formats.image.WatermarkImageService.*;
+import com.markit.exceptions.ConvertBytesToBufferedImageException;
+import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageWatermarker;
 import com.markit.servicelocator.ServiceFactory;
 

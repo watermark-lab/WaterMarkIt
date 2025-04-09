@@ -4,10 +4,9 @@ import com.markit.api.builders.PositionStepBuilder;
 import com.markit.api.builders.TextBasedWatermarkBuilder;
 import com.markit.api.positioning.WatermarkPosition;
 import com.markit.api.positioning.WatermarkPositionCoordinates;
-import com.markit.exceptions.ConvertBytesToBufferedImageException;
-import com.markit.exceptions.EmptyWatermarkObjectException;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageConverter;
+import com.markit.utils.ValidationUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
@@ -138,7 +137,7 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
     }
 
     public Service and() {
-        ValidationUtils.validateCurrentWatermark(currentWatermark);
+        ValidationUtils.validateWatermarkAttributes(currentWatermark);
         watermarks.add(currentWatermark);
         currentWatermark = new WatermarkAttributes();
         return (Service) this;
@@ -153,10 +152,6 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
         } catch (IOException e) {
             logger.error("Failed to watermark file", e);
             throw new WatermarkingException("Error watermarking the file", e);
-        } catch (ConvertBytesToBufferedImageException e) {
-            logger.error("Failed to convert bytes to buffered image", e);
-            throw new WatermarkingException("Error converting bytes to buffered image", e);
         }
     }
-
 }

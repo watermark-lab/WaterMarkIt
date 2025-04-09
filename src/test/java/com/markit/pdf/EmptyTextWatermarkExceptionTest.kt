@@ -3,7 +3,6 @@ package com.markit.pdf
 import com.markit.api.positioning.WatermarkPosition
 import com.markit.api.WatermarkService
 import com.markit.api.WatermarkingMethod
-import com.markit.exceptions.EmptyWatermarkObjectException
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.common.PDRectangle
@@ -23,7 +22,7 @@ class EmptyTextWatermarkExceptionTest : BasePdfWatermarkTest() {
     @Test
     @Throws(IOException::class)
     fun `given empty withText when draw method then throw exception`() {
-        assertThrows<EmptyWatermarkObjectException> {
+        assertThrows<IllegalArgumentException> {
             WatermarkService.create()
                 .watermarkPDF(document)
                     .withText("")

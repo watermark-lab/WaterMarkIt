@@ -15,6 +15,7 @@ import java.util.concurrent.Executor;
  * @since 1.0
  */
 public interface WatermarkService {
+
     static FileFormatSelector create() {
         return new DefaultWatermarkService();
     }
@@ -24,6 +25,9 @@ public interface WatermarkService {
         return new DefaultWatermarkService(executor);
     }
 
+    /**
+     * Selector that provides a watermarking service for a specific file
+     */
     interface FileFormatSelector {
         /**
          * Sets the PDF file to be watermarked using a byte array.
