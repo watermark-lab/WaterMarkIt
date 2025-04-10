@@ -15,9 +15,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -94,7 +91,7 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
         return (WatermarkBuilder) this;
     }
 
-    public WatermarkBuilder when(boolean condition) {
+    public WatermarkBuilder enableIf(boolean condition) {
         currentWatermark.setWatermarkEnabled(condition);
         return (WatermarkBuilder) this;
     }
@@ -141,17 +138,5 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
         watermarks.add(currentWatermark);
         currentWatermark = new WatermarkAttributes();
         return (Service) this;
-    }
-
-    public Path apply(String directoryPath, String fileName) {
-        ValidationUtils.validateDirectory(directoryPath);
-        try {
-            byte[] file = apply();
-            Path filePath = Paths.get(directoryPath, fileName);
-            return Files.write(filePath, file);
-        } catch (IOException e) {
-            logger.error("Failed to watermark file", e);
-            throw new WatermarkingException("Error watermarking the file", e);
-        }
     }
 }
