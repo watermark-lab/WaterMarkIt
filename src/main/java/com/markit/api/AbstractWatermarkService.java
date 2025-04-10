@@ -26,8 +26,8 @@ import java.util.function.Supplier;
  * @since 1.3.0
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
-        implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
+public abstract class AbstractWatermarkService<WatermarkServiceType, WatermarkBuilderType>
+        implements PositionStepBuilder<WatermarkBuilderType>, TextBasedWatermarkBuilder<WatermarkBuilderType> {
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
     protected WatermarkHandler watermarkHandler;
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
@@ -37,89 +37,89 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
         this.currentWatermark = new WatermarkAttributes();
     }
 
-    public TextBasedWatermarkBuilder<WatermarkBuilder> withText(String text) {
+    public TextBasedWatermarkBuilder<WatermarkBuilderType> withText(String text) {
         Objects.requireNonNull(text);
         currentWatermark.setText(text);
         return this;
     }
 
-    public WatermarkBuilder withImage(byte[] image) {
+    public WatermarkBuilderType withImage(byte[] image) {
         Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
         return withImage(() -> imageConverter.convertToBufferedImage(image));
     }
 
-    public WatermarkBuilder withImage(BufferedImage image) {
+    public WatermarkBuilderType withImage(BufferedImage image) {
         Objects.requireNonNull(image);
         return withImage(() -> image);
     }
 
-    public WatermarkBuilder withImage(File image) {
+    public WatermarkBuilderType withImage(File image) {
         Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
         return withImage(() -> imageConverter.convertToBufferedImage(image));
     }
 
-    private WatermarkBuilder withImage(Supplier<BufferedImage> imageSupplier) {
+    private WatermarkBuilderType withImage(Supplier<BufferedImage> imageSupplier) {
         currentWatermark.setImage(Optional.of(imageSupplier.get()));
-        return (WatermarkBuilder) this;
+        return (WatermarkBuilderType) this;
     }
 
-    public TextBasedWatermarkBuilder<WatermarkBuilder> color(Color color) {
+    public TextBasedWatermarkBuilder<WatermarkBuilderType> color(Color color) {
         Objects.requireNonNull(color);
         currentWatermark.setColor(color);
         return this;
     }
 
-    public TextBasedWatermarkBuilder<WatermarkBuilder> addTrademark() {
+    public TextBasedWatermarkBuilder<WatermarkBuilderType> addTrademark() {
         currentWatermark.setTrademark(true);
         return this;
     }
 
-    public WatermarkBuilder size(int size) {
+    public WatermarkBuilderType size(int size) {
         currentWatermark.setSize(size);
-        return (WatermarkBuilder) this;
+        return (WatermarkBuilderType) this;
     }
 
-    public WatermarkBuilder opacity(int opacity) {
+    public WatermarkBuilderType opacity(int opacity) {
         currentWatermark.setOpacity(opacity);
-        return (WatermarkBuilder) this;
+        return (WatermarkBuilderType) this;
     }
 
-    public WatermarkBuilder rotation(int degree) {
+    public WatermarkBuilderType rotation(int degree) {
         currentWatermark.setRotationDegrees(degree);
-        return (WatermarkBuilder) this;
+        return (WatermarkBuilderType) this;
     }
 
-    public WatermarkBuilder enableIf(boolean condition) {
+    public WatermarkBuilderType enableIf(boolean condition) {
         currentWatermark.setWatermarkEnabled(condition);
-        return (WatermarkBuilder) this;
+        return (WatermarkBuilderType) this;
     }
 
-    public PositionStepBuilder<WatermarkBuilder> position(WatermarkPosition watermarkPosition) {
+    public PositionStepBuilder<WatermarkBuilderType> position(WatermarkPosition watermarkPosition) {
         Objects.requireNonNull(watermarkPosition);
         currentWatermark.setPosition(watermarkPosition);
         return this;
     }
 
-    public PositionStepBuilder<WatermarkBuilder> adjust(int x, int y) {
+    public PositionStepBuilder<WatermarkBuilderType> adjust(int x, int y) {
         var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
         currentWatermark.setPositionAdjustment(adjustment);
         return this;
     }
 
-    public PositionStepBuilder<WatermarkBuilder> verticalSpacing(int spacing) {
+    public PositionStepBuilder<WatermarkBuilderType> verticalSpacing(int spacing) {
         currentWatermark.setVerticalSpacing(spacing);
         return this;
     }
 
-    public PositionStepBuilder<WatermarkBuilder> horizontalSpacing(int spacing) {
+    public PositionStepBuilder<WatermarkBuilderType> horizontalSpacing(int spacing) {
         currentWatermark.setHorizontalSpacing(spacing);
         return this;
     }
 
-    public WatermarkBuilder end() {
-        return (WatermarkBuilder) this;
+    public WatermarkBuilderType end() {
+        return (WatermarkBuilderType) this;
     }
 
     @NotNull
@@ -133,10 +133,10 @@ public abstract class AbstractWatermarkService<Service, WatermarkBuilder>
         }
     }
 
-    public Service and() {
+    public WatermarkServiceType and() {
         ValidationUtils.validateWatermarkAttributes(currentWatermark);
         watermarks.add(currentWatermark);
         currentWatermark = new WatermarkAttributes();
-        return (Service) this;
+        return (WatermarkServiceType) this;
     }
 }

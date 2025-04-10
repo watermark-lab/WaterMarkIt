@@ -6,7 +6,7 @@ package com.markit.api.builders;
  * @author Oleg Cheban
  * @since 1.3.3
  */
-public interface PositionStepBuilder<T> {
+public interface PositionStepBuilder<WatermarkBuilderType> {
 
     /**
      * Adjusts the position of the watermark relative to its default location
@@ -14,7 +14,7 @@ public interface PositionStepBuilder<T> {
      * @param x The horizontal offset in pixels
      * @param y The vertical offset in pixels
      */
-    PositionStepBuilder<T> adjust(int x, int y);
+    PositionStepBuilder<WatermarkBuilderType> adjust(int x, int y);
 
     /**
      * Sets the vertical spacing between multiple tiled watermarks on the page.
@@ -24,7 +24,7 @@ public interface PositionStepBuilder<T> {
      *                A larger value increases the distance between adjacent watermarks vertically.
      * @return The current instance of {@code WatermarkPDFBuilder} for method chaining.
      */
-    PositionStepBuilder<T> verticalSpacing(int spacing);
+    PositionStepBuilder<WatermarkBuilderType> verticalSpacing(int spacing);
 
     /**
      * Sets the horizontal spacing between multiple tiled watermarks on the page.
@@ -34,10 +34,10 @@ public interface PositionStepBuilder<T> {
      *                A larger value increases the distance between adjacent watermarks horizontally.
      * @return The current instance of {@code WatermarkPDFBuilder} for method chaining.
      */
-    PositionStepBuilder<T> horizontalSpacing(int spacing);
+    PositionStepBuilder<WatermarkBuilderType> horizontalSpacing(int spacing);
 
     /**
-     * Finish working with PositionStepBuilder and back to the WatermarkBuilder
+     * Finish working with PositionStepBuilder and back to the WatermarkBuilderType
      */
-    T end();
+    WatermarkBuilderType end();
 }
