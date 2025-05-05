@@ -1,5 +1,5 @@
 [![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
-[![javadoc](https://img.shields.io/badge/javadoc-1.3.2-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
+[![javadoc](https://img.shields.io/badge/javadoc-1.3.3-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
 [![Code climate](https://api.codeclimate.com/v1/badges/0cd17315421a1bec3587/maintainability)](https://codeclimate.com/github/OlegCheban/WaterMarkIt/maintainability)
 [![Hits-of-Code](https://hitsofcode.com/github/OlegCheban/WaterMarkIt?branch=master)](https://hitsofcode.com/github/OlegCheban/WaterMarkIt/view?branch=master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
@@ -51,7 +51,7 @@ A lightweight Java library for adding watermarks to various file types, includin
 <dependency>
     <groupId>io.github.watermark-lab</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.3.2</version>
+    <version>1.3.3</version>
 </dependency>
 ```
 
@@ -110,7 +110,7 @@ WatermarkService.create()
 WatermarkService.create()
     .watermarkPDF(document)
         .withText("Text-based Watermark").end()
-            .when(!isOwner)
+            .enableIf(!isOwner)
     .apply()
 ```
 
