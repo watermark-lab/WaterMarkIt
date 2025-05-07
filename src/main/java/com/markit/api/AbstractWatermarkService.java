@@ -92,7 +92,7 @@ public abstract class AbstractWatermarkService<WatermarkServiceType, WatermarkBu
     }
 
     public WatermarkBuilderType enableIf(boolean condition) {
-        currentWatermark.setWatermarkEnabled(condition);
+        currentWatermark.setVisible(condition);
         return (WatermarkBuilderType) this;
     }
 

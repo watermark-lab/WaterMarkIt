@@ -28,5 +28,5 @@ data class WatermarkAttributes (
     var image: Optional<BufferedImage> = Optional.empty(),
     var documentPredicate: Predicate<PDDocument> = Predicate { true },
     var pagePredicate: Predicate<Int> = Predicate { true },
-    var watermarkEnabled: Boolean = true
+    var visible: Boolean = true
 )
