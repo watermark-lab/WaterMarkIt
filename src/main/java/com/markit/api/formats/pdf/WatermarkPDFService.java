@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.function.Predicate;
 
 /**
- * Watermark Service for applying watermarks to PDF files
+ * The Watermark Service for applying watermarks to PDFs
  *
  * @author Oleg Cheban
  * @since 1.3.0
@@ -18,26 +18,40 @@ import java.util.function.Predicate;
 public interface WatermarkPDFService {
 
     /**
-     * Sets the text to be used as the watermark
+     * Text-based watermarking method
      *
      * @param text The text for the watermark
      */
     TextBasedWatermarkBuilder<WatermarkPDFBuilder> withText(String text);
 
     /**
-     * Sets the image to be used as the watermark
+     * Image-based watermarking method
+     *
+     * @param image the Byte array representation of the image
      */
     WatermarkPDFBuilder withImage(byte[] image);
+
+    /**
+     * Image-based watermarking method
+     *
+     * @param image the BufferedImage representation of the image
+     */
     WatermarkPDFBuilder withImage(BufferedImage image);
+
+    /**
+     * Image-based watermarking method
+     *
+     * @param image the File object representing the image
+     */
     WatermarkPDFBuilder withImage(File image);
 
     /**
-     * The general pdf watermarks builder
+     * The PDFs watermarking builder
      */
     interface WatermarkPDFBuilder extends WatermarkBuilder<WatermarkPDFService, WatermarkPDFBuilder> {
 
         /**
-         * Defines the method for adding a watermark (default is DRAW)
+         * The watermarking method (default is DRAW)
          *
          * @param watermarkingMethod The method to use for watermarking
          * @see WatermarkingMethod
@@ -45,25 +59,21 @@ public interface WatermarkPDFService {
         WatermarkPDFBuilder method(WatermarkingMethod watermarkingMethod);
 
         /**
-         * Sets the dpi of the watermark
+         * The DPI for PDF
          */
         WatermarkPDFBuilder dpi(int dpi);
 
         /**
-         * Adds a condition to filter the document when applying the watermark
-         * Only documents that meet the condition will have the watermark applied
+         * Filters documents to determine which should receive the watermark.
          *
-         * @param predicate: A condition that takes a PDDocument as input and returns true/false
-         * @see Predicate
+         * @param predicate A condition that takes a PDDocument as input and returns true/false
          */
         WatermarkPDFBuilder documentFilter(Predicate<PDDocument> predicate);
 
         /**
-         * Adds a condition to filter the page when applying the watermark
-         * Only pages that meet the condition will have the watermark applied
+         * Filters pages to determine which should receive the watermark.
          *
-         * @param predicate A condition that takes a page number (Integer) as input and returns true/false. The page index starts from 0
-         * @see Predicate
+         * @param predicate A condition that takes a page number as input and returns true/false (the indexes starts from 0)
          */
         WatermarkPDFBuilder pageFilter(Predicate<Integer> predicate);
     }

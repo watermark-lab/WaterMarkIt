@@ -9,8 +9,9 @@ import java.awt.*;
  * @since 1.3.3
  */
 public interface TextBasedWatermarkBuilder<WatermarkBuilderType> {
+
     /**
-     * Sets the color of the text
+     * The color of the text
      *
      * @param color The color for the text
      * @see Color
