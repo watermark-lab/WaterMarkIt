@@ -6,11 +6,10 @@ import java.util.*;
  * @author Oleg Cheban
  * @since 1.3.2
  */
-@SuppressWarnings("unchecked")
 public class ServiceFactory<T extends Prioritizable> {
-    private static final ServiceFactory instance = new ServiceFactory();
+    private static final ServiceFactory<Prioritizable> instance = new ServiceFactory<>();
     private final Map<Class<? extends T>, T> serviceInstances = new HashMap<>();
-    public static ServiceFactory getInstance() {
+    public static ServiceFactory<Prioritizable> getInstance() {
         return instance;
     }
 
@@ -26,6 +25,7 @@ public class ServiceFactory<T extends Prioritizable> {
         serviceClasses.addAll(DefaultServiceLocator.find(clazz));
 
         try {
+            @SuppressWarnings("unchecked")
             T service = (T) serviceClasses.iterator().next().getClass().getConstructor().newInstance();
             this.serviceInstances.put(clazz, service);
             return service;

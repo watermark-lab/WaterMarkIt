@@ -14,7 +14,6 @@ import java.io.File;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-@SuppressWarnings("unchecked")
 public class DefaultWatermarkImageService
         extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder>
         implements WatermarkImageService, WatermarkImageBuilder {
@@ -44,5 +43,4 @@ public class DefaultWatermarkImageService
             }
         };
     }
-
 }

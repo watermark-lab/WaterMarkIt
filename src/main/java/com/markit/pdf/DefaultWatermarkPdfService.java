@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * @author Oleg Cheban
  * @since 1.0
  */
-@SuppressWarnings("unchecked")
 public class DefaultWatermarkPdfService implements WatermarkPdfService {
     private static final Log logger = LogFactory.getLog(DefaultWatermarkPdfService.class);
     private final Optional<Executor> executorService;

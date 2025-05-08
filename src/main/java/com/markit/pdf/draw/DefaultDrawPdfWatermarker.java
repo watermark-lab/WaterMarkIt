@@ -20,7 +20,6 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
-@SuppressWarnings("unchecked")
 public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
     private final static float DEFAULT_DPI = 300f;
 
