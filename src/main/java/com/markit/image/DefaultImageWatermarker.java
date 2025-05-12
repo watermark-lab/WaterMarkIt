@@ -1,7 +1,7 @@
 package com.markit.image;
 
-import com.markit.api.ImageType;
-import com.markit.api.WatermarkAttributes;
+import com.markit.core.ImageType;
+import com.markit.core.WatermarkAttributes;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -1,7 +1,7 @@
 package com.markit.pdf.overlay;
 
-import com.markit.api.WatermarkAttributes;
-import com.markit.api.WatermarkingMethod;
+import com.markit.core.WatermarkAttributes;
+import com.markit.core.WatermarkingMethod;
 import com.markit.servicelocator.Prioritizable;
 import org.apache.pdfbox.pdmodel.PDDocument;
 

@@ -1,4 +1,4 @@
-package com.markit.api;
+package com.markit.core;
 
 import java.io.IOException;
 import java.util.List;

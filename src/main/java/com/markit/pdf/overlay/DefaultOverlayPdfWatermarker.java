@@ -1,6 +1,6 @@
 package com.markit.pdf.overlay;
 
-import com.markit.api.WatermarkAttributes;
+import com.markit.core.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;

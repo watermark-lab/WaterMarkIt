@@ -1,8 +1,8 @@
 package com.markit.pdf.draw;
 
 import com.markit.servicelocator.Prioritizable;
-import com.markit.api.WatermarkAttributes;
-import com.markit.api.WatermarkingMethod;
+import com.markit.core.WatermarkAttributes;
+import com.markit.core.WatermarkingMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.IOException;

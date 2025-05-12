@@ -1,6 +1,6 @@
 package com.markit.utils;
 
-import com.markit.api.WatermarkAttributes;
+import com.markit.core.WatermarkAttributes;
 
 /**
  * @author Oleg Cheban
@@ -9,7 +9,7 @@ import com.markit.api.WatermarkAttributes;
 public class ValidationUtils {
 
     public static void validateWatermarkAttributes(WatermarkAttributes watermark) {
-        if (watermark.getText().isEmpty() && watermark.getImage().isEmpty()) {
+        if (watermark.getText().isEmpty() && watermark.getImage().isEmpty() && watermark.getAudio().isEmpty()) {
             throw new IllegalArgumentException();
         }
     }

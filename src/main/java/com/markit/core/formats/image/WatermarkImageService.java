@@ -1,7 +1,7 @@
-package com.markit.api.formats.image;
+package com.markit.core.formats.image;
 
-import com.markit.api.builders.TextBasedWatermarkBuilder;
-import com.markit.api.builders.WatermarkBuilder;
+import com.markit.core.builders.TextBasedWatermarkBuilder;
+import com.markit.core.builders.WatermarkBuilder;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
