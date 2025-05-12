@@ -25,11 +25,14 @@ import java.util.function.Supplier;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public abstract class AbstractWatermarkService<WatermarkService, WatermarkBuilder>
-        implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
+public abstract class AbstractWatermarkService<WatermarkService, WatermarkBuilder> implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
+
     private static final Log logger = LogFactory.getLog(AbstractWatermarkService.class);
+
     protected WatermarkHandler watermarkHandler;
+
     protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
+
     protected WatermarkAttributes currentWatermark;
 
     public AbstractWatermarkService() {
