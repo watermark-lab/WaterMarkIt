@@ -23,9 +23,8 @@ public final class DefaultWatermarkPDFBuilder
     private final PDDocument document;
 
     public DefaultWatermarkPDFBuilder(PDDocument pdfDoc, Executor executor) {
+        super(watermarks -> new DefaultWatermarkPdfService(executor).watermark(pdfDoc, watermarks));
         this.document = pdfDoc;
-        watermarkHandler = (watermarks) ->
-                new DefaultWatermarkPdfService(executor).watermark(pdfDoc, watermarks);
     }
 
     @Override

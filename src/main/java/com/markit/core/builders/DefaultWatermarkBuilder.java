@@ -1,7 +1,7 @@
 package com.markit.core.builders;
 
 import com.markit.core.BaseWatermarkService;
-import com.markit.core.WatermarkAttributes;
+import com.markit.core.WatermarkHandler;
 import com.markit.core.positioning.WatermarkPosition;
 import com.markit.core.positioning.WatermarkPositionCoordinates;
 import com.markit.image.ImageConverter;
@@ -20,8 +20,8 @@ import java.util.function.Supplier;
 public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends BaseWatermarkService<WatermarkService>
         implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
 
-    public DefaultWatermarkBuilder() {
-        this.currentWatermark = new WatermarkAttributes();
+    public DefaultWatermarkBuilder(WatermarkHandler watermarkHandler) {
+        super(watermarkHandler);
     }
 
     public WatermarkBuilder withImage(byte[] image) {

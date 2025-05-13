@@ -12,6 +12,7 @@ import java.io.File;
 public class DefaultWatermarkAudioService extends BaseWatermarkService<DefaultWatermarkAudioService> implements WatermarkAudioService {
 
     public DefaultWatermarkAudioService(File file) {
+        super(null);
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Oleg Cheban
@@ -14,11 +15,16 @@ import java.util.List;
  */
 public class BaseWatermarkService<T> {
 
-    protected WatermarkHandler watermarkHandler;
+    private final WatermarkHandler watermarkHandler;
 
-    protected final List<WatermarkAttributes> watermarks = new ArrayList<>();
+    private final List<WatermarkAttributes> watermarks = new ArrayList<>();
 
     protected WatermarkAttributes currentWatermark;
+
+    protected BaseWatermarkService(WatermarkHandler watermarkHandler) {
+        this.currentWatermark = new WatermarkAttributes();
+        this.watermarkHandler = Objects.requireNonNull(watermarkHandler, "WatermarkHandler must not be null");
+    }
 
     public T and() {
         ValidationUtils.validateWatermarkAttributes(currentWatermark);
