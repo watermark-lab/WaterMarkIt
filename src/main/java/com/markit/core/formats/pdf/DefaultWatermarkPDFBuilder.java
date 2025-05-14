@@ -29,25 +29,25 @@ public final class DefaultWatermarkPDFBuilder
 
     @Override
     public WatermarkPDFBuilder method(WatermarkingMethod watermarkingMethod) {
-        currentWatermark.setMethod(watermarkingMethod);
+        getWatermark().setMethod(watermarkingMethod);
         return this;
     }
 
     @Override
     public WatermarkPDFBuilder dpi(int dpi) {
-        currentWatermark.setDpi((float) dpi);
+        getWatermark().setDpi((float) dpi);
         return this;
     }
 
     @Override
     public WatermarkPDFBuilder documentFilter(Predicate<PDDocument> predicate) {
-        currentWatermark.setDocumentPredicate(predicate);
+        getWatermark().setDocumentPredicate(predicate);
         return this;
     }
 
     @Override
     public WatermarkPDFBuilder pageFilter(Predicate<Integer> predicate) {
-        currentWatermark.setPagePredicate(predicate);
+        getWatermark().setPagePredicate(predicate);
         return this;
     }
 

@@ -8,9 +8,7 @@ import com.markit.core.WatermarkAttributes;
  */
 public class ValidationUtils {
 
-    public static void validateWatermarkAttributes(WatermarkAttributes watermark) {
-        if (watermark.getText().isEmpty() && watermark.getImage().isEmpty() && watermark.getAudio().isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+    public static boolean validateWatermarkAttributes(WatermarkAttributes watermark) {
+        return !(watermark.getText().isEmpty() && watermark.getImage().isEmpty() && watermark.getAudio().isEmpty());
     }
 }

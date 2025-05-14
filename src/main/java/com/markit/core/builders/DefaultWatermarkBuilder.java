@@ -42,27 +42,27 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
     }
 
     private WatermarkBuilder withImage(Supplier<BufferedImage> imageSupplier) {
-        currentWatermark.setImage(Optional.of(imageSupplier.get()));
+        getWatermark().setImage(Optional.of(imageSupplier.get()));
         return builder();
     }
 
     public WatermarkBuilder size(int size) {
-        currentWatermark.setSize(size);
+        getWatermark().setSize(size);
         return builder();
     }
 
     public WatermarkBuilder opacity(int opacity) {
-        currentWatermark.setOpacity(opacity);
+        getWatermark().setOpacity(opacity);
         return builder();
     }
 
     public WatermarkBuilder rotation(int degree) {
-        currentWatermark.setRotationDegrees(degree);
+        getWatermark().setRotationDegrees(degree);
         return builder();
     }
 
     public WatermarkBuilder enableIf(boolean condition) {
-        currentWatermark.setVisible(condition);
+        getWatermark().setVisible(condition);
         return builder();
     }
 
@@ -78,40 +78,40 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
 
     public PositionStepBuilder<WatermarkBuilder> position(WatermarkPosition watermarkPosition) {
         Objects.requireNonNull(watermarkPosition);
-        currentWatermark.setPosition(watermarkPosition);
+        getWatermark().setPosition(watermarkPosition);
         return this;
     }
 
     public PositionStepBuilder<WatermarkBuilder> adjust(int x, int y) {
         var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
-        currentWatermark.setPositionAdjustment(adjustment);
+        getWatermark().setPositionAdjustment(adjustment);
         return this;
     }
 
     public PositionStepBuilder<WatermarkBuilder> verticalSpacing(int spacing) {
-        currentWatermark.setVerticalSpacing(spacing);
+        getWatermark().setVerticalSpacing(spacing);
         return this;
     }
 
     public PositionStepBuilder<WatermarkBuilder> horizontalSpacing(int spacing) {
-        currentWatermark.setHorizontalSpacing(spacing);
+        getWatermark().setHorizontalSpacing(spacing);
         return this;
     }
 
     public TextBasedWatermarkBuilder<WatermarkBuilder> color(Color color) {
         Objects.requireNonNull(color);
-        currentWatermark.setColor(color);
+        getWatermark().setColor(color);
         return this;
     }
 
     public TextBasedWatermarkBuilder<WatermarkBuilder> addTrademark() {
-        currentWatermark.setTrademark(true);
+        getWatermark().setTrademark(true);
         return this;
     }
 
     public TextBasedWatermarkBuilder<WatermarkBuilder> withText(String text) {
         Objects.requireNonNull(text);
-        currentWatermark.setText(text);
+        getWatermark().setText(text);
         return this;
     }
 }

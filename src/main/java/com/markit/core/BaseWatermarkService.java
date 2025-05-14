@@ -2,7 +2,6 @@ package com.markit.core;
 
 import com.markit.exceptions.WatermarkingException;
 import com.markit.utils.ValidationUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * Base service for applying watermarks to files.
+ *
+ * @param <T> The concrete service type that extends this class
  * @author Oleg Cheban
  * @since 1.3.3
  */
@@ -19,29 +21,52 @@ public class BaseWatermarkService<T> {
 
     private final List<WatermarkAttributes> watermarks = new ArrayList<>();
 
-    protected WatermarkAttributes currentWatermark;
+    private WatermarkAttributes watermark;
 
     protected BaseWatermarkService(WatermarkHandler watermarkHandler) {
-        this.currentWatermark = new WatermarkAttributes();
+        this.watermark = new WatermarkAttributes();
         this.watermarkHandler = Objects.requireNonNull(watermarkHandler, "WatermarkHandler must not be null");
     }
 
+    /**
+     * Adds the current watermark to the list and prepares for configuring another watermark.
+     *
+     * @return The service instance
+     * @throws IllegalArgumentException if the current watermark attributes are invalid
+     */
     public T and() {
-        ValidationUtils.validateWatermarkAttributes(currentWatermark);
-        watermarks.add(currentWatermark);
-        currentWatermark = new WatermarkAttributes();
+        approveWatermark();
+        watermark = new WatermarkAttributes();
         @SuppressWarnings("unchecked")
         var service = (T) this;
         return service;
     }
 
-    @NotNull
+    /**
+     * Applies all configured watermarks to the file.
+     *
+     * @return The watermarked file as a byte array
+     * @throws WatermarkingException if an error occurs during watermarking
+     */
     public byte[] apply() {
         try {
-            and();
+            approveWatermark();
             return this.watermarkHandler.apply(this.watermarks);
         } catch (IOException e) {
             throw new WatermarkingException("Error watermarking the file", e);
         }
+    }
+
+    private void approveWatermark(){
+        Objects.requireNonNull(watermark, "Current watermark must not be null");
+        boolean isValid = ValidationUtils.validateWatermarkAttributes(watermark);
+        if (!isValid) {
+            throw new IllegalArgumentException("Invalid watermark attributes");
+        }
+        watermarks.add(watermark);
+    }
+
+    public WatermarkAttributes getWatermark() {
+        return watermark;
     }
 }
