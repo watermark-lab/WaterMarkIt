@@ -1,6 +1,6 @@
-package com.markit.api.builders;
+package com.markit.core.builders;
 
-import com.markit.api.positioning.WatermarkPosition;
+import com.markit.core.positioning.WatermarkPosition;
 
 /**
  * Watermark Builder

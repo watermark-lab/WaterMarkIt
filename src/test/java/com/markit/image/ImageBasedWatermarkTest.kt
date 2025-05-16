@@ -1,8 +1,8 @@
 package com.markit.image
 
-import com.markit.api.ImageType
-import com.markit.api.positioning.WatermarkPosition
-import com.markit.api.WatermarkService
+import com.markit.core.ImageType
+import com.markit.core.positioning.WatermarkPosition
+import com.markit.core.WatermarkService
 import com.markit.utils.TestFileUtils
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach

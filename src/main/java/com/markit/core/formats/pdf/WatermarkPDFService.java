@@ -1,8 +1,8 @@
-package com.markit.api.formats.pdf;
+package com.markit.core.formats.pdf;
 
-import com.markit.api.builders.TextBasedWatermarkBuilder;
-import com.markit.api.WatermarkingMethod;
-import com.markit.api.builders.WatermarkBuilder;
+import com.markit.core.builders.TextBasedWatermarkBuilder;
+import com.markit.core.WatermarkingMethod;
+import com.markit.core.builders.WatermarkBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.image.BufferedImage;

@@ -1,8 +1,9 @@
-package com.markit.api.formats.image;
+package com.markit.core.formats.image;
 
-import com.markit.api.AbstractWatermarkService;
-import com.markit.api.ImageType;
-import com.markit.api.formats.image.WatermarkImageService.*;
+import com.markit.core.WatermarkHandler;
+import com.markit.core.builders.DefaultWatermarkBuilder;
+import com.markit.core.ImageType;
+import com.markit.core.formats.image.WatermarkImageService.*;
 import com.markit.exceptions.ConvertBytesToBufferedImageException;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageWatermarker;
@@ -14,22 +15,22 @@ import java.io.File;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public class DefaultWatermarkImageService
-        extends AbstractWatermarkService<WatermarkImageService, WatermarkImageBuilder>
+public final class DefaultWatermarkImageBuilder
+        extends DefaultWatermarkBuilder<WatermarkImageService, WatermarkImageBuilder>
         implements WatermarkImageService, WatermarkImageBuilder {
 
-    public DefaultWatermarkImageService(byte[] fileBytes, ImageType imageType) {
-        initializeWatermarkHandler(fileBytes, imageType);
+    public DefaultWatermarkImageBuilder(byte[] fileBytes, ImageType imageType) {
+        super(createHandler(fileBytes, imageType));
     }
 
-    public DefaultWatermarkImageService(File file, ImageType imageType) {
-        initializeWatermarkHandler(file, imageType);
+    public DefaultWatermarkImageBuilder(File file, ImageType imageType) {
+        super(createHandler(file, imageType));
     }
 
-    private void initializeWatermarkHandler(Object fileSource, ImageType imageType) {
+    private  static WatermarkHandler createHandler(Object fileSource, ImageType imageType) {
         var imageWatermarker = (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
 
-        this.watermarkHandler = (watermarks) -> {
+        return watermarks -> {
             try {
                 if (fileSource instanceof byte[]) {
                     return imageWatermarker.watermark((byte[]) fileSource, imageType, watermarks);

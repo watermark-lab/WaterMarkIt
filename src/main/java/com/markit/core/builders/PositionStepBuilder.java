@@ -1,4 +1,4 @@
-package com.markit.api.builders;
+package com.markit.core.builders;
 
 /**
  * Interface for adjusting the position of watermarks
