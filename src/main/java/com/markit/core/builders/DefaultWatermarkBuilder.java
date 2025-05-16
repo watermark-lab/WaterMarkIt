@@ -24,6 +24,23 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
         super(watermarkHandler);
     }
 
+    public TextBasedWatermarkBuilder<WatermarkBuilder> withText(String text) {
+        Objects.requireNonNull(text);
+        getWatermark().setText(text);
+        return this;
+    }
+
+    public TextBasedWatermarkBuilder<WatermarkBuilder> color(Color color) {
+        Objects.requireNonNull(color);
+        getWatermark().setColor(color);
+        return this;
+    }
+
+    public TextBasedWatermarkBuilder<WatermarkBuilder> addTrademark() {
+        getWatermark().setTrademark(true);
+        return this;
+    }
+
     public WatermarkBuilder withImage(byte[] image) {
         Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
@@ -39,11 +56,6 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
         Objects.requireNonNull(image);
         var imageConverter = new ImageConverter();
         return withImage(() -> imageConverter.convertToBufferedImage(image));
-    }
-
-    private WatermarkBuilder withImage(Supplier<BufferedImage> imageSupplier) {
-        getWatermark().setImage(Optional.of(imageSupplier.get()));
-        return builder();
     }
 
     public WatermarkBuilder size(int size) {
@@ -98,20 +110,8 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
         return this;
     }
 
-    public TextBasedWatermarkBuilder<WatermarkBuilder> color(Color color) {
-        Objects.requireNonNull(color);
-        getWatermark().setColor(color);
-        return this;
-    }
-
-    public TextBasedWatermarkBuilder<WatermarkBuilder> addTrademark() {
-        getWatermark().setTrademark(true);
-        return this;
-    }
-
-    public TextBasedWatermarkBuilder<WatermarkBuilder> withText(String text) {
-        Objects.requireNonNull(text);
-        getWatermark().setText(text);
-        return this;
+    private WatermarkBuilder withImage(Supplier<BufferedImage> imageSupplier) {
+        getWatermark().setImage(Optional.of(imageSupplier.get()));
+        return builder();
     }
 }
