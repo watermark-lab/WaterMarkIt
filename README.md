@@ -1,7 +1,6 @@
 [![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/OlegCheban/WaterMarkIt)
 [![javadoc](https://img.shields.io/badge/javadoc-1.3.3-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
-[![Code climate](https://api.codeclimate.com/v1/badges/0cd17315421a1bec3587/maintainability)](https://codeclimate.com/github/OlegCheban/WaterMarkIt/maintainability)
 [![Hits-of-Code](https://hitsofcode.com/github/OlegCheban/WaterMarkIt?branch=master)](https://hitsofcode.com/github/OlegCheban/WaterMarkIt/view?branch=master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
@@ -151,6 +150,24 @@ Then create a file `META-INF/services/com.markit.pdf.draw.DrawPdfWatermarker` co
 ```
 com.example.CustomPdfWatermarker
 ```
+
+## Why Kotlin?
+
+While WaterMarkIt is primarily a Java library targeting Java 11 for maximum compatibility, we selectively use Kotlin in specific areas to enhance code quality and developer experience:
+
+### Use Cases
+
+- **Test Code**: Kotlin's concise syntax and powerful testing features make our test suite more readable and maintainable
+- **Data Classes**: Java 11 lacks records (introduced in Java 14+), so we use Kotlin's data classes for immutable value objects
+- **Exception Classes**: Custom exceptions benefit from Kotlin's concise class declarations
+
+### For Contributors
+
+When contributing to WaterMarkIt:
+- **Use Java** for all public APIs and core library functionality
+- **Use Kotlin** for test classes, internal data structures, and utility classes where it provides clear benefits
+
+This approach gives us the best of both worlds: rock-solid Java compatibility with modern development conveniences where they matter most.
 
 ### Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
