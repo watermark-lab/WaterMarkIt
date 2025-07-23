@@ -57,7 +57,7 @@ A lightweight Java library for adding watermarks to various file types, includin
 
 **For Gradle**, add the following to your `build.gradle`:
 ```kotlin
-implementation 'io.github.watermark-lab:WaterMarkIt:1.3.2'
+implementation 'io.github.watermark-lab:WaterMarkIt:1.3.3'
 ```
 
 ### Usage
@@ -123,7 +123,7 @@ WatermarkService.create()
     .apply()  
 ```
 
-### Extensibility and Customization
+## Extensibility and Customization
 
 The library uses Java's ServiceLoader mechanism to load implementations of various services. You can override the services that implement the `Prioritizable` interface.
 
@@ -169,7 +169,7 @@ When contributing to WaterMarkIt:
 
 This approach gives us the best of both worlds: rock-solid Java compatibility with modern development conveniences where they matter most.
 
-### Dependencies 
+## Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
 - **commons-logging**: [Apache Commons Logging](https://commons.apache.org/proper/commons-logging/) - A simple logging facade for Java.
