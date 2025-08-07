@@ -45,7 +45,6 @@
         <junit.version>5.11.0</junit.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <kotlin.version>2.0.20</kotlin.version>
-        <spotless.version>2.44.2</spotless.version>
     </properties>
 
     <dependencies>
