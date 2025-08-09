@@ -1,9 +1,9 @@
-package com.markit.core.formats.image;
+package com.markit.api.formats.image;
 
-import com.markit.core.WatermarkHandler;
-import com.markit.core.builders.DefaultWatermarkBuilder;
-import com.markit.core.ImageType;
-import com.markit.core.formats.image.WatermarkImageService.*;
+import com.markit.api.WatermarkHandler;
+import com.markit.api.builders.DefaultWatermarkBuilder;
+import com.markit.api.ImageType;
+import com.markit.api.formats.image.WatermarkImageService.*;
 import com.markit.exceptions.ConvertBytesToBufferedImageException;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageWatermarker;

@@ -1,6 +1,6 @@
-package com.markit.core.builders;
+package com.markit.api.builders;
 
-import com.markit.core.positioning.WatermarkPosition;
+import com.markit.api.positioning.WatermarkPosition;
 
 /**
  * Watermark Builder
@@ -32,6 +32,14 @@ public interface WatermarkBuilder<WatermarkServiceType, WatermarkBuilderType> {
      * @see WatermarkPosition
      */
     PositionStepBuilder<WatermarkBuilderType> position(WatermarkPosition watermarkPosition);
+
+    /**
+     * Defines the position of the watermark using direct coordinates
+     *
+     * @param x The x-coordinate for the watermark position
+     * @param y The y-coordinate for the watermark position
+     */
+    WatermarkBuilderType position(int x, int y);
 
     /**
      * Enables or disables the watermark based on a specific condition

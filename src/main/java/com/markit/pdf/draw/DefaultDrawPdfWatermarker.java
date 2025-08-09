@@ -1,7 +1,7 @@
 package com.markit.pdf.draw;
 
-import com.markit.core.ImageType;
-import com.markit.core.WatermarkAttributes;
+import com.markit.api.ImageType;
+import com.markit.api.WatermarkAttributes;
 import com.markit.image.ImageConverter;
 import com.markit.image.ImageWatermarker;
 import com.markit.servicelocator.ServiceFactory;

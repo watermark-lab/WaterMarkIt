@@ -1,6 +1,6 @@
 package com.markit.pdf;
 
-import com.markit.core.WatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.IOException;

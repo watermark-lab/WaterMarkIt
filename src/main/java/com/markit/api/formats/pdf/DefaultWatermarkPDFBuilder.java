@@ -1,11 +1,11 @@
-package com.markit.core.formats.pdf;
+package com.markit.api.formats.pdf;
 
-import com.markit.core.builders.DefaultWatermarkBuilder;
-import com.markit.core.WatermarkingMethod;
+import com.markit.api.builders.DefaultWatermarkBuilder;
+import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ClosePDFDocumentException;
 import com.markit.pdf.DefaultWatermarkPdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import com.markit.core.formats.pdf.WatermarkPDFService.*;
+import com.markit.api.formats.pdf.WatermarkPDFService.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.markit.pdf.overlay;
 
-import com.markit.core.WatermarkAttributes;
-import com.markit.core.positioning.WatermarkPositionCoordinates;
+import com.markit.api.WatermarkAttributes;
+import com.markit.api.positioning.WatermarkPositionCoordinates;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;

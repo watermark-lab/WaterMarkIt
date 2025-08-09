@@ -1,4 +1,4 @@
-package com.markit.core;
+package com.markit.api;
 
 import com.markit.exceptions.WatermarkingException;
 import com.markit.utils.ValidationUtils;

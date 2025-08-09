@@ -1,6 +1,6 @@
 package com.markit.utils;
 
-import com.markit.core.WatermarkAttributes;
+import com.markit.api.WatermarkAttributes;
 
 /**
  * @author Oleg Cheban
