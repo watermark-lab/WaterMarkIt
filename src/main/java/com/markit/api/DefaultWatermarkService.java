@@ -1,9 +1,9 @@
-package com.markit.core;
+package com.markit.api;
 
-import com.markit.core.formats.image.DefaultWatermarkImageBuilder;
-import com.markit.core.formats.image.WatermarkImageService;
-import com.markit.core.formats.pdf.DefaultWatermarkPDFBuilder;
-import com.markit.core.formats.pdf.WatermarkPDFService;
+import com.markit.api.formats.image.DefaultWatermarkImageBuilder;
+import com.markit.api.formats.image.WatermarkImageService;
+import com.markit.api.formats.pdf.DefaultWatermarkPDFBuilder;
+import com.markit.api.formats.pdf.WatermarkPDFService;
 import com.markit.exceptions.InvalidPDFFileException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 

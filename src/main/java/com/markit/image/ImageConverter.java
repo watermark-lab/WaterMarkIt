@@ -1,6 +1,6 @@
 package com.markit.image;
 
-import com.markit.core.ImageType;
+import com.markit.api.ImageType;
 import com.markit.exceptions.ConvertBufferedImageToBytesException;
 import com.markit.exceptions.ConvertBytesToBufferedImageException;
 

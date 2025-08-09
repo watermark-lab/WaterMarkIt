@@ -1,7 +1,7 @@
 package com.markit.pdf;
 
-import com.markit.core.WatermarkAttributes;
-import com.markit.core.WatermarkingMethod;
+import com.markit.api.WatermarkAttributes;
+import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ExecutorNotFoundException;
 import com.markit.pdf.draw.DrawPdfWatermarker;
 import com.markit.pdf.overlay.OverlayPdfWatermarker;

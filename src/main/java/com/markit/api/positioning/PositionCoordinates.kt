@@ -1,6 +1,6 @@
-package com.markit.core.positioning
+package com.markit.api.positioning
 
-import com.markit.core.WatermarkAttributes
+import com.markit.api.WatermarkAttributes
 
 /**
  * @author Oleg Cheban
@@ -14,6 +14,11 @@ abstract class PositionCoordinates(
 ) : WatermarkPositionCoordinates {
 
     fun getCoordinatesForAttributes(attr: WatermarkAttributes): List<WatermarkPositionCoordinates.Coordinates> {
+        // If custom coordinates are being used, return them directly
+        if (attr.customCoordinates) {
+            return listOf(WatermarkPositionCoordinates.Coordinates(attr.positionAdjustment.x, attr.positionAdjustment.y))
+        }
+        
         var coordinates = when (attr.position) {
             WatermarkPosition.CENTER -> listOf(center())
             WatermarkPosition.TOP_LEFT -> listOf(topLeft())
@@ -24,6 +29,8 @@ abstract class PositionCoordinates(
             WatermarkPosition.BOTTOM_CENTER -> listOf(bottomCenter())
             WatermarkPosition.TILED -> tiled(attr)
         }
+        
+        // Apply position adjustment if needed
         if (attr.positionAdjustment.x != 0 || attr.positionAdjustment.y != 0) {
             coordinates = coordinates.map {
                 WatermarkPositionCoordinates.Coordinates(

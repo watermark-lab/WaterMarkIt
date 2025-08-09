@@ -1,7 +1,7 @@
 package com.markit.pdf
 
-import com.markit.core.WatermarkingMethod
-import com.markit.core.WatermarkService
+import com.markit.api.WatermarkingMethod
+import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.common.PDRectangle

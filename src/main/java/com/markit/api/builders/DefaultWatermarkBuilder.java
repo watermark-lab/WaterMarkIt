@@ -1,9 +1,9 @@
-package com.markit.core.builders;
+package com.markit.api.builders;
 
-import com.markit.core.BaseWatermarkService;
-import com.markit.core.WatermarkHandler;
-import com.markit.core.positioning.WatermarkPosition;
-import com.markit.core.positioning.WatermarkPositionCoordinates;
+import com.markit.api.BaseWatermarkService;
+import com.markit.api.WatermarkHandler;
+import com.markit.api.positioning.WatermarkPosition;
+import com.markit.api.positioning.WatermarkPositionCoordinates;
 import com.markit.image.ImageConverter;
 
 import java.awt.*;
@@ -92,6 +92,12 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
         Objects.requireNonNull(watermarkPosition);
         getWatermark().setPosition(watermarkPosition);
         return this;
+    }
+
+    public WatermarkBuilder position(int x, int y) {
+        getWatermark().setCustomCoordinates(true);
+        getWatermark().setPositionAdjustment(new WatermarkPositionCoordinates.Coordinates(x, y));
+        return builder();
     }
 
     public PositionStepBuilder<WatermarkBuilder> adjust(int x, int y) {

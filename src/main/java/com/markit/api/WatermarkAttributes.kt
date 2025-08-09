@@ -1,7 +1,7 @@
-package com.markit.core
+package com.markit.api
 
-import com.markit.core.positioning.WatermarkPosition
-import com.markit.core.positioning.WatermarkPositionCoordinates
+import com.markit.api.positioning.WatermarkPosition
+import com.markit.api.positioning.WatermarkPositionCoordinates
 import org.apache.pdfbox.pdmodel.PDDocument
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -24,6 +24,7 @@ data class WatermarkAttributes (
     var method: WatermarkingMethod = WatermarkingMethod.DRAW,
     var position: WatermarkPosition = WatermarkPosition.CENTER,
     var positionAdjustment: WatermarkPositionCoordinates.Coordinates = WatermarkPositionCoordinates.Coordinates(0, 0),
+    var customCoordinates: Boolean = false,
     var verticalSpacing: Int = 50,
     var horizontalSpacing: Int = 50,
     var documentPredicate: Predicate<PDDocument> = Predicate { true },

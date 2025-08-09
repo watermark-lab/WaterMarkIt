@@ -1,4 +1,4 @@
-package com.markit.core;
+package com.markit.api;
 
 /**
  * @author Oleg Cheban
