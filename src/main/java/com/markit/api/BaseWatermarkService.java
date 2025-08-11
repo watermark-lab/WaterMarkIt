@@ -35,7 +35,7 @@ public class BaseWatermarkService<T> {
      * @throws IllegalArgumentException if the current watermark attributes are invalid
      */
     public T and() {
-        approveWatermark();
+        approvePreviousWatermarkAttributes();
         watermark = new WatermarkAttributes();
         @SuppressWarnings("unchecked")
         var service = (T) this;
@@ -50,7 +50,7 @@ public class BaseWatermarkService<T> {
      */
     public byte[] apply() {
         try {
-            approveWatermark();
+            approvePreviousWatermarkAttributes();
             return this.watermarkHandler.apply(this.watermarks);
         } catch (IOException e) {
             throw new WatermarkingException("Error watermarking the file", e);
@@ -61,7 +61,7 @@ public class BaseWatermarkService<T> {
         return watermark;
     }
 
-    private void approveWatermark(){
+    private void approvePreviousWatermarkAttributes(){
         Objects.requireNonNull(watermark, "Current watermark must not be null");
         boolean isValid = ValidationUtils.validateWatermarkAttributes(watermark);
         if (!isValid) {

@@ -23,7 +23,7 @@ data class WatermarkAttributes (
     var rotationDegrees: Int = 0,
     var method: WatermarkingMethod = WatermarkingMethod.DRAW,
     var position: WatermarkPosition = WatermarkPosition.CENTER,
-    var positionAdjustment: WatermarkPositionCoordinates.Coordinates = WatermarkPositionCoordinates.Coordinates(0, 0),
+    var positionCoordinates: WatermarkPositionCoordinates.Coordinates = WatermarkPositionCoordinates.Coordinates(0, 0),
     var customCoordinates: Boolean = false,
     var verticalSpacing: Int = 50,
     var horizontalSpacing: Int = 50,
