@@ -16,7 +16,7 @@ abstract class PositionCoordinates(
     fun getCoordinatesForAttributes(attr: WatermarkAttributes): List<WatermarkPositionCoordinates.Coordinates> {
         // If custom coordinates are being used, return them directly
         if (attr.customCoordinates) {
-            return listOf(WatermarkPositionCoordinates.Coordinates(attr.positionAdjustment.x, attr.positionAdjustment.y))
+            return listOf(WatermarkPositionCoordinates.Coordinates(attr.positionCoordinates.x, attr.positionCoordinates.y))
         }
         
         var coordinates = when (attr.position) {
@@ -31,11 +31,11 @@ abstract class PositionCoordinates(
         }
         
         // Apply position adjustment if needed
-        if (attr.positionAdjustment.x != 0 || attr.positionAdjustment.y != 0) {
+        if (attr.positionCoordinates.x != 0 || attr.positionCoordinates.y != 0) {
             coordinates = coordinates.map {
                 WatermarkPositionCoordinates.Coordinates(
-                    it.x + attr.positionAdjustment.x,
-                    it.y + attr.positionAdjustment.y
+                    it.x + attr.positionCoordinates.x,
+                    it.y + attr.positionCoordinates.y
                 )
             }
         }
