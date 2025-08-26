@@ -7,11 +7,11 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
 # WaterMarkIt
 
-A lightweight Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed.  
+A lightweight, framework-agnostic Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed.  
 
 ## Features
 
-- **DSL**: Provides a user-friendly way to configure and apply watermarks with ease.
+- **Internal DSL**: Provides a user-friendly way to configure and apply watermarks with ease, while also ensuring type safety at compilation time.
 
 - **Types of Watermarks**:
   - Text-based watermarks
