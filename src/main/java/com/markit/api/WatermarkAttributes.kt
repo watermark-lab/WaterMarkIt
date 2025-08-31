@@ -18,6 +18,7 @@ data class WatermarkAttributes (
     var size: Int = 100,
     var color: Color = Color.BLACK,
     var opacity: Int = 40,
+    var font: Font = Font.ARIAL,
     var dpi: Float = 300f,
     var trademark: Boolean = false,
     var rotationDegrees: Int = 0,

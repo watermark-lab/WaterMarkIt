@@ -18,7 +18,7 @@ public class TextBasedWatermarkPainter {
     public void draw(Graphics2D g2d, BufferedImage image, WatermarkAttributes attr, WatermarkPositioner positioner) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (attr.getOpacity() / 100.0));
         var fontSize = calculateFontSize(attr.getSize(), image.getWidth(), image.getHeight());
-        var font = new Font("Arial", Font.BOLD, fontSize);
+        var font = new Font(attr.getFont().getAwtFontName(), Font.PLAIN, fontSize);
         configureGraphics(g2d, alphaChannel, attr.getColor(), font);
         FontRenderContext frc = g2d.getFontRenderContext();
         TextLayout watermarkLayout = new TextLayout(attr.getText(), font, frc);
@@ -78,6 +78,6 @@ public class TextBasedWatermarkPainter {
         FontRenderContext frc = g2d.getFontRenderContext();
         Font smallFont = baseFont.deriveFont((float) baseFontSize / 2);
         TextLayout trademarkLayout = new TextLayout("®", smallFont, frc);
-        trademarkLayout.draw(g2d, (float) (c.getX() + rect.getWidth()) + 5, c.getY() - (baseFontSize / 1.5f));
+        trademarkLayout.draw(g2d, (float) (c.getX() + rect.getWidth()) + 5, c.getY() - (baseFontSize / 2f));
     }
 }

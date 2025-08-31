@@ -1,7 +1,9 @@
 package com.markit.pdf
 
+import com.markit.api.Font
 import com.markit.api.positioning.WatermarkPosition
 import com.markit.api.WatermarkService
+import com.markit.api.WatermarkingMethod
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.junit.jupiter.api.BeforeEach
@@ -40,13 +42,15 @@ class ComplexWatermarkingTest : BasePdfWatermarkTest() {
             .and()
                 .withText("WaterMarkIt")
                     .addTrademark()
+                    .font(Font.ARIAL)
                     .color(Color.BLUE).end()
                 .position(WatermarkPosition.TILED)
                     .adjust(35, 0)
                     .horizontalSpacing(10).end()
                 .opacity(10)
+                .method(WatermarkingMethod.OVERLAY)
                 .rotation(25)
-                .size(110)
+                .size(80)
             .and()
                 .withText(LocalDateTime.now().toString()).end()
                 .position(WatermarkPosition.TOP_RIGHT)
@@ -57,6 +61,6 @@ class ComplexWatermarkingTest : BasePdfWatermarkTest() {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "ImageBasedWatermark.pdf")
+        outputFile(result, "ImageBasedWatermark.pdf")
     }
 }

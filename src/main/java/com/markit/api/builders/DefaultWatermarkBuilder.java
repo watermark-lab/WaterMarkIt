@@ -1,6 +1,7 @@
 package com.markit.api.builders;
 
 import com.markit.api.BaseWatermarkService;
+import com.markit.api.Font;
 import com.markit.api.WatermarkHandler;
 import com.markit.api.positioning.WatermarkPosition;
 import com.markit.api.positioning.WatermarkPositionCoordinates;
@@ -33,6 +34,13 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
     public TextBasedWatermarkBuilder<WatermarkBuilder> color(Color color) {
         Objects.requireNonNull(color);
         getWatermark().setColor(color);
+        return this;
+    }
+
+    @Override
+    public TextBasedWatermarkBuilder<WatermarkBuilder> font(Font font) {
+        Objects.requireNonNull(font);
+        getWatermark().setFont(font);
         return this;
     }
 

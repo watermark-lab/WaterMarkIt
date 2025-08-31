@@ -18,6 +18,7 @@ A lightweight, framework-agnostic Java library for adding watermarks to various 
   - Image-based watermarks
 
 - **Customizable Watermarks**: Customize various aspects of your watermark, including:
+  - Font
   - Color
   - Size
   - Position
@@ -76,6 +77,7 @@ WatermarkService.create(
            .opacity(20)
         .and()
            .withText("WaterMarkIt")
+               .font(Font.ARIAL)
                .color(Color.BLUE)
                .addTrademark()
                .end()           
