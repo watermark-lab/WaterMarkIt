@@ -20,7 +20,7 @@ public class TextBasedOverlayWatermarker {
     }
 
     public void overlay(PDPageContentStream contentStream, PDRectangle pdRectangle, WatermarkAttributes attr) throws IOException {
-        final var font =  PDType1Font.TIMES_BOLD;
+        final var font =  attr.getFont().getPdFont();
         final int fontSize = attr.getSize() == 0 ? TEXT_SIZE : attr.getSize();
         float textWidth = font.getStringWidth(attr.getText()) / 1000 * fontSize;
         float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
@@ -35,7 +35,7 @@ public class TextBasedOverlayWatermarker {
             contentStream.endText();
 
             if (attr.getTrademark()) {
-                trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, c, font, fontSize);
+                trademarkHandler.overlayTrademark(contentStream, attr, textWidth, textHeight, c, (PDType1Font) font, fontSize);
             }
         }
     }
