@@ -27,6 +27,11 @@ public interface TextBasedWatermarkBuilder<WatermarkBuilderType> {
      * @see com.markit.api.Font
      */
     TextBasedWatermarkBuilder<WatermarkBuilderType> font(Font font);
+	
+	/**
+	 * Makes the text bold
+	 */
+	TextBasedWatermarkBuilder<WatermarkBuilderType> bold();
 
     /**
      * Adds a trademark symbol to the text
@@ -37,4 +42,5 @@ public interface TextBasedWatermarkBuilder<WatermarkBuilderType> {
      * Finish working with TextBasedWatermarkBuilder and back to the WatermarkBuilderType
      */
     WatermarkBuilderType end();
+	
 }

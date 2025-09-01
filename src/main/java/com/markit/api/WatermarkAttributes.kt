@@ -30,5 +30,6 @@ data class WatermarkAttributes (
     var horizontalSpacing: Int = 50,
     var documentPredicate: Predicate<PDDocument> = Predicate { true },
     var pagePredicate: Predicate<Int> = Predicate { true },
-    var visible: Boolean = true
+    var visible: Boolean = true,
+    var isBold: Boolean = false
 )
