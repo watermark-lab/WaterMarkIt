@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import java.io.IOException
 import kotlin.test.assertTrue
 
-class LandscapePageOrientationTextBasedWatermarkTest : BasePdfWatermarkTest() {
+class LandscapePageOrientationTextBasedTest : WatermarkPdfTest() {
     @BeforeEach
     override fun initDocument() {
         document = PDDocument().apply {
@@ -27,30 +27,31 @@ class LandscapePageOrientationTextBasedWatermarkTest : BasePdfWatermarkTest() {
         // When
         val result = WatermarkService.create()
                 .watermarkPDF(document)
-                .withText("Sample Watermark")
-                    .end()
-                        .method(WatermarkingMethod.DRAW)
+                    .withText("Sample Watermark").end()
+                    .method(WatermarkingMethod.DRAW)
                 .apply()
 
         // Then
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "DrawLandscapePdf.pdf")
+        assertTrue(validateImageContent(result));
     }
 
     @Test
     @Throws(IOException::class)
     fun `given Landscape Pdf when Overlay Method then Make Watermarked Pdf`() {
+        // Given
+        val watermarkText = "Sample Watermark"
+
         // When
         val result = WatermarkService.create()
                 .watermarkPDF(document)
-                .withText("Sample Watermark")
-                    .end()
-                        .size(50)
-                        .method(WatermarkingMethod.OVERLAY)
+                    .withText(watermarkText).end()
+                    .size(50)
+                    .method(WatermarkingMethod.OVERLAY)
                 .apply()
 
         // Then
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "OverlayLandscapePdf.pdf")
+        assertTrue(validateWatermarkText(result, watermarkText));
     }
 }
