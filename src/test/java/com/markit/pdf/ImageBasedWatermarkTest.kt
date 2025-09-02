@@ -1,5 +1,6 @@
 package com.markit.pdf
 
+import com.markit.utils.FileUtils
 import com.markit.api.positioning.WatermarkPosition
 import com.markit.api.WatermarkService
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -11,7 +12,7 @@ import java.io.IOException
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class ImageWatermarkTest : BasePdfWatermarkTest() {
+class ImageBasedWatermarkTest : WatermarkPdfTest() {
     @BeforeEach
     override fun initDocument() {
         document = PDDocument().apply {
@@ -21,29 +22,11 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
 
     @Test
     @Throws(IOException::class)
-    fun `given Pdf when Image Watermark with 180 Degree Rotation then Apply Watermark`() {
-        // When
-        val result = WatermarkService.create()
-            .watermarkPDF(document)
-                .withImage(readFileFromClasspathAsBytes("logo.png"))
-                    .size(25)
-                    .rotation(180)
-                    .position(WatermarkPosition.TILED).end()
-            .apply()
-
-        // Then
-        assertNotNull(result, "The resulting byte array should not be null")
-        assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "ImageBasedWatermarkRotation.pdf")
-    }
-
-    @Test
-    @Throws(IOException::class)
     fun `given Pdf when Image Watermark and DPI then Apply Watermark`() {
         // When
         val result = WatermarkService.create()
             .watermarkPDF(document)
-                .withImage(readFileFromClasspathAsBytes("logo.png"))
+                .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
                     .size(15)
                     .dpi(100)
                     .position(WatermarkPosition.CENTER).end()
@@ -52,7 +35,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "ImageBasedWatermarkDPI.pdf")
+        assertTrue(validateImageContent(result));
     }
 
     @Test
@@ -61,7 +44,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
         // When
         val result = WatermarkService.create()
             .watermarkPDF(document)
-                .withImage(readFileFromClasspathAsBytes("logo.png"))
+                .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
                     .size(25)
                     .position(WatermarkPosition.TILED)
                         .adjust(50, 50)
@@ -71,7 +54,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "ImageBasedWatermarkAdjust.pdf")
+        assertTrue(validateImageContent(result));
     }
 
     @Test
@@ -80,7 +63,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
         // When
         val result = WatermarkService.create()
             .watermarkPDF(document)
-                .withImage(readFileFromClasspathAsBytes("logo.png"))
+                .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
                     .size(25)
                     .position(WatermarkPosition.TOP_CENTER)
                     .end()
@@ -89,7 +72,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        // outputFile(result,  "ImageBasedWatermarkTopCenter.pdf")
+        assertTrue(validateImageContent(result));
     }
 
     @Test
@@ -98,7 +81,7 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
         // When
         val result = WatermarkService.create()
             .watermarkPDF(document)
-                .withImage(readFileFromClasspathAsBytes("logo.png"))
+                .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
                     .size(25)
                     .position(WatermarkPosition.BOTTOM_CENTER)
                     .end()
@@ -107,8 +90,6 @@ class ImageWatermarkTest : BasePdfWatermarkTest() {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        // outputFile(result, "ImageBasedWatermarkBottomCenter.pdf")
+        assertTrue(validateImageContent(result));
     }
-
-
 }

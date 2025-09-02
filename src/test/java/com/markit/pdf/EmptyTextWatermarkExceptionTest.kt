@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.io.IOException
 
-class EmptyTextWatermarkExceptionTest : BasePdfWatermarkTest() {
+class EmptyTextWatermarkExceptionTest : WatermarkPdfTest() {
     @BeforeEach
     override fun initDocument() {
         document = PDDocument().apply {
@@ -25,10 +25,9 @@ class EmptyTextWatermarkExceptionTest : BasePdfWatermarkTest() {
         assertThrows<IllegalArgumentException> {
             WatermarkService.create()
                 .watermarkPDF(document)
-                    .withText("")
-                        .end()
-                            .position(WatermarkPosition.CENTER).end()
-                            .method(WatermarkingMethod.DRAW)
+                    .withText("").end()
+                    .position(WatermarkPosition.CENTER).end()
+                    .method(WatermarkingMethod.DRAW)
                 .apply()
         }
     }

@@ -13,7 +13,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 
-class PdfPageRotationTextBasedWatermarkTest : BasePdfWatermarkTest() {
+class PdfPageRotationTextBasedTest : WatermarkPdfTest() {
     @BeforeEach
     override fun initDocument() {
         document = PDDocument().apply {
@@ -30,26 +30,28 @@ class PdfPageRotationTextBasedWatermarkTest : BasePdfWatermarkTest() {
         // When
         val result = WatermarkService.create()
             .watermarkPDF(document)
-            .withText("Sample Watermark")
-                .end()
-                    .size(50)
-                    .position(WatermarkPosition.CENTER).end()
-                    .method(WatermarkingMethod.DRAW)
+                .withText("Sample Watermark").end()
+                .size(50)
+                .position(WatermarkPosition.CENTER).end()
+                .method(WatermarkingMethod.DRAW)
             .apply()
 
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "PDFwithDifferentPagesRotatedDraw.pdf")
+        assertTrue(validateImageContent(result));
     }
 
     @Test
     @Throws(IOException::class)
     fun `given Pdf with 0, 90, 180 and 270 degrees page rotation when Overlay Method then Make Watermarked Pdf`() {
+        // Given
+        val watermarkText = "Sample Watermark"
+
         // When
         val result = WatermarkService.create()
             .watermarkPDF(document)
-            .withText("Sample Watermark")
+            .withText(watermarkText)
                 .end()
                     .size(50)
                     .position(WatermarkPosition.CENTER).end()
@@ -59,6 +61,6 @@ class PdfPageRotationTextBasedWatermarkTest : BasePdfWatermarkTest() {
         // Then
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
-        //outputFile(result, "PDFwithDifferentPagesRotatedOverlay.pdf")
+        assertTrue(validateWatermarkText(result, watermarkText));
     }
 }
