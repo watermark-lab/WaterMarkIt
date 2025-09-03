@@ -44,6 +44,12 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
         return this;
     }
 
+    @Override
+    public TextBasedWatermarkBuilder<WatermarkBuilder> bold() {
+        getWatermark().setBold(true);
+        return this;
+    }
+
     public TextBasedWatermarkBuilder<WatermarkBuilder> addTrademark() {
         getWatermark().setTrademark(true);
         return this;

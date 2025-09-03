@@ -46,6 +46,7 @@ class ComplexWatermarkingTest : WatermarkPdfTest() {
             .and()
                 .withText(watermarkText)
                     .addTrademark()
+                    .bold()
                     .font(Font.ARIAL)
                     .color(Color.BLUE).end()
                 .position(WatermarkPosition.TILED)
