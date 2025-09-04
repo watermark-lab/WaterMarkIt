@@ -32,4 +32,14 @@ data class WatermarkAttributes (
     var pagePredicate: Predicate<Int> = Predicate { true },
     var visible: Boolean = true,
     var isBold: Boolean = false
-)
+) {
+    //calculated attributes
+    val pdfFont
+        get() = if (isBold) font.boldPdFont else font.pdFont
+
+    val pdfWatermarkTextWidth: Float
+        get() = pdfFont.getStringWidth(text) / 1000f * size
+
+    val pdfWatermarkTextHeight: Float
+        get() = pdfFont.fontDescriptor.capHeight / 1000f * size
+}

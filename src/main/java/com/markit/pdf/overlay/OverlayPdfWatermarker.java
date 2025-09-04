@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * An interface for adding watermarks to a PDF page. ({@link WatermarkingMethod#OVERLAY method}
+ * The interface for applying watermarks to a PDF page via overlay mode. ({@link WatermarkingMethod#OVERLAY method}
  *
  * @author Oleg Cheban
  * @since 1.0
