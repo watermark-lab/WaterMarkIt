@@ -3,7 +3,6 @@ package com.markit.pdf.overlay;
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.positioning.WatermarkPositionCoordinates;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 
 import java.io.IOException;
@@ -12,24 +11,23 @@ import java.io.IOException;
  * @author Oleg Cheban
  * @since 1.0
  */
-@SuppressWarnings("deprecation")
-public class TrademarkHandler {
+public class DefaultTrademarkService implements TrademarkService {
+
     private static final String TRADEMARK_SYMBOL = "®";
 
-    public void overlayTrademark(
-            PDPageContentStream contentStream,
-            WatermarkAttributes attr,
-            float textWidth,
-            float textHeight,
-            WatermarkPositionCoordinates.Coordinates c,
-            PDType1Font font,
-            int fontSize) throws IOException {
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
+    }
 
-        final int trademarkFontSize = fontSize / 2;
+    @Override
+    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, WatermarkPositionCoordinates.Coordinates c) throws IOException {
+        final int trademarkFontSize = attr.getSize() / 2;
+
         contentStream.beginText();
-        contentStream.setFont(font, trademarkFontSize);
+        contentStream.setFont(attr.getPdfFont(), trademarkFontSize);
         contentStream.setNonStrokingColor(attr.getColor());
-        contentStream.setTextMatrix(setTransformationMatrix(c, textWidth, textHeight, attr.getRotationDegrees()));
+        contentStream.setTextMatrix(setTransformationMatrix(c, attr.getPdfWatermarkTextWidth(), attr.getPdfWatermarkTextHeight(), attr.getRotationDegrees()));
         contentStream.showText(TRADEMARK_SYMBOL);
         contentStream.endText();
     }

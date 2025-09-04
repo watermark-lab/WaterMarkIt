@@ -1,6 +1,7 @@
 package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
+import com.markit.servicelocator.ServiceFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
@@ -13,7 +14,6 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.0
  */
-@SuppressWarnings("deprecation")
 public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
 
     public DefaultOverlayPdfWatermarker() {
@@ -26,12 +26,17 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
 
     @Override
     public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
-        var watermarkPositioner = new WatermarkPositioner();
-        var imageBasedOverlayWatermarker = new ImageBasedOverlayWatermarker(watermarkPositioner);
-        var textBasedOverlayWatermarker = new TextBasedOverlayWatermarker(new TrademarkHandler(), watermarkPositioner);
+        var imageBasedOverlayWatermarker =
+                (ImageBasedOverlayWatermarker) ServiceFactory.getInstance()
+                        .getService(ImageBasedOverlayWatermarker.class);
+        var textBasedOverlayWatermarker =
+                (TextBasedOverlayWatermarker) ServiceFactory.getInstance()
+                        .getService(TextBasedOverlayWatermarker.class);
         var page = document.getPage(pageIndex);
 
-        try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
+        try (PDPageContentStream contentStream =
+                     new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
+
             attrs.forEach(attr -> {
                 try {
                     contentStream.setGraphicsStateParameters(setOpacity(attr.getOpacity()));
