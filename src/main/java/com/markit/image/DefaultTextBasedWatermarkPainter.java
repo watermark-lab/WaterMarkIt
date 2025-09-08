@@ -26,9 +26,9 @@ public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPaint
     }
 
     @Override
-    public void draw(Graphics2D g2d, WatermarkAttributes attr) {
+    public void draw(Graphics2D g2d, BufferedImage sourceImage, WatermarkAttributes attr) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (attr.getOpacity() / 100.0));
-        var fontSize = calculateFontSize(attr.getSize(), attr.getImageWidth(), attr.getImageHeight());
+        var fontSize = calculateFontSize(attr.getSize(), sourceImage.getWidth(), sourceImage.getHeight());
         var fontStyle = attr.isBold() ? Font.BOLD : Font.PLAIN;
         var font = new Font(attr.getFont().getAwtFontName(), fontStyle, fontSize);
         configureGraphics(g2d, alphaChannel, attr.getColor(), font);
@@ -36,7 +36,7 @@ public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPaint
         TextLayout watermarkLayout = new TextLayout(attr.getText(), font, frc);
         Rectangle2D rect = watermarkLayout.getBounds();
 
-        var coordinates = WatermarkPositioner.defineXY(attr, attr.getImageWidth(), attr.getImageHeight(), (int) rect.getWidth(), (int) rect.getHeight());
+        var coordinates = WatermarkPositioner.defineXY(attr, sourceImage.getWidth(), sourceImage.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
         coordinates.forEach(v -> drawWatermark(g2d, watermarkLayout, attr, rect, v, font, fontSize));
     }
 
