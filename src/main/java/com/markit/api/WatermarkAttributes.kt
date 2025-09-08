@@ -15,7 +15,7 @@ import java.util.function.Predicate
 data class WatermarkAttributes (
     var text: String = "",
     var image: Optional<BufferedImage> = Optional.empty(),
-    var size: Int = 100,
+    var size: Int = 50,
     var color: Color = Color.BLACK,
     var opacity: Int = 40,
     var font: Font = Font.ARIAL,
@@ -31,15 +31,22 @@ data class WatermarkAttributes (
     var documentPredicate: Predicate<PDDocument> = Predicate { true },
     var pagePredicate: Predicate<Int> = Predicate { true },
     var visible: Boolean = true,
-    var isBold: Boolean = false
+    var isBold: Boolean = false,
+    var adjustTextSizeCf: Float = 2.5f
 ) {
     //calculated attributes
     val pdfFont
         get() = if (isBold) font.boldPdFont else font.pdFont
 
     val pdfWatermarkTextWidth: Float
-        get() = pdfFont.getStringWidth(text) / 1000f * size
+        get() = pdfFont.getStringWidth(text) / 1000f * size / adjustTextSizeCf
 
     val pdfWatermarkTextHeight: Float
-        get() = pdfFont.fontDescriptor.capHeight / 1000f * size
+        get() = pdfFont.fontDescriptor.capHeight / 1000f * size / adjustTextSizeCf
+
+    val pdfTextSize: Float
+        get() = size / adjustTextSizeCf
+
+    val imageTextSize: Float
+        get() = size * 1.7f
 }

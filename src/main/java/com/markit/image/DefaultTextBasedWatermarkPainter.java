@@ -28,7 +28,7 @@ public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPaint
     @Override
     public void draw(Graphics2D g2d, BufferedImage sourceImage, WatermarkAttributes attr) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (attr.getOpacity() / 100.0));
-        var fontSize = calculateFontSize(attr.getSize(), sourceImage.getWidth(), sourceImage.getHeight());
+        var fontSize = calculateFontSize((int) (attr.getImageTextSize()), sourceImage.getWidth(), sourceImage.getHeight());
         var fontStyle = attr.isBold() ? Font.BOLD : Font.PLAIN;
         var font = new Font(attr.getFont().getAwtFontName(), fontStyle, fontSize);
         configureGraphics(g2d, alphaChannel, attr.getColor(), font);

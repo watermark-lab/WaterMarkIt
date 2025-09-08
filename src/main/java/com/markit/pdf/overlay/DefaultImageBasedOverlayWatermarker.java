@@ -18,8 +18,8 @@ public class DefaultImageBasedOverlayWatermarker implements ImageBasedOverlayWat
 
     @Override
     public void overlay(PDPageContentStream contentStream, PDImageXObject imageXObject, PDRectangle pdRectangle, WatermarkAttributes attr) throws IOException {
-        float imageWidth = (int) (imageXObject.getWidth() * (attr.getSize() / 100.0));
-        float imageHeight = (int) (imageXObject.getHeight() * (attr.getSize() / 100.0));
+        float imageWidth = (int) (imageXObject.getWidth() * (attr.getSize() / 300f));
+        float imageHeight = (int) (imageXObject.getHeight() * (attr.getSize() / 300f));
 
         var coordinates = WatermarkPositioner.defineXY(
                 attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight(), (int) imageWidth, (int) imageHeight);
