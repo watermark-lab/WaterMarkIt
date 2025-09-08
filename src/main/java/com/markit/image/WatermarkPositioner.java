@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class WatermarkPositioner {
 
-    public List<WatermarkPositionCoordinates.Coordinates> defineXY(
+    public static List<WatermarkPositionCoordinates.Coordinates> defineXY(
             WatermarkAttributes attr, int imageWidth, int imageHeight, int watermarkWidth, int watermarkHeight) {
         return new DrawMethodPositionCoordinates(imageWidth, imageHeight, watermarkWidth, watermarkHeight)
                 .getCoordinatesForAttributes(attr);

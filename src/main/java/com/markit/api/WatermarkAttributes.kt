@@ -42,4 +42,10 @@ data class WatermarkAttributes (
 
     val pdfWatermarkTextHeight: Float
         get() = pdfFont.fontDescriptor.capHeight / 1000f * size
+
+    val imageWidth: Int
+        get() = image.map { it.width }.orElse(0)
+
+    val imageHeight: Int
+        get() = image.map { it.height }.orElse(0)
 }
