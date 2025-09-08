@@ -42,11 +42,11 @@ public class DefaultImageWatermarker implements ImageWatermarker {
             if (attr.getImage().isPresent()){
                 var imagePainter = (ImageBasedWatermarkPainter) ServiceFactory.getInstance()
                         .getService(ImageBasedWatermarkPainter.class);
-                imagePainter.draw(g2d, attr);
+                imagePainter.draw(g2d, sourceImage, attr);
             } else {
                 var textPainter = (TextBasedWatermarkPainter) ServiceFactory.getInstance()
                         .getService(TextBasedWatermarkPainter.class);
-                textPainter.draw(g2d, attr);
+                textPainter.draw(g2d, sourceImage, attr);
             }
         });
         g2d.dispose();

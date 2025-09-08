@@ -4,6 +4,7 @@ import com.markit.api.WatermarkAttributes;
 import com.markit.servicelocator.Prioritizable;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  * The interface for text-based watermark painting
@@ -13,5 +14,5 @@ import java.awt.Graphics2D;
  */
 public interface TextBasedWatermarkPainter extends Prioritizable {
 
-    void draw(Graphics2D g2d, WatermarkAttributes attr);
+    void draw(Graphics2D g2d, BufferedImage sourceImage, WatermarkAttributes attr);
 }

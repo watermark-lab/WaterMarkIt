@@ -21,13 +21,13 @@ public class DefaultImageBasedWatermarkPainter implements ImageBasedWatermarkPai
     }
 
     @Override
-    public void draw(Graphics2D g2d, WatermarkAttributes attr) {
+    public void draw(Graphics2D g2d, BufferedImage sourceImage, WatermarkAttributes attr) {
         BufferedImage watermarkImage = attr.getImage().get();
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (attr.getOpacity() / 100.0));
         configureGraphics(g2d, alphaChannel);
         int watermarkWidth = (int) (watermarkImage.getWidth() * (attr.getSize() / 100.0));
         int watermarkHeight = (int) (watermarkImage.getHeight() * (attr.getSize() / 100.0));
-        var coordinates = WatermarkPositioner.defineXY(attr, attr.getImageWidth(), attr.getImageHeight(), watermarkWidth, watermarkHeight);
+        var coordinates = WatermarkPositioner.defineXY(attr, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth, watermarkHeight);
         coordinates.forEach(v -> drawWatermark(g2d, watermarkImage, v, watermarkWidth, watermarkHeight, attr.getRotationDegrees()));
     }
 
