@@ -22,7 +22,7 @@ public class DefaultTrademarkService implements TrademarkService {
 
     @Override
     public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, WatermarkPositionCoordinates.Coordinates c) throws IOException {
-        final int trademarkFontSize = attr.getSize() / 2;
+        final int trademarkFontSize = attr.getSize() / 4;
 
         contentStream.beginText();
         contentStream.setFont(attr.getResolvedPdfFont(), trademarkFontSize);
