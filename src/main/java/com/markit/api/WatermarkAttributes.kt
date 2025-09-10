@@ -3,6 +3,7 @@ package com.markit.api
 import com.markit.api.positioning.WatermarkPosition
 import com.markit.api.positioning.WatermarkPositionCoordinates
 import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.pdmodel.font.PDFont
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.util.*
@@ -32,17 +33,25 @@ data class WatermarkAttributes (
     var pagePredicate: Predicate<Int> = Predicate { true },
     var visible: Boolean = true,
     var isBold: Boolean = false,
-    var adjustTextSizeCf: Float = 2.5f
+    var adjustTextSizeCf: Float = 2.5f,
+    var cyrillicFont: PDFont? = null
 ) {
     //calculated attributes
-    val pdfFont
-        get() = if (isBold) font.boldPdFont else font.pdFont
+    val isCyrillic: Boolean
+        get() = text.any { Character.UnicodeBlock.of(it) == Character.UnicodeBlock.CYRILLIC }
+
+    val resolvedPdfFont
+        get() = when {
+            isCyrillic -> requireNotNull(cyrillicFont) { "Cyrillic font must be provided for Cyrillic text" }
+            isBold -> font.boldPdFont
+            else -> font.pdFont
+        }
 
     val pdfWatermarkTextWidth: Float
-        get() = pdfFont.getStringWidth(text) / 1000f * size / adjustTextSizeCf
+        get() = resolvedPdfFont.getStringWidth(text) / 1000f * size / adjustTextSizeCf
 
     val pdfWatermarkTextHeight: Float
-        get() = pdfFont.fontDescriptor.capHeight / 1000f * size / adjustTextSizeCf
+        get() = resolvedPdfFont.fontDescriptor.capHeight / 1000f * size / adjustTextSizeCf
 
     val pdfTextSize: Float
         get() = size / adjustTextSizeCf

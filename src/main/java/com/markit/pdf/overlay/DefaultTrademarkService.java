@@ -25,7 +25,7 @@ public class DefaultTrademarkService implements TrademarkService {
         final int trademarkFontSize = attr.getSize() / 2;
 
         contentStream.beginText();
-        contentStream.setFont(attr.getPdfFont(), trademarkFontSize);
+        contentStream.setFont(attr.getResolvedPdfFont(), trademarkFontSize);
         contentStream.setNonStrokingColor(attr.getColor());
         contentStream.setTextMatrix(setTransformationMatrix(c, attr.getPdfWatermarkTextWidth(), attr.getPdfWatermarkTextHeight(), attr.getRotationDegrees()));
         contentStream.showText(TRADEMARK_SYMBOL);
