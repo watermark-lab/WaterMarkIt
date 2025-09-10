@@ -24,7 +24,6 @@ public class DefaultTextBasedOverlayWatermarker implements TextBasedOverlayWater
 
         for (WatermarkPositionCoordinates.Coordinates c : coordinates) {
             contentStream.beginText();
-            contentStream.setFont(attr.getPdfFont(), attr.getPdfTextSize());
             contentStream.setNonStrokingColor(attr.getColor());
             contentStream.setTextMatrix(setRotationMatrix(c, attr.getPdfWatermarkTextWidth(), attr.getPdfWatermarkTextHeight(), attr.getRotationDegrees()));
             contentStream.showText(attr.getText());

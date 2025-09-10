@@ -9,6 +9,7 @@ import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Oleg Cheban
@@ -44,6 +45,7 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
                         var image = LosslessFactory.createFromImage(document, attr.getImage().get());
                         imageBasedOverlayWatermarker.overlay(contentStream, image, page.getMediaBox(), attr);
                     } else {
+                        setFont(contentStream, attr, document);
                         textBasedOverlayWatermarker.overlay(contentStream, page.getMediaBox(), attr);
                     }
                 } catch (IOException e) {
@@ -57,5 +59,14 @@ public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
         var transparencyState = new PDExtendedGraphicsState();
         transparencyState.setNonStrokingAlphaConstant((float) (opacity / 100.0));
         return transparencyState;
+    }
+
+    private void setFont(PDPageContentStream contentStream, WatermarkAttributes attr, PDDocument document) throws IOException {
+        if (attr.isCyrillic()) {
+            attr.setCyrillicFont(CyrillicFontLoader.loadDefault(document));
+            contentStream.setFont(attr.getCyrillicFont(), attr.getPdfTextSize());
+        } else {
+            contentStream.setFont(attr.getResolvedPdfFont(), attr.getPdfTextSize());
+        }
     }
 }

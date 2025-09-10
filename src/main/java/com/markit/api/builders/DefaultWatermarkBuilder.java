@@ -73,7 +73,7 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
     }
 
     public WatermarkBuilder size(int size) {
-        if (size < 0 || size > 100)
+        if (size < 0 || size > 300)
             throw new IllegalArgumentException("Size must be between 0 and 100");
 
         getWatermark().setSize(size);
