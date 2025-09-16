@@ -16,11 +16,6 @@ public class DefaultTrademarkService implements TrademarkService {
     private static final String TRADEMARK_SYMBOL = "®";
 
     @Override
-    public int getPriority() {
-        return DEFAULT_PRIORITY;
-    }
-
-    @Override
     public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, WatermarkPositionCoordinates.Coordinates c) throws IOException {
         final int trademarkFontSize = attr.getSize() / 4;
 
@@ -44,5 +39,10 @@ public class DefaultTrademarkService implements TrademarkService {
         if (rotationDegrees != 0){
             matrix.rotate(Math.toRadians(rotationDegrees));
         }
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }

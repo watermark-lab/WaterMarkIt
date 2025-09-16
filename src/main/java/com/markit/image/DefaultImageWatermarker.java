@@ -16,11 +16,6 @@ public class DefaultImageWatermarker implements ImageWatermarker {
     private final ImageConverter imageConverter = new ImageConverter();
 
     @Override
-    public int getPriority() {
-        return DEFAULT_PRIORITY;
-    }
-
-    @Override
     public byte[] watermark(byte[] sourceImageBytes, ImageType imageType, List<WatermarkAttributes> attrs) {
         if (isByteArrayEmpty(sourceImageBytes)) {
             return sourceImageBytes;
@@ -55,5 +50,10 @@ public class DefaultImageWatermarker implements ImageWatermarker {
 
     public boolean isByteArrayEmpty(byte[] byteArray) {
         return byteArray == null || byteArray.length == 0;
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }
