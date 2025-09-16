@@ -16,11 +16,6 @@ import java.awt.image.BufferedImage;
 public class DefaultImageBasedWatermarkPainter implements ImageBasedWatermarkPainter {
 
     @Override
-    public int getPriority() {
-        return DEFAULT_PRIORITY;
-    }
-
-    @Override
     public void draw(Graphics2D g2d, BufferedImage sourceImage, WatermarkAttributes attr) {
         BufferedImage watermarkImage = attr.getImage().get();
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (attr.getOpacity() / 100f));
@@ -57,6 +52,11 @@ public class DefaultImageBasedWatermarkPainter implements ImageBasedWatermarkPai
         double centerX = c.getX() + width / 2.0;
         double centerY = c.getY() + height / 2.0;
         g2d.rotate(-Math.toRadians(rotation), centerX, centerY);
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }
 

@@ -2,6 +2,7 @@ package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.servicelocator.Prioritizable;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
@@ -22,5 +23,5 @@ public interface TextBasedOverlayWatermarker extends Prioritizable {
      * @param pdRectangle the page boundaries in default user space units (PDF points)
      * @param attr the watermark attributes
      */
-    void overlay(PDPageContentStream contentStream, PDRectangle pdRectangle, WatermarkAttributes attr) throws IOException;
+    void overlay(PDDocument document, PDPageContentStream contentStream, PDRectangle pdRectangle, WatermarkAttributes attr) throws IOException;
 }

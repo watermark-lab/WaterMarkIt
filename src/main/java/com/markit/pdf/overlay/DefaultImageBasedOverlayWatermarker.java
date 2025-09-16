@@ -12,11 +12,6 @@ import java.io.IOException;
 public class DefaultImageBasedOverlayWatermarker implements ImageBasedOverlayWatermarker {
 
     @Override
-    public int getPriority() {
-        return DEFAULT_PRIORITY;
-    }
-
-    @Override
     public void overlay(PDPageContentStream contentStream, PDImageXObject imageXObject, PDRectangle pdRectangle, WatermarkAttributes attr) throws IOException {
         float imageWidth = (int) (imageXObject.getWidth() * (attr.getSize() / 300f));
         float imageHeight = (int) (imageXObject.getHeight() * (attr.getSize() / 300f));
@@ -52,5 +47,10 @@ public class DefaultImageBasedOverlayWatermarker implements ImageBasedOverlayWat
         if (rotationDegrees != 0){
             matrix.rotate(Math.toRadians(rotationDegrees));
         }
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }

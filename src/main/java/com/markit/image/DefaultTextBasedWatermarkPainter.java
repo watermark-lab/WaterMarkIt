@@ -21,11 +21,6 @@ import java.awt.image.BufferedImage;
 public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPainter {
 
     @Override
-    public int getPriority() {
-        return DEFAULT_PRIORITY;
-    }
-
-    @Override
     public void draw(Graphics2D g2d, BufferedImage sourceImage, WatermarkAttributes attr) {
         var alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (attr.getOpacity() / 100.0));
         var fontSize = calculateFontSize((int) (attr.getImageTextSize()), sourceImage.getWidth(), sourceImage.getHeight());
@@ -85,6 +80,11 @@ public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPaint
         Font smallFont = baseFont.deriveFont((float) baseFontSize / 2);
         TextLayout trademarkLayout = new TextLayout("®", smallFont, frc);
         trademarkLayout.draw(g2d, (float) (c.getX() + rect.getWidth()) + 5, c.getY() - (baseFontSize / 2f));
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }
 
