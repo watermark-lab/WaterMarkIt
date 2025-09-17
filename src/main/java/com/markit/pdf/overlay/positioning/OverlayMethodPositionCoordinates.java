@@ -1,4 +1,4 @@
-package com.markit.pdf.overlay;
+package com.markit.pdf.overlay.positioning;
 
 import com.markit.api.positioning.PositionCoordinates;
 

@@ -1,4 +1,4 @@
-package com.markit.pdf.overlay;
+package com.markit.pdf.overlay.opacity;
 
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 
