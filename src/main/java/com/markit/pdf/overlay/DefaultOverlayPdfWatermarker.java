@@ -16,9 +16,6 @@ import java.util.List;
  */
 public class DefaultOverlayPdfWatermarker implements OverlayPdfWatermarker {
 
-    public DefaultOverlayPdfWatermarker() {
-    }
-
     @Override
     public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         var page = document.getPage(pageIndex);

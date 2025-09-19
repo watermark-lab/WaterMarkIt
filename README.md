@@ -78,6 +78,7 @@ WatermarkService.create(
         .and()
            .withText("WaterMarkIt")
                .font(Font.ARIAL)
+               .bold()
                .color(Color.BLUE)
                .addTrademark()
                .end()           
