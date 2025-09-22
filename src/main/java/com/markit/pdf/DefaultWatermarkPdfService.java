@@ -40,7 +40,7 @@ public class DefaultWatermarkPdfService implements WatermarkPdfService {
     }
 
     private void applyWatermark(PDDocument document, List<WatermarkAttributes> attrs,
-                                WatermarkingMethod method, PdfWatermarkHandler action) throws IOException {
+                                WatermarkingMethod method, PdfWatermarkProcessor action) throws IOException {
         var filteredAttrs = attrs.stream()
                 .filter(WatermarkAttributes::getVisible)
                 .filter(attr -> attr.getDocumentPredicate().test(document))

@@ -1,4 +1,4 @@
-package com.markit.pdf.draw;
+package com.markit.image.positioning;
 
 import com.markit.api.positioning.PositionCoordinates;
 

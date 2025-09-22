@@ -2,7 +2,7 @@ package com.markit.image;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.positioning.WatermarkPositionCoordinates;
-import com.markit.pdf.draw.DrawMethodPositionCoordinates;
+import com.markit.image.positioning.DrawMethodPositionCoordinates;
 
 import java.util.List;
 
