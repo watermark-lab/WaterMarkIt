@@ -17,15 +17,15 @@ import java.util.Objects;
  */
 public class BaseWatermarkService<T> {
 
-    private final WatermarkHandler watermarkHandler;
+    private final WatermarkProcessor watermarkProcessor;
 
     private final List<WatermarkAttributes> watermarks = new ArrayList<>();
 
     private WatermarkAttributes watermark;
 
-    protected BaseWatermarkService(WatermarkHandler watermarkHandler) {
+    protected BaseWatermarkService(WatermarkProcessor watermarkProcessor) {
         this.watermark = new WatermarkAttributes();
-        this.watermarkHandler = Objects.requireNonNull(watermarkHandler, "WatermarkHandler must not be null");
+        this.watermarkProcessor = Objects.requireNonNull(watermarkProcessor, "WatermarkProcessor must not be null");
     }
 
     /**
@@ -51,7 +51,7 @@ public class BaseWatermarkService<T> {
     public byte[] apply() {
         try {
             approvePreviousWatermarkAttributes();
-            return this.watermarkHandler.apply(this.watermarks);
+            return this.watermarkProcessor.apply(this.watermarks);
         } catch (IOException e) {
             throw new WatermarkingException("Error watermarking the file", e);
         }

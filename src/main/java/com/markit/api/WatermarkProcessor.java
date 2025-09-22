@@ -8,6 +8,6 @@ import java.util.List;
  * @since 1.0
  */
 @FunctionalInterface
-public interface WatermarkHandler {
+public interface WatermarkProcessor {
     byte[] apply(List<WatermarkAttributes> watermarks) throws IOException;
 }

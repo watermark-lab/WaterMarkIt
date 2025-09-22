@@ -11,6 +11,6 @@ import java.util.List;
  * @since 1.0
  */
 @FunctionalInterface
-interface PdfWatermarkHandler {
+interface PdfWatermarkProcessor {
     void apply(PDDocument document, List<WatermarkAttributes> attributes) throws IOException;
 }

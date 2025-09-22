@@ -1,6 +1,6 @@
 package com.markit.api.formats.image;
 
-import com.markit.api.WatermarkHandler;
+import com.markit.api.WatermarkProcessor;
 import com.markit.api.builders.DefaultWatermarkBuilder;
 import com.markit.api.ImageType;
 import com.markit.api.formats.image.WatermarkImageService.*;
@@ -20,14 +20,14 @@ public final class DefaultWatermarkImageBuilder
         implements WatermarkImageService, WatermarkImageBuilder {
 
     public DefaultWatermarkImageBuilder(byte[] fileBytes, ImageType imageType) {
-        super(createHandler(fileBytes, imageType));
+        super(create(fileBytes, imageType));
     }
 
     public DefaultWatermarkImageBuilder(File file, ImageType imageType) {
-        super(createHandler(file, imageType));
+        super(create(file, imageType));
     }
 
-    private  static WatermarkHandler createHandler(Object fileSource, ImageType imageType) {
+    private  static WatermarkProcessor create(Object fileSource, ImageType imageType) {
         var imageWatermarker = (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
 
         return watermarks -> {

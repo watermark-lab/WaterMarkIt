@@ -2,11 +2,13 @@ package com.markit.api.formats.pdf;
 
 import com.markit.api.builders.DefaultWatermarkBuilder;
 import com.markit.api.WatermarkingMethod;
+import com.markit.exceptions.ClosePDFDocumentException;
 import com.markit.pdf.DefaultWatermarkPdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import com.markit.api.formats.pdf.WatermarkPDFService.*;
+import org.jetbrains.annotations.NotNull;
 
-import java.lang.ref.Cleaner;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
@@ -19,12 +21,12 @@ public final class DefaultWatermarkPDFBuilder
         extends DefaultWatermarkBuilder<WatermarkPDFService, WatermarkPDFBuilder>
         implements WatermarkPDFService, WatermarkPDFBuilder {
 
-    private static final Cleaner CLEANER = Cleaner.create();
+    private PDDocument document;
 
     public DefaultWatermarkPDFBuilder(PDDocument pdfDoc, Executor executor) {
         super(watermarks -> new DefaultWatermarkPdfService(executor).watermark(pdfDoc, watermarks));
-        Objects.requireNonNull(pdfDoc, "pdf file cannot be null");
-        CLEANER.register(this, new DocumentState(pdfDoc));
+        Objects.requireNonNull(pdfDoc, "PDDocument cannot be null");
+        this.document = pdfDoc;
     }
 
     @Override
@@ -51,20 +53,22 @@ public final class DefaultWatermarkPDFBuilder
         return this;
     }
 
-    private static final class DocumentState implements Runnable {
-        private final PDDocument document;
-
-        private DocumentState(PDDocument document) {
-            this.document = document;
-        }
-
-        @Override
-        public void run() {
-            try {
-                document.close();
-            } catch (Exception ignored) {
-                // Best-effort cleanup during GC; exceptions cannot be propagated here.
-            }
+    @NotNull
+    @Override
+    public byte[] apply() {
+        try {
+            return super.apply();
+        } finally {
+            closeDocument();
         }
     }
+
+    private void closeDocument() {
+        try {
+            document.close();
+        } catch (IOException e) {
+            throw new ClosePDFDocumentException("Failed to close the document", e);
+        }
+    }
+
 }
