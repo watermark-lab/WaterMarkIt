@@ -24,6 +24,4 @@ interface WatermarkPositionCoordinates {
     fun bottomCenter(): Coordinates
 
     fun tiled(attr: WatermarkAttributes): List<Coordinates>
-
-    data class Coordinates(val x: Int, val y: Int)
 }

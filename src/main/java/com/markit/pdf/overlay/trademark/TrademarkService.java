@@ -1,7 +1,7 @@
 package com.markit.pdf.overlay.trademark;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
 import com.markit.servicelocator.Prioritizable;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
@@ -22,5 +22,5 @@ public interface TrademarkService extends Prioritizable {
      * @param attr a trademark has to check watermark attributes such as color, rotation, font, text, and size of text
      * @param c the watermark coordinates
      */
-    void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, WatermarkPositionCoordinates.Coordinates c) throws IOException;
+    void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, Coordinates c) throws IOException;
 }

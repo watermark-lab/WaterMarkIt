@@ -1,7 +1,7 @@
 package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
 import com.markit.pdf.overlay.positioning.WatermarkPositioner;
 import com.markit.pdf.overlay.rotation.MatrixTransformationProvider;
 import com.markit.pdf.overlay.rotation.TransformationType;
@@ -22,7 +22,7 @@ public class DefaultImageBasedOverlayWatermarker implements ImageBasedOverlayWat
         var coordinates = WatermarkPositioner.defineXY(
                 attr, (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight(), (int) imageWidth, (int) imageHeight);
 
-        for (WatermarkPositionCoordinates.Coordinates c : coordinates) {
+        for (Coordinates c : coordinates) {
             if (attr.getRotationDegrees() != 0) {
                 applyRotationAndDraw(contentStream, imageXObject, c, imageWidth, imageHeight, attr.getRotationDegrees());
             } else {
@@ -31,9 +31,9 @@ public class DefaultImageBasedOverlayWatermarker implements ImageBasedOverlayWat
         }
     }
 
-    private void applyRotationAndDraw(PDPageContentStream contentStream, PDImageXObject imageXObject,
-                                      WatermarkPositionCoordinates.Coordinates c, float width, float height,
-                                      int rotationDegrees) throws IOException {
+    private void applyRotationAndDraw(
+            PDPageContentStream contentStream, PDImageXObject imageXObject,
+            Coordinates c, float width, float height, int rotationDegrees) throws IOException {
         contentStream.saveGraphicsState();
 
         var textTransformationProvider = (MatrixTransformationProvider) ServiceFactory.getInstance()

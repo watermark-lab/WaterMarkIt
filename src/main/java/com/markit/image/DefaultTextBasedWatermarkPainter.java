@@ -1,7 +1,7 @@
 package com.markit.image;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -46,7 +46,7 @@ public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPaint
         g2d.setFont(font);
     }
 
-    private void drawWatermark(Graphics2D g2d, TextLayout watermarkLayout, WatermarkAttributes attr, Rectangle2D rect, WatermarkPositionCoordinates.Coordinates c, Font baseFont, int baseFontSize) {
+    private void drawWatermark(Graphics2D g2d, TextLayout watermarkLayout, WatermarkAttributes attr, Rectangle2D rect, Coordinates c, Font baseFont, int baseFontSize) {
         applyWithOptionalRotation(g2d, attr.getRotationDegrees(), c, rect, () -> {
             watermarkLayout.draw(g2d, c.getX(), c.getY());
 
@@ -56,7 +56,7 @@ public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPaint
         });
     }
 
-    private void applyWithOptionalRotation(Graphics2D g2d, int rotation, WatermarkPositionCoordinates.Coordinates c, Rectangle2D rect, Runnable drawAction) {
+    private void applyWithOptionalRotation(Graphics2D g2d, int rotation, Coordinates c, Rectangle2D rect, Runnable drawAction) {
         var originalTransform = g2d.getTransform();
         if (rotation != 0) {
             applyRotation(g2d, rotation, c, rect);
@@ -69,13 +69,13 @@ public class DefaultTextBasedWatermarkPainter implements TextBasedWatermarkPaint
         }
     }
 
-    private void applyRotation(Graphics2D g2d, int rotation, WatermarkPositionCoordinates.Coordinates c, Rectangle2D rect) {
+    private void applyRotation(Graphics2D g2d, int rotation, Coordinates c, Rectangle2D rect) {
         double centerX = c.getX() + rect.getWidth() / 2;
         double centerY = c.getY() + rect.getHeight() / 2;
         g2d.rotate(-Math.toRadians(rotation), centerX, centerY);
     }
 
-    private void drawTrademark(Graphics2D g2d, Font baseFont, int baseFontSize, Rectangle2D rect, WatermarkPositionCoordinates.Coordinates c) {
+    private void drawTrademark(Graphics2D g2d, Font baseFont, int baseFontSize, Rectangle2D rect, Coordinates c) {
         FontRenderContext frc = g2d.getFontRenderContext();
         Font smallFont = baseFont.deriveFont((float) baseFontSize / 2);
         TextLayout trademarkLayout = new TextLayout("®", smallFont, frc);

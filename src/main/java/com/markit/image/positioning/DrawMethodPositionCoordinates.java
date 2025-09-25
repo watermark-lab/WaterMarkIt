@@ -1,5 +1,6 @@
 package com.markit.image.positioning;
 
+import com.markit.api.positioning.Coordinates;
 import com.markit.api.positioning.PositionCoordinates;
 
 /**

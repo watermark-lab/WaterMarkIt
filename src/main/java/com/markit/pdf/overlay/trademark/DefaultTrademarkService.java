@@ -1,7 +1,7 @@
 package com.markit.pdf.overlay.trademark;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.util.Matrix;
 
@@ -16,7 +16,7 @@ public class DefaultTrademarkService implements TrademarkService {
     private static final String TRADEMARK_SYMBOL = "®";
 
     @Override
-    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, WatermarkPositionCoordinates.Coordinates c) throws IOException {
+    public void overlayTrademark(PDPageContentStream contentStream, WatermarkAttributes attr, Coordinates c) throws IOException {
         final int trademarkFontSize = attr.getSize() / 4;
 
         contentStream.beginText();
@@ -27,7 +27,7 @@ public class DefaultTrademarkService implements TrademarkService {
         contentStream.endText();
     }
 
-    private Matrix setTransformationMatrix(WatermarkPositionCoordinates.Coordinates c, float textWidth, float textHeight, int rotationDegrees) {
+    private Matrix setTransformationMatrix(Coordinates c, float textWidth, float textHeight, int rotationDegrees) {
         Matrix matrix = new Matrix();
         matrix.translate(c.getX() + textWidth / 2, c.getY() + textHeight / 2);
         rotate(matrix, rotationDegrees);
