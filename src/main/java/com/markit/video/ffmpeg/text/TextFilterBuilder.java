@@ -8,12 +8,10 @@ import java.util.List;
 
 public class TextFilterBuilder {
 
-    public FilterStep build(List<WatermarkAttributes> attrs, String lastLabel, int step, boolean isEmpty) {
+    public FilterStep build(List<WatermarkAttributes> attrs, String lastLabel, int step, boolean isEmptyFilter) {
         StringBuilder filter = new StringBuilder();
 
         for (WatermarkAttributes a : attrs) {
-            if (!a.getVisible() || a.getText() == null || a.getText().isEmpty()) continue;
-
             String inLabel = step == 0 ? "[0:v]" : lastLabel;
             String outLabel = "[v" + (step + 1) + "]";
 
@@ -35,15 +33,15 @@ public class TextFilterBuilder {
                     outLabel
             );
 
-            if (!isEmpty) filter.append(",");
+            if (!isEmptyFilter) filter.append(",");
             filter.append(drawtext);
 
             lastLabel = outLabel;
-            isEmpty = false;
+            isEmptyFilter = false;
             step++;
         }
 
-        return new FilterStep(filter.toString(), lastLabel, step, isEmpty);
+        return new FilterStep(filter.toString(), lastLabel, step, isEmptyFilter);
     }
 
     private String getColorValue(Color color) {

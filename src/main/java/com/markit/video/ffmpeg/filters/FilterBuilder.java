@@ -15,28 +15,54 @@ public class FilterBuilder {
     private final TextFilterBuilder textBuilder = new TextFilterBuilder();
     private final ImageOverlayBuilder imageBuilder = new ImageOverlayBuilder();
 
-    public FilterResult build(File video, List<WatermarkAttributes> attrs) throws Exception {
+    public FilterResult build(File video, List<WatermarkAttributes> attributes) throws Exception {
         StringBuilder filter = new StringBuilder();
         List<File> tempImages = new ArrayList<>();
         String lastLabel = "[0:v]";
         int step = 0;
-        boolean isEmpty = true;
+        boolean isEmptyFilter = true;
 
         VideoDimensions dimensions = VideoInfoExtractor.getVideoDimensions(video);
 
         // Build text filters
-        FilterStep textStep = textBuilder.build(attrs, lastLabel, step, isEmpty);
-        filter.append(textStep.getFilter());
-        lastLabel = textStep.getLastLabel();
-        step = textStep.getStep();
-        isEmpty = textStep.getEmpty();
+        List<WatermarkAttributes> textAttributes = getTextAttributes(attributes);
+        if (!textAttributes.isEmpty()) {
+            FilterStep textStep = textBuilder.build(textAttributes, lastLabel, step, isEmptyFilter);
+            filter.append(textStep.getFilter());
+            lastLabel = textStep.getLastLabel();
+            step = textStep.getStep();
+            isEmptyFilter = textStep.getEmpty();
+        }
 
         // Build image overlays
-        FilterStep imageStep = imageBuilder.build(attrs, dimensions, lastLabel, step, isEmpty);
-        filter.append(imageStep.getFilter());
-        tempImages.addAll(imageStep.getTempImages());
-        lastLabel = imageStep.getLastLabel();
+        List<WatermarkAttributes> imageAttributes = getImageAttributes(attributes);
+        if (!imageAttributes.isEmpty()) {
+            FilterStep imageStep = imageBuilder.build(imageAttributes, dimensions, lastLabel, step, isEmptyFilter);
+            filter.append(imageStep.getFilter());
+            tempImages.addAll(imageStep.getTempImages());
+            lastLabel = imageStep.getLastLabel();
+        }
 
         return new FilterResult(filter.toString(), lastLabel, tempImages);
+    }
+
+    private List<WatermarkAttributes> getTextAttributes(List<WatermarkAttributes> attributes) {
+        List<WatermarkAttributes> textAttrs = new ArrayList<>();
+        for (WatermarkAttributes attr : attributes) {
+            if (attr.isTextWatermark()) {
+                textAttrs.add(attr);
+            }
+        }
+        return textAttrs;
+    }
+
+    private List<WatermarkAttributes> getImageAttributes(List<WatermarkAttributes> attributes) {
+        List<WatermarkAttributes> imageAttrs = new ArrayList<>();
+        for (WatermarkAttributes attr : attributes) {
+            if (attr.isImageWatermark()) {
+                imageAttrs.add(attr);
+            }
+        }
+        return imageAttrs;
     }
 }

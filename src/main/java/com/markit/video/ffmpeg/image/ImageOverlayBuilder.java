@@ -16,22 +16,16 @@ import java.util.List;
 
 public class ImageOverlayBuilder {
 
-    public FilterStep build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean first) throws Exception {
+    public FilterStep build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception {
         StringBuilder filter = new StringBuilder();
         List<File> tempImages = new ArrayList<>();
 
         for (WatermarkAttributes a : attrs) {
-            if (!a.getVisible() || !a.getImage().isPresent()) continue;
-
             BufferedImage original = a.getImage().get();
             int targetWidth = Math.max(1, (int) Math.round(original.getWidth() * (a.getSize() / 100.0)));
             int targetHeight = Math.max(1, (int) Math.round(original.getHeight() * (a.getSize() / 100.0)));
 
-            BufferedImage scaled = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = scaled.createGraphics();
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.drawImage(original, 0, 0, targetWidth, targetHeight, null);
-            g2d.dispose();
+            BufferedImage scaled = scaleImage(original, targetWidth, targetHeight);
 
             List<Coordinates> coordinates =
                     WatermarkPositioner.defineXY(a, dimensions.getWidth(), dimensions.getHeight(), targetWidth, targetHeight);
@@ -47,15 +41,24 @@ public class ImageOverlayBuilder {
                 String overlay = String.format("%s[%d:v]overlay=x=%d:y=%d%s",
                         inLabel, tempImages.size(), c.getX(), c.getY(), outLabel);
 
-                if (!first) filter.append(",");
+                if (!isEmptyFilter) filter.append(",");
                 filter.append(overlay);
 
                 lastLabel = outLabel;
-                first = false;
+                isEmptyFilter = false;
                 step++;
             }
         }
 
-        return new FilterStep(filter.toString(), lastLabel, step, first, tempImages);
+        return new FilterStep(filter.toString(), lastLabel, step, isEmptyFilter, tempImages);
+    }
+
+    private BufferedImage scaleImage(BufferedImage original, int targetWidth, int targetHeight) {
+        BufferedImage scaled = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = scaled.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(original, 0, 0, targetWidth, targetHeight, null);
+        g2d.dispose();
+        return scaled;
     }
 }
