@@ -1,9 +1,8 @@
-package com.markit.video.ffmpeg.image;
+package com.markit.video.ffmpeg.filters;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.api.positioning.Coordinates;
 import com.markit.image.WatermarkPositioner;
-import com.markit.video.ffmpeg.filters.FilterStep;
 import com.markit.video.ffmpeg.probes.VideoDimensions;
 
 import javax.imageio.ImageIO;
@@ -14,7 +13,12 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageOverlayBuilder {
+/**
+ *
+ * @author Oleg Cheban
+ * @since 1.4.0
+ */
+public class ImageOverlayBuilder implements FilterStepBuilder {
 
     public FilterStep build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception {
         StringBuilder filter = new StringBuilder();
@@ -60,5 +64,15 @@ public class ImageOverlayBuilder {
         g2d.drawImage(original, 0, 0, targetWidth, targetHeight, null);
         g2d.dispose();
         return scaled;
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
+    }
+
+    @Override
+    public Step getStepType() {
+        return Step.OVERLAY;
     }
 }

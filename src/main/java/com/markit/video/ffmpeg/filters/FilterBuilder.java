@@ -1,19 +1,19 @@
 package com.markit.video.ffmpeg.filters;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.video.ffmpeg.image.ImageOverlayBuilder;
 import com.markit.video.ffmpeg.probes.VideoDimensions;
 import com.markit.video.ffmpeg.probes.VideoInfoExtractor;
-import com.markit.video.ffmpeg.text.TextFilterBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Oleg Cheban
+ * @since 1.4.0
+ */
 public class FilterBuilder {
-
-    private final TextFilterBuilder textBuilder = new TextFilterBuilder();
-    private final ImageOverlayBuilder imageBuilder = new ImageOverlayBuilder();
 
     public FilterResult build(File video, List<WatermarkAttributes> attributes) throws Exception {
         StringBuilder filter = new StringBuilder();
@@ -27,7 +27,8 @@ public class FilterBuilder {
         // Build text filters
         List<WatermarkAttributes> textAttributes = getTextAttributes(attributes);
         if (!textAttributes.isEmpty()) {
-            FilterStep textStep = textBuilder.build(textAttributes, lastLabel, step, isEmptyFilter);
+            FilterStepBuilder textBuilder = FilterStepBuilderFactory.getInstance().getBuilder(Step.TEXT);
+            FilterStep textStep = textBuilder.build(textAttributes, dimensions, lastLabel, step, isEmptyFilter);
             filter.append(textStep.getFilter());
             lastLabel = textStep.getLastLabel();
             step = textStep.getStep();
@@ -37,7 +38,8 @@ public class FilterBuilder {
         // Build image overlays
         List<WatermarkAttributes> imageAttributes = getImageAttributes(attributes);
         if (!imageAttributes.isEmpty()) {
-            FilterStep imageStep = imageBuilder.build(imageAttributes, dimensions, lastLabel, step, isEmptyFilter);
+            FilterStepBuilder overlayBuilder = FilterStepBuilderFactory.getInstance().getBuilder(Step.OVERLAY);
+            FilterStep imageStep = overlayBuilder.build(imageAttributes, dimensions, lastLabel, step, isEmptyFilter);
             filter.append(imageStep.getFilter());
             tempImages.addAll(imageStep.getTempImages());
             lastLabel = imageStep.getLastLabel();

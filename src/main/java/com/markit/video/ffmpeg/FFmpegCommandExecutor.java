@@ -9,6 +9,11 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Oleg Cheban
+ * @since 1.4.0
+ */
 public class FFmpegCommandExecutor {
 
     public byte[] execute(File input, FilterResult graph) throws Exception {

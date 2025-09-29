@@ -10,6 +10,11 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 
+/**
+ *
+ * @author Oleg Cheban
+ * @since 1.4.0
+ */
 public class FFmpegVideoWatermarker implements VideoWatermarker {
 
     private final FFmpegCommandExecutor executor;

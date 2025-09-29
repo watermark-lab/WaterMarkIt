@@ -7,6 +7,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ *
+ * @author Oleg Cheban
+ * @since 1.4.0
+ */
 public class VideoInfoExtractor {
     public static VideoDimensions getVideoDimensions(File videoFile) throws IOException, InterruptedException {
         Process process = getProcess(videoFile);

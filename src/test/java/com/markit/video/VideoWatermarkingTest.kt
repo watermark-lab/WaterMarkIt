@@ -19,15 +19,15 @@ class VideoWatermarkingTest {
                 .withText("WaterMarkIt").color(Color.RED).end()
                 .opacity(50)
                 .position(WatermarkPosition.CENTER).end()
-                .size(60)
+                .size(30)
             .and()
                 .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
                 .position(WatermarkPosition.BOTTOM_RIGHT).end()
                 .size(8)
             .and()
                 .withText("WaterMarkIt").end()
-                .position(WatermarkPosition.BOTTOM_CENTER).end()
-                .size(30)
+                .position(WatermarkPosition.BOTTOM_LEFT).end()
+                .size(40)
             .and()
                 .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
                 .position(WatermarkPosition.TOP_LEFT).end()
@@ -36,5 +36,6 @@ class VideoWatermarkingTest {
 
         assertNotNull(result, "The resulting byte array should not be null")
         assertTrue(result.isNotEmpty(), "The resulting byte array should not be empty")
+        //FileUtils.outputFile(result, "video_watermark.mp4")
     }
 }
