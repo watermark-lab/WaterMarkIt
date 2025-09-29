@@ -13,8 +13,6 @@ public final class DefaultWatermarkVideoBuilder
         extends DefaultWatermarkBuilder<WatermarkVideoService, WatermarkVideoBuilder>
         implements WatermarkVideoService, WatermarkVideoBuilder {
 
-    private static VideoWatermarker videoWatermarker;
-
     public DefaultWatermarkVideoBuilder(byte[] fileBytes) {
         super(createWatermarkProcessor(fileBytes));
     }
@@ -44,10 +42,7 @@ public final class DefaultWatermarkVideoBuilder
     }
 
     private static VideoWatermarker getVideoWatermarker() {
-        if (videoWatermarker == null) {
-            videoWatermarker = (VideoWatermarker) ServiceFactory.getInstance().getService(VideoWatermarker.class);
-        }
-        return videoWatermarker;
+        return (VideoWatermarker) ServiceFactory.getInstance().getService(VideoWatermarker.class);
     }
 }
 

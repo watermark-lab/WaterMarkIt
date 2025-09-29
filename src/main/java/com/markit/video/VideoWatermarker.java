@@ -15,5 +15,6 @@ import java.util.List;
 public interface VideoWatermarker extends Prioritizable {
 
     byte[] watermark(byte[] sourceVideoBytes, List<WatermarkAttributes> attrs) throws Exception;
+
     byte[] watermark(File file, List<WatermarkAttributes> attrs) throws Exception;
 }

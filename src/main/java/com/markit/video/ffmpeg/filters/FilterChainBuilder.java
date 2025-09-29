@@ -12,5 +12,6 @@ import java.util.List;
  * @since 1.4.0
  */
 public interface FilterChainBuilder extends Prioritizable {
+
     FilterResult build(File video, List<WatermarkAttributes> attributes) throws Exception;
 }
