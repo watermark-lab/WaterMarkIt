@@ -1,7 +1,7 @@
 package com.markit.api
 
+import com.markit.api.positioning.Coordinates
 import com.markit.api.positioning.WatermarkPosition
-import com.markit.api.positioning.WatermarkPositionCoordinates
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.font.PDFont
 import java.awt.Color
@@ -25,7 +25,7 @@ data class WatermarkAttributes (
     var rotationDegrees: Int = 0,
     var method: WatermarkingMethod = WatermarkingMethod.DRAW,
     var position: WatermarkPosition = WatermarkPosition.CENTER,
-    var positionCoordinates: WatermarkPositionCoordinates.Coordinates = WatermarkPositionCoordinates.Coordinates(0, 0),
+    var positionCoordinates: Coordinates = Coordinates(0, 0),
     var customCoordinates: Boolean = false,
     var verticalSpacing: Int = 50,
     var horizontalSpacing: Int = 50,
@@ -36,7 +36,13 @@ data class WatermarkAttributes (
     var adjustTextSizeCf: Float = 2.5f,
     var cyrillicFont: PDFont? = null
 ) {
-    //calculated attributes
+    //virtual attributes
+    val isTextWatermark: Boolean
+        get() = text.isNotEmpty() && visible
+
+    val isImageWatermark: Boolean
+        get() = image.isPresent && visible
+
     val isCyrillic: Boolean
         get() = text.any { Character.UnicodeBlock.of(it) == Character.UnicodeBlock.CYRILLIC }
 

@@ -1,13 +1,13 @@
 package com.markit.pdf.overlay.rotation;
 
-import com.markit.api.positioning.WatermarkPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
 import org.apache.pdfbox.util.Matrix;
 
 public class DefaultMatrixTransformationProvider implements MatrixTransformationProvider {
 
     @Override
     public Matrix createRotationMatrix(
-            WatermarkPositionCoordinates.Coordinates coordinates,
+            Coordinates coordinates,
             float watermarkWidth,
             float watermarkHeight,
             int rotationDegrees,

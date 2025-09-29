@@ -1,5 +1,6 @@
 package com.markit.image.positioning;
 
+import com.markit.api.positioning.Coordinates;
 import com.markit.api.positioning.PositionCoordinates;
 
 /**
@@ -7,8 +8,8 @@ import com.markit.api.positioning.PositionCoordinates;
  * @since 1.0
  */
 public class DrawMethodPositionCoordinates extends PositionCoordinates {
-    private final int MIN_X_EDGE_SIZE = 30;
-    private final int MIN_Y_EDGE_SIZE = 100;
+    private final int MIN_X_EDGE_SIZE = 10;
+    private final int MIN_Y_EDGE_SIZE = 20;
 
     public DrawMethodPositionCoordinates(int pageWidth, int pageHeight, int watermarkWidth, int watermarkHeight) {
         super(pageWidth, pageHeight, watermarkWidth, watermarkHeight);

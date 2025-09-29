@@ -1,7 +1,7 @@
 package com.markit.pdf.overlay.positioning;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class WatermarkPositioner {
 
-    public static List<WatermarkPositionCoordinates.Coordinates> defineXY(
+    public static List<Coordinates> defineXY(
             WatermarkAttributes attr, int imageWidth, int imageHeight, int watermarkWidth, int watermarkHeight) {
         return new OverlayMethodPositionCoordinates(imageWidth, imageHeight, watermarkWidth, watermarkHeight)
                 .getCoordinatesForAttributes(attr);

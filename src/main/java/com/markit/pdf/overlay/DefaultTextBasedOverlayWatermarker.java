@@ -1,7 +1,7 @@
 package com.markit.pdf.overlay;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
 import com.markit.pdf.overlay.font.DefaultFontProvider;
 import com.markit.pdf.overlay.font.FontProvider;
 import com.markit.pdf.overlay.positioning.WatermarkPositioner;
@@ -25,7 +25,7 @@ public class DefaultTextBasedOverlayWatermarker implements TextBasedOverlayWater
                 (int) pdRectangle.getWidth(), (int) pdRectangle.getHeight (),
                 (int) attr.getPdfWatermarkTextWidth(), (int) attr.getPdfWatermarkTextHeight());
 
-        for (WatermarkPositionCoordinates.Coordinates c : coordinates) {
+        for (Coordinates c : coordinates) {
             var textTransformationProvider = (MatrixTransformationProvider) ServiceFactory.getInstance()
                     .getService(MatrixTransformationProvider.class);
 
