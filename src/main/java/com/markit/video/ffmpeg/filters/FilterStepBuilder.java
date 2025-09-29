@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface FilterStepBuilder extends Prioritizable {
 
-    FilterStep build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception;
+    FilterStepAttributes build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception;
 
-    Step getStepType();
+    StepType getStepType();
 }

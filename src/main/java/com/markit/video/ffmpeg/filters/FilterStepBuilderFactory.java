@@ -17,7 +17,7 @@ public class FilterStepBuilderFactory {
 
     private static final FilterStepBuilderFactory instance = new FilterStepBuilderFactory();
 
-    private final Map<Step, FilterStepBuilder> cachedBuilders = new HashMap<>();
+    private final Map<StepType, FilterStepBuilder> cachedBuilders = new HashMap<>();
 
     private FilterStepBuilderFactory() {
     }
@@ -29,13 +29,13 @@ public class FilterStepBuilderFactory {
     /**
      * Retrieves the highest priority FilterStepBuilder for the given Step type.
      *
-     * @param step the Step type (OVERLAY or TEXT)
+     * @param stepType the Step type (OVERLAY or TEXT)
      * @return the highest priority FilterStepBuilder for the given type
      * @throws RuntimeException if no builder is found for the given step type
      */
-    public FilterStepBuilder getBuilder(Step step) {
-        if (cachedBuilders.containsKey(step)) {
-            return cachedBuilders.get(step);
+    public FilterStepBuilder getBuilder(StepType stepType) {
+        if (cachedBuilders.containsKey(stepType)) {
+            return cachedBuilders.get(stepType);
         }
 
         // Load all FilterStepBuilder implementations
@@ -43,17 +43,17 @@ public class FilterStepBuilderFactory {
 
         // Filter by step type and sort by priority (highest first)
         List<FilterStepBuilder> buildersForStep = allBuilders.stream()
-                .filter(builder -> builder.getStepType() == step)
+                .filter(builder -> builder.getStepType() == stepType)
                 .sorted((o1, o2) -> -1 * Integer.compare(o1.getPriority(), o2.getPriority()))
                 .collect(Collectors.toList());
 
         if (buildersForStep.isEmpty()) {
-            throw new RuntimeException("No FilterStepBuilder found for step type: " + step);
+            throw new RuntimeException("No FilterStepBuilder found for step type: " + stepType);
         }
 
         // Get the highest priority builder
         FilterStepBuilder builder = buildersForStep.get(0);
-        cachedBuilders.put(step, builder);
+        cachedBuilders.put(stepType, builder);
 
         return builder;
     }

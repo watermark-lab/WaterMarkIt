@@ -13,8 +13,9 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.4.0
  */
-public class FilterBuilder {
+public class DefaultFilterChainBuilder implements FilterChainBuilder {
 
+    @Override
     public FilterResult build(File video, List<WatermarkAttributes> attributes) throws Exception {
         StringBuilder filter = new StringBuilder();
         List<File> tempImages = new ArrayList<>();
@@ -27,8 +28,8 @@ public class FilterBuilder {
         // Build text filters
         List<WatermarkAttributes> textAttributes = getTextAttributes(attributes);
         if (!textAttributes.isEmpty()) {
-            FilterStepBuilder textBuilder = FilterStepBuilderFactory.getInstance().getBuilder(Step.TEXT);
-            FilterStep textStep = textBuilder.build(textAttributes, dimensions, lastLabel, step, isEmptyFilter);
+            FilterStepBuilder textBuilder = FilterStepBuilderFactory.getInstance().getBuilder(StepType.TEXT);
+            FilterStepAttributes textStep = textBuilder.build(textAttributes, dimensions, lastLabel, step, isEmptyFilter);
             filter.append(textStep.getFilter());
             lastLabel = textStep.getLastLabel();
             step = textStep.getStep();
@@ -38,8 +39,8 @@ public class FilterBuilder {
         // Build image overlays
         List<WatermarkAttributes> imageAttributes = getImageAttributes(attributes);
         if (!imageAttributes.isEmpty()) {
-            FilterStepBuilder overlayBuilder = FilterStepBuilderFactory.getInstance().getBuilder(Step.OVERLAY);
-            FilterStep imageStep = overlayBuilder.build(imageAttributes, dimensions, lastLabel, step, isEmptyFilter);
+            FilterStepBuilder overlayBuilder = FilterStepBuilderFactory.getInstance().getBuilder(StepType.OVERLAY);
+            FilterStepAttributes imageStep = overlayBuilder.build(imageAttributes, dimensions, lastLabel, step, isEmptyFilter);
             filter.append(imageStep.getFilter());
             tempImages.addAll(imageStep.getTempImages());
             lastLabel = imageStep.getLastLabel();
@@ -66,5 +67,10 @@ public class FilterBuilder {
             }
         }
         return imageAttrs;
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }

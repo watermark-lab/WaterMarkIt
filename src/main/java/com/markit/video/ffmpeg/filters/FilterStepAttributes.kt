@@ -7,7 +7,7 @@ import java.io.File
  * @author Oleg Cheban
  * @since 1.4.0
  */
-data class FilterStep(
+data class FilterStepAttributes(
     val filter: String,
     val lastLabel: String,
     val step: Int,

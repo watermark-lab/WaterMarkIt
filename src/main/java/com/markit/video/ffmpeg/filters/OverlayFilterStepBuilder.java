@@ -18,9 +18,9 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.4.0
  */
-public class ImageOverlayBuilder implements FilterStepBuilder {
+public class OverlayFilterStepBuilder implements FilterStepBuilder {
 
-    public FilterStep build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception {
+    public FilterStepAttributes build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception {
         StringBuilder filter = new StringBuilder();
         List<File> tempImages = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class ImageOverlayBuilder implements FilterStepBuilder {
             }
         }
 
-        return new FilterStep(filter.toString(), lastLabel, step, isEmptyFilter, tempImages);
+        return new FilterStepAttributes(filter.toString(), lastLabel, step, isEmptyFilter, tempImages);
     }
 
     private BufferedImage scaleImage(BufferedImage original, int targetWidth, int targetHeight) {
@@ -72,7 +72,7 @@ public class ImageOverlayBuilder implements FilterStepBuilder {
     }
 
     @Override
-    public Step getStepType() {
-        return Step.OVERLAY;
+    public StepType getStepType() {
+        return StepType.OVERLAY;
     }
 }

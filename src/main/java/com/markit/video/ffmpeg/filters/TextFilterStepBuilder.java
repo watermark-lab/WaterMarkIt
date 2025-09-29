@@ -17,10 +17,10 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.4.0
  */
-public class TextFilterBuilder implements FilterStepBuilder {
+public class TextFilterStepBuilder implements FilterStepBuilder {
 
     @Override
-    public FilterStep build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) {
+    public FilterStepAttributes build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) {
         StringBuilder filter = new StringBuilder();
 
         BufferedImage tempImage = new BufferedImage(dimensions.getWidth(), dimensions.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -63,7 +63,7 @@ public class TextFilterBuilder implements FilterStepBuilder {
             }
         }
 
-        return new FilterStep(filter.toString(), lastLabel, step, isEmptyFilter);
+        return new FilterStepAttributes(filter.toString(), lastLabel, step, isEmptyFilter);
     }
 
     private int calculateFontSize(int textSize, int imageWidth, int imageHeight) {
@@ -85,7 +85,7 @@ public class TextFilterBuilder implements FilterStepBuilder {
     }
 
     @Override
-    public Step getStepType() {
-        return Step.TEXT;
+    public StepType getStepType() {
+        return StepType.TEXT;
     }
 }

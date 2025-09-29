@@ -14,8 +14,9 @@ import java.util.List;
  * @author Oleg Cheban
  * @since 1.4.0
  */
-public class FFmpegCommandExecutor {
+public class FFmpegCommandExecutor implements CommandExecutor {
 
+    @Override
     public byte[] execute(File input, FilterResult graph) throws Exception {
         File output = Files.createTempFile("wmk-video-out", ".mp4").toFile();
 
@@ -65,5 +66,10 @@ public class FFmpegCommandExecutor {
         for (File img : graph.getTempImages()) img.delete();
 
         return bytes;
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }

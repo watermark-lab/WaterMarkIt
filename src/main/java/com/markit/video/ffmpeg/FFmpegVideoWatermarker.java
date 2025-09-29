@@ -2,8 +2,9 @@ package com.markit.video.ffmpeg;
 
 import com.markit.api.WatermarkAttributes;
 import com.markit.servicelocator.Prioritizable;
+import com.markit.servicelocator.ServiceFactory;
 import com.markit.video.VideoWatermarker;
-import com.markit.video.ffmpeg.filters.FilterBuilder;
+import com.markit.video.ffmpeg.filters.FilterChainBuilder;
 import com.markit.video.ffmpeg.filters.FilterResult;
 
 import java.io.File;
@@ -16,19 +17,6 @@ import java.util.List;
  * @since 1.4.0
  */
 public class FFmpegVideoWatermarker implements VideoWatermarker {
-
-    private final FFmpegCommandExecutor executor;
-    private final FilterBuilder filterBuilder;
-
-    public FFmpegVideoWatermarker() {
-        this.executor = new FFmpegCommandExecutor();
-        this.filterBuilder = new FilterBuilder();
-    }
-
-    @Override
-    public int getPriority() {
-        return Prioritizable.DEFAULT_PRIORITY;
-    }
 
     @Override
     public byte[] watermark(byte[] sourceVideoBytes, List<WatermarkAttributes> attrs) throws Exception {
@@ -44,7 +32,15 @@ public class FFmpegVideoWatermarker implements VideoWatermarker {
 
     @Override
     public byte[] watermark(File file, List<WatermarkAttributes> attrs) throws Exception {
-        FilterResult filterGraph = filterBuilder.build(file, attrs);
+        var executor = (CommandExecutor) ServiceFactory.getInstance().getService(CommandExecutor.class);
+        var filterChainBuilder = (FilterChainBuilder) ServiceFactory.getInstance().getService(FilterChainBuilder.class);
+
+        FilterResult filterGraph = filterChainBuilder.build(file, attrs);
         return executor.execute(file, filterGraph);
+    }
+
+    @Override
+    public int getPriority() {
+        return Prioritizable.DEFAULT_PRIORITY;
     }
 }

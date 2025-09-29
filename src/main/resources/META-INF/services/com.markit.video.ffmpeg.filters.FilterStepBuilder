@@ -1,2 +1,2 @@
-com.markit.video.ffmpeg.filters.ImageOverlayBuilder
-com.markit.video.ffmpeg.filters.TextFilterBuilder
+com.markit.video.ffmpeg.filters.OverlayFilterStepBuilder
+com.markit.video.ffmpeg.filters.TextFilterStepBuilder
