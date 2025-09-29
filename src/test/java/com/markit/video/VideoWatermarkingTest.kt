@@ -3,6 +3,7 @@ package com.markit.video
 import com.markit.utils.FileUtils
 import com.markit.api.positioning.WatermarkPosition
 import com.markit.api.WatermarkService
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.awt.Color
 import java.io.IOException
@@ -12,6 +13,7 @@ import kotlin.test.assertNotNull
 class VideoWatermarkingTest {
 
     @Test
+    @Disabled //todo configure ffmpeg at github actions
     @Throws(IOException::class)
     fun `given video when apply several watermarks then make watermarked vidio`() {
         val result = WatermarkService.create()
