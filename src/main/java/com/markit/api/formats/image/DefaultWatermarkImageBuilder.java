@@ -31,7 +31,7 @@ public final class DefaultWatermarkImageBuilder
             try {
                 return getImageWatermarker().watermark(file, imageType, watermarks);
             } catch (Exception e) {
-                throw new WatermarkingException("Error watermarking the video", e);
+                throw new WatermarkingException("Error watermarking the image", e);
             }
         };
     }
@@ -41,7 +41,7 @@ public final class DefaultWatermarkImageBuilder
             try {
                 return getImageWatermarker().watermark(fileBytes, imageType, watermarks);
             } catch (Exception e) {
-                throw new WatermarkingException("Error watermarking the video", e);
+                throw new WatermarkingException("Error watermarking the image", e);
             }
         };
     }
