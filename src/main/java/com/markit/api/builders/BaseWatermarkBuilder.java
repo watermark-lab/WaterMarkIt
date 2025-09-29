@@ -1,5 +1,7 @@
-package com.markit.api;
+package com.markit.api.builders;
 
+import com.markit.api.WatermarkAttributes;
+import com.markit.api.WatermarkProcessor;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.utils.ValidationUtils;
 
@@ -15,7 +17,7 @@ import java.util.Objects;
  * @author Oleg Cheban
  * @since 1.3.3
  */
-public class BaseWatermarkService<T> {
+public class BaseWatermarkBuilder<T> {
 
     private final WatermarkProcessor watermarkProcessor;
 
@@ -23,7 +25,7 @@ public class BaseWatermarkService<T> {
 
     private WatermarkAttributes watermark;
 
-    protected BaseWatermarkService(WatermarkProcessor watermarkProcessor) {
+    protected BaseWatermarkBuilder(WatermarkProcessor watermarkProcessor) {
         this.watermark = new WatermarkAttributes();
         this.watermarkProcessor = Objects.requireNonNull(watermarkProcessor, "WatermarkProcessor must not be null");
     }

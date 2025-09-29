@@ -1,6 +1,5 @@
 package com.markit.api.builders;
 
-import com.markit.api.BaseWatermarkService;
 import com.markit.api.Font;
 import com.markit.api.WatermarkProcessor;
 import com.markit.api.positioning.Coordinates;
@@ -18,7 +17,7 @@ import java.util.function.Supplier;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends BaseWatermarkService<WatermarkService>
+public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends BaseWatermarkBuilder<WatermarkService>
         implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
 
     public DefaultWatermarkBuilder(WatermarkProcessor watermarkProcessor) {
