@@ -11,5 +11,5 @@ import java.io.File;
  * @since 1.4.0
  */
 public interface CommandExecutor extends Prioritizable {
-    byte[] execute(File input, FilterResult graph) throws Exception;
+    byte[] execute(File input, FilterResult data) throws Exception;
 }
