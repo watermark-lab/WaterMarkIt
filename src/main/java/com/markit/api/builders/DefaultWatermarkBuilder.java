@@ -73,13 +73,16 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
 
     public WatermarkBuilder size(int size) {
         if (size < 0 || size > 300)
-            throw new IllegalArgumentException("Size must be between 0 and 100");
+            throw new IllegalArgumentException("Size must be between 0 and 300");
 
         getWatermark().setSize(size);
         return builder();
     }
 
     public WatermarkBuilder opacity(int opacity) {
+        if (opacity < 0 || opacity > 100)
+            throw new IllegalArgumentException("Opacity must be between 0 and 100");
+
         getWatermark().setOpacity(opacity);
         return builder();
     }
