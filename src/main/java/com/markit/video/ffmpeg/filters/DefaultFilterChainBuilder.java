@@ -28,7 +28,7 @@ public class DefaultFilterChainBuilder implements FilterChainBuilder {
         // Build text filters
         List<WatermarkAttributes> textAttributes = getTextAttributes(attributes);
         if (!textAttributes.isEmpty()) {
-            FilterStepBuilder textBuilder = FilterStepBuilderFactory.getInstance().getBuilder(StepType.TEXT);
+            FilterStepBuilder textBuilder = FilterStepBuilderFactory.getInstance().getBuilder(FilterStepType.DRAWTEXT);
             FilterStepAttributes textStep = textBuilder.build(textAttributes, dimensions, lastLabel, step, isEmptyFilter);
             filter.append(textStep.getFilter());
             lastLabel = textStep.getLastLabel();
@@ -39,7 +39,7 @@ public class DefaultFilterChainBuilder implements FilterChainBuilder {
         // Build image overlays
         List<WatermarkAttributes> imageAttributes = getImageAttributes(attributes);
         if (!imageAttributes.isEmpty()) {
-            FilterStepBuilder overlayBuilder = FilterStepBuilderFactory.getInstance().getBuilder(StepType.OVERLAY);
+            FilterStepBuilder overlayBuilder = FilterStepBuilderFactory.getInstance().getBuilder(FilterStepType.OVERLAY);
             FilterStepAttributes imageStep = overlayBuilder.build(imageAttributes, dimensions, lastLabel, step, isEmptyFilter);
             filter.append(imageStep.getFilter());
             tempImages.addAll(imageStep.getTempImages());

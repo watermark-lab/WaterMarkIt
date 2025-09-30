@@ -15,5 +15,5 @@ public interface FilterStepBuilder extends Prioritizable {
 
     FilterStepAttributes build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception;
 
-    StepType getStepType();
+    FilterStepType getFilterStepType();
 }
