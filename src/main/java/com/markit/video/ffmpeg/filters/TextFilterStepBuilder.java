@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
+ * drawtext filter chain builder
  *
  * @author Oleg Cheban
  * @since 1.4.0
@@ -65,12 +66,6 @@ public class TextFilterStepBuilder implements FilterStepBuilder {
         return new FilterStepAttributes(filter.toString(), lastLabel, step, isEmptyFilter);
     }
 
-    private int calculateFontSize(int textSize, int imageWidth, int imageHeight) {
-        if (textSize > 0) return textSize;
-        return Math.min(imageWidth, imageHeight) / 10;
-    }
-
-
     /**
      * method converts a Java Color object to ffmpeg's expected hexadecimal color format
      */
@@ -91,7 +86,7 @@ public class TextFilterStepBuilder implements FilterStepBuilder {
     }
 
     @Override
-    public StepType getStepType() {
-        return StepType.TEXT;
+    public FilterStepType getFilterStepType() {
+        return FilterStepType.DRAWTEXT;
     }
 }

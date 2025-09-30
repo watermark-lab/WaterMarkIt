@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * overlay filter chain builder
  *
  * @author Oleg Cheban
  * @since 1.4.0
@@ -72,7 +73,7 @@ public class OverlayFilterStepBuilder implements FilterStepBuilder {
     }
 
     @Override
-    public StepType getStepType() {
-        return StepType.OVERLAY;
+    public FilterStepType getFilterStepType() {
+        return FilterStepType.OVERLAY;
     }
 }

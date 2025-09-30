@@ -35,8 +35,8 @@ public class FFmpegVideoWatermarker implements VideoWatermarker {
         var executor = (CommandExecutor) ServiceFactory.getInstance().getService(CommandExecutor.class);
         var filterChainBuilder = (FilterChainBuilder) ServiceFactory.getInstance().getService(FilterChainBuilder.class);
 
-        FilterResult filterGraph = filterChainBuilder.build(file, attrs);
-        return executor.execute(file, filterGraph);
+        FilterResult filter = filterChainBuilder.build(file, attrs);
+        return executor.execute(file, filter);
     }
 
     @Override

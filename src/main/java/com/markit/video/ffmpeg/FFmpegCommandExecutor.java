@@ -17,7 +17,7 @@ import java.util.List;
 public class FFmpegCommandExecutor implements CommandExecutor {
 
     @Override
-    public byte[] execute(File input, FilterResult graph) throws Exception {
+    public byte[] execute(File input, FilterResult data) throws Exception {
         File output = Files.createTempFile("wmk-video-out", ".mp4").toFile();
 
         List<String> cmd = new ArrayList<>();
@@ -26,16 +26,16 @@ public class FFmpegCommandExecutor implements CommandExecutor {
         cmd.add("-i");
         cmd.add(input.getAbsolutePath());
 
-        for (File img : graph.getTempImages()) {
+        for (File img : data.getTempImages()) {
             cmd.add("-i");
             cmd.add(img.getAbsolutePath());
         }
 
-        if (!graph.getFilter().isEmpty()) {
+        if (!data.getFilter().isEmpty()) {
             cmd.add("-filter_complex");
-            cmd.add(graph.getFilter());
+            cmd.add(data.getFilter());
             cmd.add("-map");
-            cmd.add(graph.getLastLabel());
+            cmd.add(data.getLastLabel());
             cmd.add("-map");
             cmd.add("0:a?");
         }
@@ -63,7 +63,7 @@ public class FFmpegCommandExecutor implements CommandExecutor {
 
         output.delete();
 
-        for (File img : graph.getTempImages()) img.delete();
+        for (File img : data.getTempImages()) img.delete();
 
         return bytes;
     }

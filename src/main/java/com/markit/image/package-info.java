@@ -1,4 +1,4 @@
 /**
- * This package contains an implementation for images watermarking
+ * Image watermarking painters, converters, and orchestration services.
  */
 package com.markit.image;

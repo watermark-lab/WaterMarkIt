@@ -1,4 +1,4 @@
 /**
- * This package provides the Service Locator pattern implementation
+ * Lightweight service locator and prioritization SPI.
  */
 package com.markit.servicelocator;

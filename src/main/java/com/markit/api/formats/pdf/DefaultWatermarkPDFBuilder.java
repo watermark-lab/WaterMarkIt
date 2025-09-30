@@ -3,7 +3,8 @@ package com.markit.api.formats.pdf;
 import com.markit.api.builders.DefaultWatermarkBuilder;
 import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ClosePDFDocumentException;
-import com.markit.pdf.DefaultWatermarkPdfService;
+import com.markit.pdf.WatermarkPdfServiceFactory;
+import com.markit.servicelocator.ServiceFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import com.markit.api.formats.pdf.WatermarkPDFService.*;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,7 @@ public final class DefaultWatermarkPDFBuilder
     private PDDocument document;
 
     public DefaultWatermarkPDFBuilder(PDDocument pdfDoc, Executor executor) {
-        super(watermarks -> new DefaultWatermarkPdfService(executor).watermark(pdfDoc, watermarks));
+        super(watermarks -> getPdfServiceFactory().create(executor).watermark(pdfDoc, watermarks));
         Objects.requireNonNull(pdfDoc, "PDDocument cannot be null");
         this.document = pdfDoc;
     }
@@ -71,4 +72,7 @@ public final class DefaultWatermarkPDFBuilder
         }
     }
 
+    private static WatermarkPdfServiceFactory getPdfServiceFactory() {
+        return (WatermarkPdfServiceFactory) ServiceFactory.getInstance().getService(WatermarkPdfServiceFactory.class);
+    }
 }
