@@ -32,4 +32,6 @@ jobs:
       - run: java -version
       - run: mvn -version
       - run: ffmpeg -version
+      - run: which ffmpeg
+      - run: ffprobe -version
       - run: mvn --errors --batch-mode clean install
