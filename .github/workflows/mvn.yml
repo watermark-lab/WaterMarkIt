@@ -19,10 +19,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
-      - uses: FedericoCarboni/setup-ffmpeg@v3
-        with:
-          ffmpeg-version: release
-        id: setup-ffmpeg
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
       - uses: actions/cache@v4
         with:
           path: ~/.m2/repository
@@ -31,13 +31,4 @@ jobs:
             ${{ runner.os }}-jdk-${{ matrix.java }}-maven-
       - run: java -version
       - run: mvn -version
-      - run: ffmpeg -version
-      - run: which ffmpeg
-      - run: ffprobe -version
-      - name: Test FFmpeg
-        run: |
-          ffmpeg -version
-          ffmpeg -f lavfi -i testsrc=duration=1:size=320x240:rate=1 -f null -
       - run: mvn --errors --batch-mode clean install
-        env:
-          MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
