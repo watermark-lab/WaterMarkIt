@@ -28,9 +28,8 @@ public class TextFilterStepBuilder implements FilterStepBuilder {
 
         for (WatermarkAttributes a : attrs) {
             FontRenderContext frc = g2d.getFontRenderContext();
-            var fontSize = calculateFontSize(a.getSize(), tempImage.getWidth(), tempImage.getHeight());
             var fontStyle = a.isBold() ? Font.BOLD : Font.PLAIN;;
-            var font = new Font(a.getFont().getAwtFontName(), fontStyle, fontSize);
+            var font = new Font(a.getFont().getAwtFontName(), fontStyle, a.getSize());
             TextLayout watermarkLayout = new TextLayout(a.getText(), font, frc);
             Rectangle2D rect = watermarkLayout.getBounds();
 
@@ -71,10 +70,17 @@ public class TextFilterStepBuilder implements FilterStepBuilder {
         return Math.min(imageWidth, imageHeight) / 10;
     }
 
+
+    /**
+     * method converts a Java Color object to ffmpeg's expected hexadecimal color format
+     */
     private String getColorValue(Color color) {
         return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
 
+    /**
+     * method converts a percentage-based opacity (0-100) to FFmpeg's decimal format (0.0-1.0).
+     */
     private float getOpacityValue(int opacity) {
         return Math.max(0, Math.min(100, opacity)) / 100f;
     }

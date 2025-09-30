@@ -13,7 +13,7 @@ import kotlin.test.assertNotNull
 class VideoWatermarkingTest {
 
     @Test
-    @Disabled //todo configure ffmpeg at github actions
+    //@Disabled //todo configure ffmpeg at github actions
     @Throws(IOException::class)
     fun `given video when apply several watermarks then make watermarked vidio`() {
         val result = WatermarkService.create()
