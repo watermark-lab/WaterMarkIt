@@ -1,4 +1,4 @@
 /**
- * This package contains custom exception classes for handling errors and exceptional conditions.
+ * Exception hierarchy for watermarking operations and IO conversions.
  */
 package com.markit.exceptions;
