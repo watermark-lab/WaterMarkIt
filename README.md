@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
 # WaterMarkIt
 
-A lightweight, framework-agnostic Java library for adding watermarks to various file types, including PDFs and images. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed.  
+A lightweight, framework-agnostic Java library for adding watermarks to various file types, including PDFs and videos. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed.  
 
 ## Features
 
@@ -141,8 +141,6 @@ The library supports adding watermarks to video files using FFmpeg. This feature
   - **macOS**: Use Homebrew (`brew install ffmpeg`)
   - **Linux**: Use your distribution's package manager (e.g., `sudo apt install ffmpeg` on Ubuntu)
 
-#### Video Watermarking Example
-
 ```java
 WatermarkService.create()
     .watermarkVideo(videoFile)
@@ -189,21 +187,20 @@ com.example.CustomPdfWatermarker
 
 ## Why Kotlin?
 
-While WaterMarkIt is primarily a Java library targeting Java 11 for maximum compatibility, we selectively use Kotlin in specific areas to enhance code quality and developer experience:
+While WaterMarkIt is primarily a Java library targeting Java 11 for better compatibility, we selectively use Kotlin in specific areas to enhance code quality and developer experience:
 
 ### Use Cases
 
 - **Test Code**: Kotlin's concise syntax and powerful testing features make our test suite more readable and maintainable
 - **Data Classes**: Java 11 lacks records (introduced in Java 14+), so we use Kotlin's data classes for immutable value objects
-- **Exception Classes**: Custom exceptions benefit from Kotlin's concise class declarations
+- **Enums**: Kotlin enums provide cleaner syntax for associating data with enum values
+- **Exception Classes**: Custom exceptions benefit from Kotlin's concise class declarations with automatic constructor generation
 
 ### For Contributors
 
 When contributing to WaterMarkIt:
 - **Use Java** for all public APIs and core library functionality
 - **Use Kotlin** for test classes, internal data structures, and utility classes where it provides clear benefits
-
-This approach gives us the best of both worlds: rock-solid Java compatibility with modern development conveniences where they matter most.
 
 ## Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
