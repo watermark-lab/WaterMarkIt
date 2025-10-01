@@ -1,7 +1,7 @@
 [![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
 [![Code climate](https://api.codeclimate.com/v1/badges/0cd17315421a1bec3587/maintainability)](https://codeclimate.com/github/OlegCheban/WaterMarkIt/maintainability)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/OlegCheban/WaterMarkIt)
-[![javadoc](https://img.shields.io/badge/javadoc-1.3.5-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
+[![javadoc](https://img.shields.io/badge/javadoc-1.4.0-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/OlegCheban/WaterMarkIt)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
@@ -32,7 +32,8 @@ A lightweight, framework-agnostic Java library for adding watermarks to various 
 
 - **Supported Formats**:
   - PDF
-  - Various image formats (JPEG, PNG, etc.)
+  - Images (JPEG, PNG, etc.)
+  - Videos (MP4, MOV, AVI, MKV, etc)
   
 - **Drawn Watermarks**: The library provides the `WatermarkingMethod.DRAW` method to add watermarks to PDF files that can't be easily removed. This mode generates an image from a PDF page, applies watermarks to the image, and replaces all layers of the page with the modified image.
 
@@ -53,13 +54,13 @@ A lightweight, framework-agnostic Java library for adding watermarks to various 
 <dependency>
     <groupId>io.github.watermark-lab</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.3.5</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
 **For Gradle**, add the following to your `build.gradle`:
 ```kotlin
-implementation 'io.github.watermark-lab:WaterMarkIt:1.3.5'
+implementation 'io.github.watermark-lab:WaterMarkIt:1.4.0'
 ```
 
 ### Usage
@@ -125,6 +126,37 @@ WatermarkService.create()
         .withText("Text-based Watermark").end()
             .documentFilter(document -> document.getNumberOfPages() > 3)
     .apply()  
+```
+
+### Video Watermarking
+
+The library supports adding watermarks to video files using FFmpeg. This feature allows you to apply both text-based and image-based watermarks to various video formats.
+
+#### Prerequisites for Video Watermarking
+
+- **FFmpeg**: The library requires FFmpeg to be installed on your system and available in the system PATH. FFmpeg is used internally to process video files and apply watermarks.
+
+  **Installation:**
+  - **Windows**: Download from [FFmpeg official website](https://ffmpeg.org/download.html) or use package managers like Chocolatey (`choco install ffmpeg`)
+  - **macOS**: Use Homebrew (`brew install ffmpeg`)
+  - **Linux**: Use your distribution's package manager (e.g., `sudo apt install ffmpeg` on Ubuntu)
+
+#### Video Watermarking Example
+
+```java
+WatermarkService.create()
+    .watermarkVideo(videoFile)
+        .withText("WaterMarkIt")
+            .color(Color.RED)
+            .end()
+        .opacity(50)
+        .position(WatermarkPosition.CENTER).end()
+        .size(30)
+    .and()
+        .withImage(logoFile)
+        .position(WatermarkPosition.BOTTOM_RIGHT).end()
+        .size(8)
+    .apply();
 ```
 
 ## Extensibility and Customization
