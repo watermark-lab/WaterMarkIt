@@ -182,6 +182,7 @@
                 </executions>
                 <configuration>
                     <release>11</release>
+                    <parameters>true</parameters>
                     <compilerArgs>
                         <arg>-Werror</arg>
                     </compilerArgs>
