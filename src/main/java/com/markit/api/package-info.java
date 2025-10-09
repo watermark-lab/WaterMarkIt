@@ -1,4 +1,4 @@
 /**
- * This package contains the core specifications and implementations for the library.
+ * Public API for watermark configuration and processing services.
  */
 package com.markit.api;

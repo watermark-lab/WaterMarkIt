@@ -1,10 +1,9 @@
 package com.markit.api.formats.image;
 
-import com.markit.api.WatermarkHandler;
+import com.markit.api.WatermarkProcessor;
 import com.markit.api.builders.DefaultWatermarkBuilder;
 import com.markit.api.ImageType;
 import com.markit.api.formats.image.WatermarkImageService.*;
-import com.markit.exceptions.ConvertBytesToBufferedImageException;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.image.ImageWatermarker;
 import com.markit.servicelocator.ServiceFactory;
@@ -20,28 +19,34 @@ public final class DefaultWatermarkImageBuilder
         implements WatermarkImageService, WatermarkImageBuilder {
 
     public DefaultWatermarkImageBuilder(byte[] fileBytes, ImageType imageType) {
-        super(createHandler(fileBytes, imageType));
+        super(createWatermarkProcessor(fileBytes, imageType));
     }
 
     public DefaultWatermarkImageBuilder(File file, ImageType imageType) {
-        super(createHandler(file, imageType));
+        super(createWatermarkProcessor(file, imageType));
     }
 
-    private  static WatermarkHandler createHandler(Object fileSource, ImageType imageType) {
-        var imageWatermarker = (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
-
+    private static WatermarkProcessor createWatermarkProcessor(File file, ImageType imageType) {
         return watermarks -> {
             try {
-                if (fileSource instanceof byte[]) {
-                    return imageWatermarker.watermark((byte[]) fileSource, imageType, watermarks);
-                } else if (fileSource instanceof File) {
-                    return imageWatermarker.watermark((File) fileSource, imageType, watermarks);
-                } else {
-                    throw new IllegalArgumentException("Unsupported file source type: " + fileSource.getClass().getName());
-                }
-            } catch (ConvertBytesToBufferedImageException e) {
-                throw new WatermarkingException("Error converting bytes to buffered image", e);
+                return getImageWatermarker().watermark(file, imageType, watermarks);
+            } catch (Exception e) {
+                throw new WatermarkingException("Error watermarking the image", e);
             }
         };
+    }
+
+    private static WatermarkProcessor createWatermarkProcessor(byte[] fileBytes, ImageType imageType) {
+        return watermarks -> {
+            try {
+                return getImageWatermarker().watermark(fileBytes, imageType, watermarks);
+            } catch (Exception e) {
+                throw new WatermarkingException("Error watermarking the image", e);
+            }
+        };
+    }
+
+    private static ImageWatermarker getImageWatermarker() {
+        return (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
     }
 }

@@ -2,6 +2,7 @@ package com.markit.image;
 
 import com.markit.api.ImageType;
 import com.markit.api.WatermarkAttributes;
+import com.markit.servicelocator.ServiceFactory;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,22 +13,7 @@ import java.util.List;
  * @since 1.0
  */
 public class DefaultImageWatermarker implements ImageWatermarker {
-    private final ImageConverter imageConverter;
-    private final TextBasedWatermarkPainter textBasedWatermarkPainter;
-    private final ImageBasedWatermarkPainter imageBasedWatermarkPainter;
-    private final WatermarkPositioner watermarkPositioner;
-
-    public DefaultImageWatermarker() {
-        this.imageBasedWatermarkPainter = new ImageBasedWatermarkPainter();
-        this.imageConverter = new ImageConverter();
-        this.textBasedWatermarkPainter = new TextBasedWatermarkPainter();
-        this.watermarkPositioner = new WatermarkPositioner();
-    }
-
-    @Override
-    public int getPriority() {
-        return DEFAULT_PRIORITY;
-    }
+    private final ImageConverter imageConverter = new ImageConverter();
 
     @Override
     public byte[] watermark(byte[] sourceImageBytes, ImageType imageType, List<WatermarkAttributes> attrs) {
@@ -46,11 +32,16 @@ public class DefaultImageWatermarker implements ImageWatermarker {
 
     public byte[] watermark(BufferedImage sourceImage, ImageType imageType, List<WatermarkAttributes> attrs) {
         var g2d = sourceImage.createGraphics();
+
         attrs.forEach(attr -> {
             if (attr.getImage().isPresent()){
-                imageBasedWatermarkPainter.draw(g2d, sourceImage, attr, watermarkPositioner);
+                var imagePainter = (ImageBasedWatermarkPainter) ServiceFactory.getInstance()
+                        .getService(ImageBasedWatermarkPainter.class);
+                imagePainter.draw(g2d, sourceImage, attr);
             } else {
-                textBasedWatermarkPainter.draw(g2d, sourceImage, attr, watermarkPositioner);
+                var textPainter = (TextBasedWatermarkPainter) ServiceFactory.getInstance()
+                        .getService(TextBasedWatermarkPainter.class);
+                textPainter.draw(g2d, sourceImage, attr);
             }
         });
         g2d.dispose();
@@ -59,5 +50,10 @@ public class DefaultImageWatermarker implements ImageWatermarker {
 
     public boolean isByteArrayEmpty(byte[] byteArray) {
         return byteArray == null || byteArray.length == 0;
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }

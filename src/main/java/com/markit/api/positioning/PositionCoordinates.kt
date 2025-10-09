@@ -13,10 +13,10 @@ abstract class PositionCoordinates(
     protected val watermarkHeight: Int
 ) : WatermarkPositionCoordinates {
 
-    fun getCoordinatesForAttributes(attr: WatermarkAttributes): List<WatermarkPositionCoordinates.Coordinates> {
+    fun getCoordinatesForAttributes(attr: WatermarkAttributes): List<Coordinates> {
         // If custom coordinates are being used, return them directly
         if (attr.customCoordinates) {
-            return listOf(WatermarkPositionCoordinates.Coordinates(attr.positionAdjustment.x, attr.positionAdjustment.y))
+            return listOf(Coordinates(attr.positionCoordinates.x, attr.positionCoordinates.y))
         }
         
         var coordinates = when (attr.position) {
@@ -31,23 +31,22 @@ abstract class PositionCoordinates(
         }
         
         // Apply position adjustment if needed
-        if (attr.positionAdjustment.x != 0 || attr.positionAdjustment.y != 0) {
+        if (attr.positionCoordinates.x != 0 || attr.positionCoordinates.y != 0) {
             coordinates = coordinates.map {
-                WatermarkPositionCoordinates.Coordinates(
-                    it.x + attr.positionAdjustment.x,
-                    it.y + attr.positionAdjustment.y
+                Coordinates(
+                    it.x + attr.positionCoordinates.x,
+                    it.y + attr.positionCoordinates.y
                 )
             }
         }
         return coordinates
     }
 
-    override fun tiled(attr: WatermarkAttributes): List<WatermarkPositionCoordinates.Coordinates> {
+    override fun tiled(attr: WatermarkAttributes): List<Coordinates> {
         val numHorizontal = (pageWidth + watermarkWidth - 1) / watermarkWidth
         val numVertical = (pageHeight + watermarkHeight - 1) / watermarkHeight
         return (0 until numHorizontal).flatMap { i ->
-            (0 until numVertical).map { j ->
-                WatermarkPositionCoordinates.Coordinates(
+            (0 until numVertical).map { j -> Coordinates(
                     (i * watermarkWidth) + (i * attr.horizontalSpacing),
                     (j * watermarkHeight) + (j * attr.verticalSpacing)
                 )

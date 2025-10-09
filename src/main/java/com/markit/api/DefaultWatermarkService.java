@@ -4,6 +4,8 @@ import com.markit.api.formats.image.DefaultWatermarkImageBuilder;
 import com.markit.api.formats.image.WatermarkImageService;
 import com.markit.api.formats.pdf.DefaultWatermarkPDFBuilder;
 import com.markit.api.formats.pdf.WatermarkPDFService;
+import com.markit.api.formats.video.DefaultWatermarkVideoBuilder;
+import com.markit.api.formats.video.WatermarkVideoService;
 import com.markit.exceptions.InvalidPDFFileException;
 import com.markit.utils.ImageTypeDetector;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -83,5 +85,12 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
         }
 
         return new DefaultWatermarkImageBuilder(fileBytes, imageType);
+    public WatermarkVideoService watermarkVideo(byte[] fileBytes) {
+        return new DefaultWatermarkVideoBuilder(fileBytes);
+    }
+
+    @Override
+    public WatermarkVideoService watermarkVideo(File file) {
+        return new DefaultWatermarkVideoBuilder(file);
     }
 }

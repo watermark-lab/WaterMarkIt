@@ -1,0 +1,92 @@
+package com.markit.video.ffmpeg.filters;
+
+import com.markit.api.WatermarkAttributes;
+import com.markit.api.positioning.Coordinates;
+import com.markit.image.WatermarkPositioner;
+import com.markit.video.ffmpeg.probes.VideoDimensions;
+
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.List;
+
+/**
+ * drawtext filter chain builder
+ *
+ * @author Oleg Cheban
+ * @since 1.4.0
+ */
+public class TextFilterStepBuilder implements FilterStepBuilder {
+
+    @Override
+    public FilterStepAttributes build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) {
+        StringBuilder filter = new StringBuilder();
+
+        BufferedImage tempImage = new BufferedImage(dimensions.getWidth(), dimensions.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = tempImage.createGraphics();
+
+        for (WatermarkAttributes a : attrs) {
+            FontRenderContext frc = g2d.getFontRenderContext();
+            var fontStyle = a.isBold() ? Font.BOLD : Font.PLAIN;;
+            var font = new Font(a.getFont().getAwtFontName(), fontStyle, a.getSize());
+            TextLayout watermarkLayout = new TextLayout(a.getText(), font, frc);
+            Rectangle2D rect = watermarkLayout.getBounds();
+
+            var coordinates =
+                    WatermarkPositioner.defineXY(
+                            a, dimensions.getWidth(), dimensions.getHeight(), (int) rect.getWidth(), (int) rect.getHeight());
+
+            for (Coordinates c : coordinates) {
+                String inLabel = step == 0 ? "[0:v]" : lastLabel;
+                String outLabel = "[v" + (step + 1) + "]";
+
+                String drawtext = String.format(
+                        "%sdrawtext=text='%s':fontcolor=%s@%s:fontsize=%d:x=%s:y=%s%s",
+                        inLabel,
+                        a.getText(),
+                        getColorValue(a.getColor()),
+                        getOpacityValue(a.getOpacity()),
+                        a.getSize(),
+                        c.getX(),
+                        c.getY(),
+                        outLabel
+                );
+
+                if (!isEmptyFilter) filter.append(",");
+                filter.append(drawtext);
+
+                lastLabel = outLabel;
+                isEmptyFilter = false;
+                step++;
+            }
+        }
+
+        return new FilterStepAttributes(filter.toString(), lastLabel, step, isEmptyFilter);
+    }
+
+    /**
+     * method converts a Java Color object to ffmpeg's expected hexadecimal color format
+     */
+    private String getColorValue(Color color) {
+        return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    /**
+     * method converts a percentage-based opacity (0-100) to FFmpeg's decimal format (0.0-1.0).
+     */
+    private float getOpacityValue(int opacity) {
+        return Math.max(0, Math.min(100, opacity)) / 100f;
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
+    }
+
+    @Override
+    public FilterStepType getFilterStepType() {
+        return FilterStepType.DRAWTEXT;
+    }
+}

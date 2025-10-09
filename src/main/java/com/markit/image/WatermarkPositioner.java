@@ -1,8 +1,8 @@
 package com.markit.image;
 
 import com.markit.api.WatermarkAttributes;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
-import com.markit.pdf.draw.DrawMethodPositionCoordinates;
+import com.markit.api.positioning.Coordinates;
+import com.markit.image.positioning.DrawMethodPositionCoordinates;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class WatermarkPositioner {
 
-    public List<WatermarkPositionCoordinates.Coordinates> defineXY(
+    public static List<Coordinates> defineXY(
             WatermarkAttributes attr, int imageWidth, int imageHeight, int watermarkWidth, int watermarkHeight) {
         return new DrawMethodPositionCoordinates(imageWidth, imageHeight, watermarkWidth, watermarkHeight)
                 .getCoordinatesForAttributes(attr);

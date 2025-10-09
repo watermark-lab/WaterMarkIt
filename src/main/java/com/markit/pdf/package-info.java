@@ -1,4 +1,4 @@
 /**
- * This package contains an implementation for pdfs watermarking
+ * PDF watermarking services including draw and overlay strategies.
  */
 package com.markit.pdf;

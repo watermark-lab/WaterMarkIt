@@ -2,6 +2,7 @@ package com.markit.api;
 
 import com.markit.api.formats.image.WatermarkImageService;
 import com.markit.api.formats.pdf.WatermarkPDFService;
+import com.markit.api.formats.video.WatermarkVideoService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -75,5 +76,13 @@ public interface WatermarkService {
          * @param fileBytes The byte array representing the source file.
          */
         WatermarkImageService watermarkImage(byte[] fileBytes);
+         * Sets the video file to be watermarked using a byte array.
+         */
+        WatermarkVideoService watermarkVideo(byte[] fileBytes);
+
+        /**
+         * Sets the video file to be watermarked using a File object.
+         */
+        WatermarkVideoService watermarkVideo(File file);
     }
 }

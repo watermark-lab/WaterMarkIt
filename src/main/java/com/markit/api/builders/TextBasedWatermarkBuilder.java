@@ -1,5 +1,7 @@
 package com.markit.api.builders;
 
+import com.markit.api.Font;
+
 import java.awt.*;
 
 /**
@@ -19,6 +21,19 @@ public interface TextBasedWatermarkBuilder<WatermarkBuilderType> {
     TextBasedWatermarkBuilder<WatermarkBuilderType> color(Color color);
 
     /**
+     * The font of the text
+     *
+     * @param font The font for the text
+     * @see com.markit.api.Font
+     */
+    TextBasedWatermarkBuilder<WatermarkBuilderType> font(Font font);
+	
+	/**
+	 * Makes the text bold
+	 */
+	TextBasedWatermarkBuilder<WatermarkBuilderType> bold();
+
+    /**
      * Adds a trademark symbol to the text
      */
     TextBasedWatermarkBuilder<WatermarkBuilderType> addTrademark();
@@ -27,4 +42,5 @@ public interface TextBasedWatermarkBuilder<WatermarkBuilderType> {
      * Finish working with TextBasedWatermarkBuilder and back to the WatermarkBuilderType
      */
     WatermarkBuilderType end();
+	
 }

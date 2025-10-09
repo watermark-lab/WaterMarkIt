@@ -27,11 +27,6 @@ public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
     }
 
     @Override
-    public int getPriority() {
-        return DEFAULT_PRIORITY;
-    }
-
-    @Override
     public void watermark(PDDocument document, int pageIndex, List<WatermarkAttributes> attrs) throws IOException {
         var imageConverter = new ImageConverter();
         var page = document.getPage(pageIndex);
@@ -111,5 +106,10 @@ public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
                 break;
         }
         contentStream.transform(Matrix.getScaleInstance(scaleX, scaleY));
+    }
+
+    @Override
+    public int getPriority() {
+        return DEFAULT_PRIORITY;
     }
 }

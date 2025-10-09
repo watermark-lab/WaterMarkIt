@@ -1,9 +1,9 @@
 package com.markit.api.builders;
 
-import com.markit.api.BaseWatermarkService;
-import com.markit.api.WatermarkHandler;
+import com.markit.api.Font;
+import com.markit.api.WatermarkProcessor;
+import com.markit.api.positioning.Coordinates;
 import com.markit.api.positioning.WatermarkPosition;
-import com.markit.api.positioning.WatermarkPositionCoordinates;
 import com.markit.image.ImageConverter;
 
 import java.awt.*;
@@ -17,11 +17,11 @@ import java.util.function.Supplier;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends BaseWatermarkService<WatermarkService>
+public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends BaseWatermarkBuilder<WatermarkService>
         implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
 
-    public DefaultWatermarkBuilder(WatermarkHandler watermarkHandler) {
-        super(watermarkHandler);
+    public DefaultWatermarkBuilder(WatermarkProcessor watermarkProcessor) {
+        super(watermarkProcessor);
     }
 
     public TextBasedWatermarkBuilder<WatermarkBuilder> withText(String text) {
@@ -33,6 +33,19 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
     public TextBasedWatermarkBuilder<WatermarkBuilder> color(Color color) {
         Objects.requireNonNull(color);
         getWatermark().setColor(color);
+        return this;
+    }
+
+    @Override
+    public TextBasedWatermarkBuilder<WatermarkBuilder> font(Font font) {
+        Objects.requireNonNull(font);
+        getWatermark().setFont(font);
+        return this;
+    }
+
+    @Override
+    public TextBasedWatermarkBuilder<WatermarkBuilder> bold() {
+        getWatermark().setBold(true);
         return this;
     }
 
@@ -59,11 +72,17 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
     }
 
     public WatermarkBuilder size(int size) {
+        if (size < 0 || size > 300)
+            throw new IllegalArgumentException("Size must be between 0 and 300");
+
         getWatermark().setSize(size);
         return builder();
     }
 
     public WatermarkBuilder opacity(int opacity) {
+        if (opacity < 0 || opacity > 100)
+            throw new IllegalArgumentException("Opacity must be between 0 and 100");
+
         getWatermark().setOpacity(opacity);
         return builder();
     }
@@ -96,13 +115,13 @@ public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends
 
     public WatermarkBuilder position(int x, int y) {
         getWatermark().setCustomCoordinates(true);
-        getWatermark().setPositionAdjustment(new WatermarkPositionCoordinates.Coordinates(x, y));
+        getWatermark().setPositionCoordinates(new Coordinates(x, y));
         return builder();
     }
 
     public PositionStepBuilder<WatermarkBuilder> adjust(int x, int y) {
-        var adjustment = new WatermarkPositionCoordinates.Coordinates(x, y);
-        getWatermark().setPositionAdjustment(adjustment);
+        var adjustment = new Coordinates(x, y);
+        getWatermark().setPositionCoordinates(adjustment);
         return this;
     }
 
