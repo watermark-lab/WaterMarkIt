@@ -8,7 +8,7 @@ import com.markit.api.positioning.WatermarkPosition;
  * @author Oleg Cheban
  * @since 1.3.3
  */
-public interface WatermarkBuilder<WatermarkServiceType, WatermarkBuilderType> {
+public interface VisualWatermarkBuilder<WatermarkServiceType, WatermarkBuilderType> {
 
     /**
      * Sets the size of the watermark

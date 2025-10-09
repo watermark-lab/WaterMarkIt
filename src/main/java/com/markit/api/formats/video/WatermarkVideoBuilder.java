@@ -1,23 +1,22 @@
 package com.markit.api.formats.video;
 
 import com.markit.api.WatermarkProcessor;
-import com.markit.api.builders.DefaultWatermarkBuilder;
-import com.markit.api.formats.video.WatermarkVideoService.*;
+import com.markit.api.builders.DefaultVisualWatermarkBuilder;
 import com.markit.exceptions.WatermarkingException;
 import com.markit.servicelocator.ServiceFactory;
 import com.markit.video.VideoWatermarker;
 
 import java.io.File;
 
-public final class DefaultWatermarkVideoBuilder
-        extends DefaultWatermarkBuilder<WatermarkVideoService, WatermarkVideoBuilder>
-        implements WatermarkVideoService, WatermarkVideoBuilder {
+public final class WatermarkVideoBuilder
+        extends DefaultVisualWatermarkBuilder<WatermarkVideoService, WatermarkVideoService.WatermarkVideoBuilder>
+        implements WatermarkVideoService, WatermarkVideoService.WatermarkVideoBuilder {
 
-    public DefaultWatermarkVideoBuilder(byte[] fileBytes) {
+    public WatermarkVideoBuilder(byte[] fileBytes) {
         super(createWatermarkProcessor(fileBytes));
     }
 
-    public DefaultWatermarkVideoBuilder(File file) {
+    public WatermarkVideoBuilder(File file) {
         super(createWatermarkProcessor(file));
     }
 

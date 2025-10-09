@@ -1,12 +1,11 @@
 package com.markit.api.formats.pdf;
 
-import com.markit.api.builders.DefaultWatermarkBuilder;
+import com.markit.api.builders.DefaultVisualWatermarkBuilder;
 import com.markit.api.WatermarkingMethod;
 import com.markit.exceptions.ClosePDFDocumentException;
 import com.markit.pdf.WatermarkPdfServiceFactory;
 import com.markit.servicelocator.ServiceFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import com.markit.api.formats.pdf.WatermarkPDFService.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -18,13 +17,13 @@ import java.util.function.Predicate;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public final class DefaultWatermarkPDFBuilder
-        extends DefaultWatermarkBuilder<WatermarkPDFService, WatermarkPDFBuilder>
-        implements WatermarkPDFService, WatermarkPDFBuilder {
+public final class WatermarkPDFBuilder
+        extends DefaultVisualWatermarkBuilder<WatermarkPDFService, WatermarkPDFService.WatermarkPDFBuilder>
+        implements WatermarkPDFService, WatermarkPDFService.WatermarkPDFBuilder {
 
     private PDDocument document;
 
-    public DefaultWatermarkPDFBuilder(PDDocument pdfDoc, Executor executor) {
+    public WatermarkPDFBuilder(PDDocument pdfDoc, Executor executor) {
         super(watermarks -> getPdfServiceFactory().create(executor).watermark(pdfDoc, watermarks));
         Objects.requireNonNull(pdfDoc, "PDDocument cannot be null");
         this.document = pdfDoc;

@@ -17,10 +17,10 @@ import java.util.function.Supplier;
  * @author Oleg Cheban
  * @since 1.3.0
  */
-public class DefaultWatermarkBuilder<WatermarkService, WatermarkBuilder> extends BaseWatermarkBuilder<WatermarkService>
+public class DefaultVisualWatermarkBuilder<WatermarkService, WatermarkBuilder> extends BaseWatermarkBuilder<WatermarkService>
         implements PositionStepBuilder<WatermarkBuilder>, TextBasedWatermarkBuilder<WatermarkBuilder> {
 
-    public DefaultWatermarkBuilder(WatermarkProcessor watermarkProcessor) {
+    public DefaultVisualWatermarkBuilder(WatermarkProcessor watermarkProcessor) {
         super(watermarkProcessor);
     }
 

@@ -1,12 +1,14 @@
 package com.markit.api.formats.video;
 
 import com.markit.api.builders.TextBasedWatermarkBuilder;
-import com.markit.api.builders.WatermarkBuilder;
+import com.markit.api.builders.VisualWatermarkBuilder;
 
 import java.io.File;
 
 /**
  * The Watermark Service for applying watermarks to videos
+ *
+ * @since 1.4.0
  */
 public interface WatermarkVideoService {
 
@@ -35,7 +37,7 @@ public interface WatermarkVideoService {
     /**
      * The videos watermarking builder
      */
-    interface WatermarkVideoBuilder extends WatermarkBuilder<WatermarkVideoService, WatermarkVideoBuilder> {}
+    interface WatermarkVideoBuilder extends VisualWatermarkBuilder<WatermarkVideoService, WatermarkVideoBuilder> {}
 }
 
 
