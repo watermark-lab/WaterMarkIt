@@ -1,10 +1,10 @@
 package com.markit.api;
 
-import com.markit.api.formats.image.DefaultWatermarkImageBuilder;
+import com.markit.api.formats.image.WatermarkImageBuilder;
 import com.markit.api.formats.image.WatermarkImageService;
-import com.markit.api.formats.pdf.DefaultWatermarkPDFBuilder;
+import com.markit.api.formats.pdf.WatermarkPDFBuilder;
 import com.markit.api.formats.pdf.WatermarkPDFService;
-import com.markit.api.formats.video.DefaultWatermarkVideoBuilder;
+import com.markit.api.formats.video.WatermarkVideoBuilder;
 import com.markit.api.formats.video.WatermarkVideoService;
 import com.markit.exceptions.InvalidPDFFileException;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.util.concurrent.Executor;
 
 /**
+ * Main entry point for adding watermarks to various file formats.
+ * Acts as a factory for format-specific watermark builders that provide
+ * a fluent DSL for configuring and applying watermarks.
+ *
  * @author Oleg Cheban
  * @since 1.0
  */
@@ -31,7 +35,7 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
     @Override
     public WatermarkPDFService watermarkPDF(byte[] fileBytes) {
         try {
-            return new DefaultWatermarkPDFBuilder(PDDocument.load(fileBytes), executor);
+            return new WatermarkPDFBuilder(PDDocument.load(fileBytes), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
@@ -40,7 +44,7 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
     @Override
     public WatermarkPDFService watermarkPDF(File file) {
         try {
-            return new DefaultWatermarkPDFBuilder(PDDocument.load(file), executor);
+            return new WatermarkPDFBuilder(PDDocument.load(file), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
@@ -48,26 +52,26 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
 
     @Override
     public WatermarkPDFService watermarkPDF(PDDocument document) {
-        return new DefaultWatermarkPDFBuilder(document, executor);
+        return new WatermarkPDFBuilder(document, executor);
     }
 
     @Override
     public WatermarkImageService watermarkImage(byte[] fileBytes, ImageType imageType) {
-        return new DefaultWatermarkImageBuilder(fileBytes, imageType);
+        return new WatermarkImageBuilder(fileBytes, imageType);
     }
 
     @Override
     public WatermarkImageService watermarkImage(File file, ImageType imageType) {
-        return new DefaultWatermarkImageBuilder(file, imageType);
+        return new WatermarkImageBuilder(file, imageType);
     }
 
     @Override
     public WatermarkVideoService watermarkVideo(byte[] fileBytes) {
-        return new DefaultWatermarkVideoBuilder(fileBytes);
+        return new WatermarkVideoBuilder(fileBytes);
     }
 
     @Override
     public WatermarkVideoService watermarkVideo(File file) {
-        return new DefaultWatermarkVideoBuilder(file);
+        return new WatermarkVideoBuilder(file);
     }
 }
