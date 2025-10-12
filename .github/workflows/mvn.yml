@@ -31,3 +31,8 @@ jobs:
       - run: java -version
       - run: mvn -version
       - run: mvn --errors --batch-mode clean install
+      - name: Upload Code Coverage
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: reports/coverage.xml
