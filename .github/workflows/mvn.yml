@@ -34,7 +34,5 @@ jobs:
       - name: Upload Code Coverage
         uses: qltysh/qlty-action/coverage@v2
         with:
-          token: CODE_COVERAGE_TOKEN
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: target/site/jacoco/jacoco.xml
-        env:
-          CODE_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
