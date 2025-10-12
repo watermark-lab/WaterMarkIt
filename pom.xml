@@ -43,8 +43,11 @@
         <jai-imageio-jpeg2000.version>1.4.0</jai-imageio-jpeg2000.version>
         <jbig2-imageio.version>3.0.4</jbig2-imageio.version>
         <junit.version>5.13.4</junit.version>
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <kotlin.version>2.2.20</kotlin.version>
+        <jacoco.verson>0.8.13</jacoco.verson>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-source-plugin.verson>3.3.1</maven-source-plugin.verson>
+        <dokka-maven-plugin.version>2.0.0</dokka-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -92,7 +95,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>${maven-source-plugin.verson}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -106,7 +109,7 @@
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
-                <version>2.0.0</version>
+                <version>${dokka-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -187,6 +190,25 @@
                         <arg>-Werror</arg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.verson}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
