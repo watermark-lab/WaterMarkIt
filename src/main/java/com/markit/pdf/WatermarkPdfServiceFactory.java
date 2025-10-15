@@ -8,7 +8,7 @@ import java.util.concurrent.Executor;
  * Factory for creating {@link WatermarkPdfService} instances, optionally with an Executor.
  *
  * @author Oleg Cheban
- * @since 1.5.0
+ * @since 1.4.0
  */
 public interface WatermarkPdfServiceFactory extends Prioritizable {
 
