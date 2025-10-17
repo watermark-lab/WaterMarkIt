@@ -2,7 +2,7 @@ package com.markit.api.formats.pdf;
 
 import com.markit.api.builders.TextBasedWatermarkBuilder;
 import com.markit.api.WatermarkingMethod;
-import com.markit.api.builders.WatermarkBuilder;
+import com.markit.api.builders.VisualWatermarkBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.image.BufferedImage;
@@ -48,7 +48,7 @@ public interface WatermarkPDFService {
     /**
      * The PDFs watermarking builder
      */
-    interface WatermarkPDFBuilder extends WatermarkBuilder<WatermarkPDFService, WatermarkPDFBuilder> {
+    interface WatermarkPDFBuilder extends VisualWatermarkBuilder<WatermarkPDFService, WatermarkPDFBuilder> {
 
         /**
          * The watermarking method (default is DRAW)

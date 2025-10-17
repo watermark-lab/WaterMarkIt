@@ -1,7 +1,7 @@
 package com.markit.api.formats.image;
 
 import com.markit.api.builders.TextBasedWatermarkBuilder;
-import com.markit.api.builders.WatermarkBuilder;
+import com.markit.api.builders.VisualWatermarkBuilder;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -45,5 +45,5 @@ public interface WatermarkImageService {
     /**
      * The images watermarking builder
      */
-    interface WatermarkImageBuilder extends WatermarkBuilder<WatermarkImageService, WatermarkImageBuilder> {}
+    interface WatermarkImageBuilder extends VisualWatermarkBuilder<WatermarkImageService, WatermarkImageBuilder> {}
 }
