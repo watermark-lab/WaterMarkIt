@@ -15,7 +15,7 @@ class WatermarkJpegText {
     @Throws(IOException::class)
     fun `given jpeg file when apply centered image-based watermark then make watermarked jpeg`() {
         val result = WatermarkService.create()
-            .watermarkImage(FileUtils.readFileFromClasspathAsBytes("image.JPG"), ImageType.JPEG)
+            .watermarkImage(FileUtils.readFileFromClasspathAsBytes("image.JPG"))
                 .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
                     .size(25)
                     .position(WatermarkPosition.CENTER).end()

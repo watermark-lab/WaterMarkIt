@@ -54,16 +54,6 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
     }
 
     @Override
-    public WatermarkImageService watermarkImage(byte[] fileBytes, ImageType imageType) {
-        return new DefaultWatermarkImageBuilder(fileBytes, imageType);
-    }
-
-    @Override
-    public WatermarkImageService watermarkImage(File file, ImageType imageType) {
-        return new DefaultWatermarkImageBuilder(file, imageType);
-    }
-
-    @Override
     public WatermarkImageService watermarkImage(File file) {
         ImageType imageType = ImageTypeDetector.detect(file);
 
@@ -85,6 +75,7 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
         }
 
         return new DefaultWatermarkImageBuilder(fileBytes, imageType);
+    }
     public WatermarkVideoService watermarkVideo(byte[] fileBytes) {
         return new DefaultWatermarkVideoBuilder(fileBytes);
     }

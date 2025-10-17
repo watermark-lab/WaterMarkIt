@@ -48,35 +48,20 @@ public interface WatermarkService {
          */
         WatermarkPDFService watermarkPDF(PDDocument document);
 
-        /**
-         * Sets the image file to be watermarked using a byte array.
-         *
-         * @param fileBytes The byte array representing the source file.
-         * @param imageType The type of image
-         * @see ImageType
-         */
-        WatermarkImageService watermarkImage(byte[] fileBytes, ImageType imageType);
-
-        /**
-         * Sets the image file to be watermarked using a File object.
-         *
-         * @param file The file to be watermarked.
-         * @param imageType The type of image
-         */
-        WatermarkImageService watermarkImage(File file, ImageType imageType);
 
         /**
          *
-         * @param file The file to be watermarked.
+         * @param file The image file to be watermarked.
          */
         WatermarkImageService watermarkImage(File file);
 
         /**
          *
-         * @param fileBytes The byte array representing the source file.
+         * @param fileBytes The byte array representing the source image file.
          */
         WatermarkImageService watermarkImage(byte[] fileBytes);
-         * Sets the video file to be watermarked using a byte array.
+        /**
+        * Sets the video file to be watermarked using a byte array.
          */
         WatermarkVideoService watermarkVideo(byte[] fileBytes);
 
