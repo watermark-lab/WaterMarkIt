@@ -66,7 +66,7 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
             throw new UnsupportedOperationException("No writer found for " + imageType);
         }
 
-        return new DefaultWatermarkImageBuilder(file, imageType);
+        return new WatermarkImageBuilder(file, imageType);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class DefaultWatermarkService implements WatermarkService.FileFormatSelec
             throw new UnsupportedOperationException("No writer found for " + imageType);
         }
 
-        return new DefaultWatermarkImageBuilder(fileBytes, imageType);
+        return new WatermarkImageBuilder(fileBytes, imageType);
     }
     public WatermarkVideoService watermarkVideo(byte[] fileBytes) {
         return new WatermarkVideoBuilder(fileBytes);
