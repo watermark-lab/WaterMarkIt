@@ -1,9 +1,7 @@
 package com.markit.image;
 
-import com.markit.api.ImageType;
 import com.markit.api.WatermarkAttributes;
 import com.markit.servicelocator.ServiceFactory;
-import com.markit.utils.ImageTypeDetector;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -22,7 +20,7 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         if (isByteArrayEmpty(sourceImageBytes)) {
             return sourceImageBytes;
         }
-        ImageType imageType = ImageTypeDetector.detect(sourceImageBytes);
+        var imageType = ImageTypeDetector.detect(sourceImageBytes);
         validateImageType(imageType);
 
         BufferedImage image = imageConverter.convertToBufferedImage(sourceImageBytes);
@@ -31,14 +29,14 @@ public class DefaultImageWatermarker implements ImageWatermarker {
 
     @Override
     public byte[] watermark(File file, List<WatermarkAttributes> attrs) {
-        ImageType imageType = ImageTypeDetector.detect(file);
+        var imageType = ImageTypeDetector.detect(file);
         validateImageType(imageType);
 
         BufferedImage image = imageConverter.convertToBufferedImage(file);
         return watermark(image, imageType, attrs);
     }
 
-    public byte[] watermark(BufferedImage sourceImage, ImageType imageType, List<WatermarkAttributes> attrs) {
+    public byte[] watermark(BufferedImage sourceImage, String imageType, List<WatermarkAttributes> attrs) {
         var g2d = sourceImage.createGraphics();
 
         attrs.forEach(attr -> {
@@ -60,8 +58,8 @@ public class DefaultImageWatermarker implements ImageWatermarker {
         return byteArray == null || byteArray.length == 0;
     }
 
-    private void validateImageType(ImageType imageType) {
-        if (!ImageIO.getImageWritersByFormatName(imageType.name().toLowerCase()).hasNext()) {
+    private void validateImageType(String imageType) {
+        if (!ImageIO.getImageWritersByFormatName(imageType.toLowerCase()).hasNext()) {
             throw new UnsupportedOperationException("No writer found for " + imageType);
         }
     }
