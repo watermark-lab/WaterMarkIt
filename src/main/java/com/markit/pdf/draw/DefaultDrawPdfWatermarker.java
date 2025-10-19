@@ -35,10 +35,7 @@ public class DefaultDrawPdfWatermarker implements DrawPdfWatermarker {
         var imageWatermarker = (ImageWatermarker) ServiceFactory.getInstance().getService(ImageWatermarker.class);
 
         // Apply watermark to the rendered image
-        var watermarkedImageBytes = imageWatermarker.watermark(
-                        imageConverter.convertToByteArray(image, ImageType.JPEG),
-                        ImageType.JPEG,
-                        attrs);
+        var watermarkedImageBytes = imageWatermarker.watermark(imageConverter.convertToByteArray(image, ImageType.JPEG), attrs);
 
         // Create a PDImageXObject from the watermarked image bytes
         var pdImage = PDImageXObject.createFromByteArray(document, watermarkedImageBytes, "watermarked");
