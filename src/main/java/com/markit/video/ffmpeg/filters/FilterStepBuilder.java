@@ -7,16 +7,16 @@ import com.markit.video.ffmpeg.probes.VideoDimensions;
 import java.util.List;
 
 /**
- * Builds a single step of an ffmpeg filter graph used for video watermarking.
+ * Appends one kind of watermark step (text or image overlay) to an ffmpeg filter graph.
  * <p>
- * Each implementation handles a particular {@link FilterStepType} (e.g., text drawing
- * or image overlay) and produces the partial filter string, the updated last label,
- * and any temporary resources required for the step.
+ * Each implementation handles a particular {@link FilterStepType} and appends its
+ * filter fragments to the shared {@link FilterGraph}, which manages label chaining
+ * between steps and collects any temporary resources.
  * </p>
  *
  * <p>
- * Steps are typically chained by a {@link FilterChainBuilder}, which passes the
- * {@code lastLabel} from the previous step into the next one.
+ * Steps are orchestrated by a {@link FilterChainBuilder}, which appends each step
+ * to the same {@link FilterGraph} in turn.
  * </p>
  *
  * @author Oleg Cheban
@@ -25,17 +25,14 @@ import java.util.List;
 public interface FilterStepBuilder extends Prioritizable {
 
     /**
-     * Build this step's contribution to the filter graph.
+     * Append this step's fragments to the filter graph.
      *
+     * @param graph the shared filter graph to append to (mutated in place)
      * @param attrs watermark attributes relevant to this step
      * @param dimensions probed video dimensions for positioning and scaling
-     * @param lastLabel the label of the previous step's output (or input stream label)
-     * @param step sequential index of this step in the overall chain
-     * @param isEmptyFilter whether the chain has not added any filters yet (first step)
-     * @return {@link FilterStepAttributes} describing this step's filter fragment and state
      * @throws Exception if the step cannot be constructed (invalid params, IO issues, etc.)
      */
-    FilterStepAttributes build(List<WatermarkAttributes> attrs, VideoDimensions dimensions, String lastLabel, int step, boolean isEmptyFilter) throws Exception;
+    void appendTo(FilterGraph graph, List<WatermarkAttributes> attrs, VideoDimensions dimensions) throws Exception;
 
     FilterStepType getFilterStepType();
 }

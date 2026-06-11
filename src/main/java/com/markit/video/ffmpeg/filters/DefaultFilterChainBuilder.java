@@ -5,10 +5,13 @@ import com.markit.video.ffmpeg.probes.VideoDimensions;
 import com.markit.video.ffmpeg.probes.VideoInfoExtractor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
+ * Default {@link FilterChainBuilder} that assembles a text step followed by an
+ * image overlay step into a single ffmpeg filter graph.
  *
  * @author Oleg Cheban
  * @since 1.4.0
@@ -17,56 +20,26 @@ public class DefaultFilterChainBuilder implements FilterChainBuilder {
 
     @Override
     public FilterResult build(File video, List<WatermarkAttributes> attributes) throws Exception {
-        StringBuilder filter = new StringBuilder();
-        List<File> tempImages = new ArrayList<>();
-        String lastLabel = "[0:v]";
-        int step = 0;
-        boolean isEmptyFilter = true;
-
         VideoDimensions dimensions = VideoInfoExtractor.getVideoDimensions(video);
+        FilterGraph graph = new FilterGraph();
 
-        // Build text filters
-        List<WatermarkAttributes> textAttributes = getTextAttributes(attributes);
-        if (!textAttributes.isEmpty()) {
-            FilterStepBuilder textBuilder = FilterStepBuilderFactory.getInstance().getBuilder(FilterStepType.DRAWTEXT);
-            FilterStepAttributes textStep = textBuilder.build(textAttributes, dimensions, lastLabel, step, isEmptyFilter);
-            filter.append(textStep.getFilter());
-            lastLabel = textStep.getLastLabel();
-            step = textStep.getStep();
-            isEmptyFilter = textStep.getEmpty();
-        }
+        appendStep(graph, FilterStepType.DRAWTEXT, dimensions, select(attributes, WatermarkAttributes::isTextWatermark));
+        appendStep(graph, FilterStepType.OVERLAY, dimensions, select(attributes, WatermarkAttributes::isImageWatermark));
 
-        // Build image overlays
-        List<WatermarkAttributes> imageAttributes = getImageAttributes(attributes);
-        if (!imageAttributes.isEmpty()) {
-            FilterStepBuilder overlayBuilder = FilterStepBuilderFactory.getInstance().getBuilder(FilterStepType.OVERLAY);
-            FilterStepAttributes imageStep = overlayBuilder.build(imageAttributes, dimensions, lastLabel, step, isEmptyFilter);
-            filter.append(imageStep.getFilter());
-            tempImages.addAll(imageStep.getTempImages());
-            lastLabel = imageStep.getLastLabel();
-        }
-
-        return new FilterResult(filter.toString(), lastLabel, tempImages);
+        return graph.toResult();
     }
 
-    private List<WatermarkAttributes> getTextAttributes(List<WatermarkAttributes> attributes) {
-        List<WatermarkAttributes> textAttrs = new ArrayList<>();
-        for (WatermarkAttributes attr : attributes) {
-            if (attr.isTextWatermark()) {
-                textAttrs.add(attr);
-            }
+    private void appendStep(FilterGraph graph, FilterStepType type, VideoDimensions dimensions,
+                            List<WatermarkAttributes> attrs) throws Exception {
+        if (attrs.isEmpty()) {
+            return;
         }
-        return textAttrs;
+        FilterStepBuilderFactory.getInstance().getBuilder(type).appendTo(graph, attrs, dimensions);
     }
 
-    private List<WatermarkAttributes> getImageAttributes(List<WatermarkAttributes> attributes) {
-        List<WatermarkAttributes> imageAttrs = new ArrayList<>();
-        for (WatermarkAttributes attr : attributes) {
-            if (attr.isImageWatermark()) {
-                imageAttrs.add(attr);
-            }
-        }
-        return imageAttrs;
+    private List<WatermarkAttributes> select(List<WatermarkAttributes> attributes,
+                                             Predicate<WatermarkAttributes> filter) {
+        return attributes.stream().filter(filter).collect(Collectors.toList());
     }
 
     @Override
