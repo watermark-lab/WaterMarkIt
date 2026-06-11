@@ -46,6 +46,13 @@ data class WatermarkAttributes (
     val isCyrillic: Boolean
         get() = text.any { Character.UnicodeBlock.of(it) == Character.UnicodeBlock.CYRILLIC }
 
+    /**
+     * The opacity expressed as a fraction in the range 0.0 (fully transparent) to 1.0 (fully opaque),
+     * clamping any out-of-range percentage. Used by renderers that expect a normalized alpha value.
+     */
+    val opacityFraction: Float
+        get() = opacity.coerceIn(0, 100) / 100f
+
     val resolvedPdfFont
         get() = when {
             isCyrillic -> requireNotNull(cyrillicFont) { "Cyrillic font must be provided for Cyrillic text" }

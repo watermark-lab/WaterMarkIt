@@ -71,7 +71,7 @@ public class TextFilterStepBuilder implements FilterStepBuilder {
                 inLabel,
                 attr.getText(),
                 toHexColor(attr.getColor()),
-                toOpacityFraction(attr.getOpacity()),
+                attr.getOpacityFraction(),
                 attr.getSize(),
                 coord.getX(),
                 coord.getY(),
@@ -84,13 +84,6 @@ public class TextFilterStepBuilder implements FilterStepBuilder {
      */
     private String toHexColor(Color color) {
         return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-    }
-
-    /**
-     * Converts a percentage-based opacity (0-100) to ffmpeg's decimal format (0.0-1.0).
-     */
-    private float toOpacityFraction(int opacity) {
-        return Math.max(0, Math.min(100, opacity)) / 100f;
     }
 
     @Override

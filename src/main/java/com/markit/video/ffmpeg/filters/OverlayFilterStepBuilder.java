@@ -29,12 +29,37 @@ public class OverlayFilterStepBuilder implements FilterStepBuilder {
     @Override
     public void appendTo(FilterGraph graph, List<WatermarkAttributes> attrs, VideoDimensions dimensions) throws IOException {
         for (WatermarkAttributes attr : attrs) {
-            BufferedImage overlay = scaleToSize(attr.getImage().get(), attr.getSize());
+            BufferedImage overlay = prepareOverlay(attr);
             for (Coordinates coord : place(attr, dimensions, overlay)) {
                 int inputIndex = graph.addOverlayImage(saveTempImage(overlay));
                 graph.append((in, out) -> overlayFilter(in, out, coord, inputIndex));
             }
         }
+    }
+
+    private BufferedImage prepareOverlay(WatermarkAttributes attr) {
+        BufferedImage scaled = scaleToSize(attr.getImage().get(), attr.getSize());
+        return applyOpacity(scaled, attr.getOpacityFraction());
+    }
+
+    /**
+     * Multiplies the image's alpha channel by the given opacity fraction, so any existing
+     * transparency in the watermark is preserved while the whole overlay is dimmed.
+     */
+    private BufferedImage applyOpacity(BufferedImage image, float opacityFraction) {
+        if (opacityFraction >= 1.0f) {
+            return image;
+        }
+
+        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = result.createGraphics();
+        try {
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacityFraction));
+            g2d.drawImage(image, 0, 0, null);
+        } finally {
+            g2d.dispose();
+        }
+        return result;
     }
 
     private BufferedImage scaleToSize(BufferedImage original, int sizePercentage) {

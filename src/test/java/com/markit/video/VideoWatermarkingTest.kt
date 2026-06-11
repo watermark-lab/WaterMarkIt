@@ -22,6 +22,7 @@ class VideoWatermarkingTest {
                 .size(30)
             .and()
                 .withImage(FileUtils.readFileFromClasspathAsBytes("logo.png"))
+                .opacity(30)
                 .position(WatermarkPosition.BOTTOM_RIGHT).end()
                 .size(8)
             .and()
