@@ -5,12 +5,10 @@ import com.markit.api.positioning.Coordinates;
 import com.markit.image.WatermarkPositioner;
 import com.markit.video.ffmpeg.probes.VideoDimensions;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 /**
@@ -31,35 +29,15 @@ public class OverlayFilterStepBuilder implements FilterStepBuilder {
         for (WatermarkAttributes attr : attrs) {
             BufferedImage overlay = prepareOverlay(attr);
             for (Coordinates coord : place(attr, dimensions, overlay)) {
-                int inputIndex = graph.addOverlayImage(saveTempImage(overlay));
-                graph.append((in, out) -> overlayFilter(in, out, coord, inputIndex));
+                graph.appendOverlay(OverlayImages.writeTempPng(overlay), coord);
             }
         }
     }
 
     private BufferedImage prepareOverlay(WatermarkAttributes attr) {
         BufferedImage scaled = scaleToSize(attr.getImage().get(), attr.getSize());
-        return applyOpacity(scaled, attr.getOpacityFraction());
-    }
-
-    /**
-     * Multiplies the image's alpha channel by the given opacity fraction, so any existing
-     * transparency in the watermark is preserved while the whole overlay is dimmed.
-     */
-    private BufferedImage applyOpacity(BufferedImage image, float opacityFraction) {
-        if (opacityFraction >= 1.0f) {
-            return image;
-        }
-
-        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = result.createGraphics();
-        try {
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacityFraction));
-            g2d.drawImage(image, 0, 0, null);
-        } finally {
-            g2d.dispose();
-        }
-        return result;
+        BufferedImage withOpacity = OverlayImages.applyOpacity(scaled, attr.getOpacityFraction());
+        return OverlayImages.rotate(withOpacity, attr.getRotationDegrees());
     }
 
     private BufferedImage scaleToSize(BufferedImage original, int sizePercentage) {
@@ -85,22 +63,6 @@ public class OverlayFilterStepBuilder implements FilterStepBuilder {
                 dimensions.getHeight(),
                 overlay.getWidth(),
                 overlay.getHeight()
-        );
-    }
-
-    private File saveTempImage(BufferedImage image) throws IOException {
-        File tempFile = Files.createTempFile("wmk-img", ".png").toFile();
-        ImageIO.write(image, "png", tempFile);
-        return tempFile;
-    }
-
-    private String overlayFilter(String inLabel, String outLabel, Coordinates coord, int inputIndex) {
-        return String.format("%s[%d:v]overlay=x=%d:y=%d%s",
-                inLabel,
-                inputIndex,
-                coord.getX(),
-                coord.getY(),
-                outLabel
         );
     }
 

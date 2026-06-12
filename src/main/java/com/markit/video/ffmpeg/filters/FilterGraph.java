@@ -1,5 +1,7 @@
 package com.markit.video.ffmpeg.filters;
 
+import com.markit.api.positioning.Coordinates;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,14 +62,18 @@ public class FilterGraph {
     }
 
     /**
-     * Registers a temporary overlay image as an extra ffmpeg input.
+     * Registers a temporary overlay image as an extra ffmpeg input and appends an {@code overlay}
+     * filter that composites it at the given coordinates. Keeping the input registration and the
+     * filter that references its index together guarantees they stay in sync.
      *
-     * @param image the image file to add
-     * @return the ffmpeg input index of the registered image (input 0 is the video)
+     * @param image the overlay image file to add as an input
+     * @param coord the position at which to composite the image onto the video
      */
-    public int addOverlayImage(File image) {
+    public void appendOverlay(File image, Coordinates coord) {
         overlayImages.add(image);
-        return overlayImages.size();
+        int inputIndex = overlayImages.size();
+        append((in, out) -> String.format("%s[%d:v]overlay=x=%d:y=%d%s",
+                in, inputIndex, coord.getX(), coord.getY(), out));
     }
 
     /**
