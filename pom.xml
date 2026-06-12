@@ -46,7 +46,7 @@
         <kotlin.version>2.2.21</kotlin.version>
         <jacoco.verson>0.8.14</jacoco.verson>
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-        <maven-source-plugin.verson>3.3.1</maven-source-plugin.verson>
+        <maven-source-plugin.verson>3.4.0</maven-source-plugin.verson>
         <dokka-maven-plugin.version>2.1.0</dokka-maven-plugin.version>
     </properties>
 
