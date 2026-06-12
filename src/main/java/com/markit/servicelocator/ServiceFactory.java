@@ -1,6 +1,7 @@
 package com.markit.servicelocator;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Oleg Cheban
@@ -8,7 +9,7 @@ import java.util.*;
  */
 public class ServiceFactory<T extends Prioritizable> {
     private static final ServiceFactory<Prioritizable> instance = new ServiceFactory<>();
-    private final Map<Class<? extends T>, T> serviceInstances = new HashMap<>();
+    private final Map<Class<? extends T>, T> serviceInstances = new ConcurrentHashMap<>();
     public static ServiceFactory<Prioritizable> getInstance() {
         return instance;
     }
@@ -17,20 +18,13 @@ public class ServiceFactory<T extends Prioritizable> {
     }
 
     public T getService(Class<? extends T> clazz) {
-        if (serviceInstances.containsKey(clazz)){
-            return serviceInstances.get(clazz);
-        }
+        return serviceInstances.computeIfAbsent(clazz, this::loadHighestPriorityService);
+    }
 
-        final Set<T> serviceClasses = new TreeSet<>((o1, o2) -> -1 * Integer.compare(o1.getPriority(), o2.getPriority()));
-        serviceClasses.addAll(DefaultServiceLocator.find(clazz));
-
-        try {
-            @SuppressWarnings("unchecked")
-            T service = (T) serviceClasses.iterator().next().getClass().getConstructor().newInstance();
-            this.serviceInstances.put(clazz, service);
-            return service;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    private T loadHighestPriorityService(Class<? extends T> clazz) {
+        return DefaultServiceLocator.find(clazz).stream()
+                .max(Comparator.comparingInt(Prioritizable::getPriority))
+                .orElseThrow(() -> new NoSuchElementException(
+                        "No service implementation found for: " + clazz.getName()));
     }
 }

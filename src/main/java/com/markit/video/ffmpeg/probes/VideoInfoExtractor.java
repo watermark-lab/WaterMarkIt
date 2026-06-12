@@ -1,7 +1,5 @@
 package com.markit.video.ffmpeg.probes;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +11,12 @@ import java.io.InputStreamReader;
  * @since 1.4.0
  */
 public class VideoInfoExtractor {
+
+    private VideoInfoExtractor() {
+    }
+
     public static VideoDimensions getVideoDimensions(File videoFile) throws IOException, InterruptedException {
-        Process process = getProcess(videoFile);
+        Process process = startFfprobe(videoFile);
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(process.getInputStream()))) {
@@ -26,21 +28,23 @@ public class VideoInfoExtractor {
                 throw new RuntimeException("ffprobe failed with exit code: " + exitCode);
             }
 
-            if (output != null && !output.trim().isEmpty()) {
-                String[] dimensions = output.trim().split(",");
-                if (dimensions.length == 2) {
-                    int width = Integer.parseInt(dimensions[0]);
-                    int height = Integer.parseInt(dimensions[1]);
-                    return new VideoDimensions(width, height);
-                }
-            }
-
-            throw new RuntimeException("Could not parse video dimensions from ffprobe output: " + output);
+            return parseDimensions(output);
         }
     }
 
-    @NotNull
-    private static Process getProcess(File videoFile) throws IOException {
+    private static VideoDimensions parseDimensions(String ffprobeOutput) {
+        if (ffprobeOutput != null && !ffprobeOutput.trim().isEmpty()) {
+            String[] parts = ffprobeOutput.trim().split(",");
+            if (parts.length == 2) {
+                int width = Integer.parseInt(parts[0]);
+                int height = Integer.parseInt(parts[1]);
+                return new VideoDimensions(width, height);
+            }
+        }
+        throw new RuntimeException("Could not parse video dimensions from ffprobe output: " + ffprobeOutput);
+    }
+
+    private static Process startFfprobe(File videoFile) throws IOException {
         if (!videoFile.exists()) {
             throw new IOException("Video file does not exist: " + videoFile.getAbsolutePath());
         }
@@ -58,7 +62,6 @@ public class VideoInfoExtractor {
                 videoFile.getAbsolutePath()
         );
 
-        Process process = pb.start();
-        return process;
+        return pb.start();
     }
 }
