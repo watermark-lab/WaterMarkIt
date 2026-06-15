@@ -41,7 +41,7 @@
         <pdfbox.version>2.0.32</pdfbox.version>
         <ai-imageio-core.version>1.4.0</ai-imageio-core.version>
         <jai-imageio-jpeg2000.version>1.4.0</jai-imageio-jpeg2000.version>
-        <jbig2-imageio.version>3.0.4</jbig2-imageio.version>
+        <jbig2-imageio.version>3.0.5</jbig2-imageio.version>
         <junit.version>5.13.4</junit.version>
         <kotlin.version>2.3.0</kotlin.version>
         <jacoco.verson>0.8.14</jacoco.verson>
