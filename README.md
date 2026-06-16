@@ -1,7 +1,7 @@
 [![Maintainability](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt/maintainability.svg)](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt)
 [![Code Coverage](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt/coverage.svg)](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/OlegCheban/WaterMarkIt)
-[![javadoc](https://img.shields.io/badge/javadoc-1.4.1-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
+[![javadoc](https://img.shields.io/badge/javadoc-1.4.2-brightgreen.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt/latest/index.html)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/OlegCheban/WaterMarkIt)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
 # WaterMarkIt
@@ -53,13 +53,13 @@ A lightweight, framework-agnostic Java library for adding watermarks to various 
 <dependency>
     <groupId>io.github.watermark-lab</groupId>
     <artifactId>WaterMarkIt</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
 </dependency>
 ```
 
 **For Gradle**, add the following to your `build.gradle`:
 ```kotlin
-implementation 'io.github.watermark-lab:WaterMarkIt:1.4.1'
+implementation 'io.github.watermark-lab:WaterMarkIt:1.4.2'
 ```
 
 ### Usage
