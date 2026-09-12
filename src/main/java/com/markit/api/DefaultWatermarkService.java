@@ -1,12 +1,14 @@
 package com.markit.api;
 
-import com.markit.api.formats.image.WatermarkImageBuilder;
-import com.markit.api.formats.image.WatermarkImageService;
-import com.markit.api.formats.pdf.WatermarkPDFBuilder;
-import com.markit.api.formats.pdf.WatermarkPDFService;
-import com.markit.api.formats.video.WatermarkVideoBuilder;
-import com.markit.api.formats.video.WatermarkVideoService;
+import com.markit.api.formats.audio.AudioWatermarkContentStep;
+import com.markit.api.formats.image.DefaultWatermarkImageBuilder;
+import com.markit.api.formats.image.ImageWatermarkContentStep;
+import com.markit.api.formats.pdf.DefaultWatermarkPDFBuilder;
+import com.markit.api.formats.pdf.PdfWatermarkContentStep;
+import com.markit.api.formats.video.DefaultWatermarkVideoBuilder;
+import com.markit.api.formats.video.VideoWatermarkContentStep;
 import com.markit.exceptions.InvalidPDFFileException;
+import com.markit.api.formats.audio.DefaultAudioWatermarkBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -23,54 +25,65 @@ import java.util.concurrent.Executor;
  */
 public class DefaultWatermarkService implements WatermarkService.FileFormatSelector {
 
-    private Executor executor;
+    private final Executor executor;
 
     public DefaultWatermarkService() {
+        this(null);
     }
 
-    public DefaultWatermarkService(Executor e) {
-        this.executor = e;
+    public DefaultWatermarkService(Executor executor) {
+        this.executor = executor;
     }
 
     @Override
-    public WatermarkPDFService watermarkPDF(byte[] fileBytes) {
+    public PdfWatermarkContentStep watermarkPDF(byte[] fileBytes) {
         try {
-            return new WatermarkPDFBuilder(PDDocument.load(fileBytes), executor);
+            return new DefaultWatermarkPDFBuilder(PDDocument.load(fileBytes), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
     }
 
     @Override
-    public WatermarkPDFService watermarkPDF(File file) {
+    public PdfWatermarkContentStep watermarkPDF(File file) {
         try {
-            return new WatermarkPDFBuilder(PDDocument.load(file), executor);
+            return new DefaultWatermarkPDFBuilder(PDDocument.load(file), executor);
         } catch (IOException e) {
             throw new InvalidPDFFileException(e);
         }
     }
 
     @Override
-    public WatermarkPDFService watermarkPDF(PDDocument document) {
-        return new WatermarkPDFBuilder(document, executor);
+    public PdfWatermarkContentStep watermarkPDF(PDDocument document) {
+        return new DefaultWatermarkPDFBuilder(document, executor);
     }
 
     @Override
-    public WatermarkImageService watermarkImage(File file) {
-        return new WatermarkImageBuilder(file);
+    public ImageWatermarkContentStep watermarkImage(File file) {
+        return new DefaultWatermarkImageBuilder(file);
     }
 
     @Override
-    public WatermarkImageService watermarkImage(byte[] fileBytes) {
-        return new WatermarkImageBuilder(fileBytes);
+    public ImageWatermarkContentStep watermarkImage(byte[] fileBytes) {
+        return new DefaultWatermarkImageBuilder(fileBytes);
     }
 
-    public WatermarkVideoService watermarkVideo(byte[] fileBytes) {
-        return new WatermarkVideoBuilder(fileBytes);
+    public VideoWatermarkContentStep watermarkVideo(byte[] fileBytes) {
+        return new DefaultWatermarkVideoBuilder(fileBytes);
     }
 
     @Override
-    public WatermarkVideoService watermarkVideo(File file) {
-        return new WatermarkVideoBuilder(file);
+    public VideoWatermarkContentStep watermarkVideo(File file) {
+        return new DefaultWatermarkVideoBuilder(file);
+    }
+
+    @Override
+    public AudioWatermarkContentStep watermarkAudio(byte[] fileBytes) {
+        return new DefaultAudioWatermarkBuilder(fileBytes);
+    }
+
+    @Override
+    public AudioWatermarkContentStep watermarkAudio(File file) {
+        return new DefaultAudioWatermarkBuilder(file);
     }
 }
