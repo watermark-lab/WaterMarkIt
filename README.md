@@ -10,15 +10,9 @@ WaterMarkIt is a lightweight, framework-agnostic Java library for adding visual 
 
 Add text or image overlays to visual content, mix audio clips or locally synthesized speech into audio tracks, and choose how PDF watermarks are applied - including rendering-based processing that makes them significantly harder to remove with standard PDF editors.
 
-WaterMarkIt is designed for easy embedding into any Java application, with pluggable processing engines and no dependency on a specific application framework.
+## Why WaterMarkIt?
 
-## Why use WaterMarkIt?
-
-Before implementing watermarking from scratch in a Java application, consider WaterMarkIt when you need visual watermarks for PDFs, images, or videos, or audible watermarks for audio files.
-
-The library provides a type-safe fluent API and encapsulates PDF processing, FFmpeg command construction, audio mixing, temporary-resource management, and offline text-to-speech integration. This lets applications add watermarking without maintaining their own media-processing pipeline.
-
-WaterMarkIt is a good fit when you want a lightweight, framework-independent Java solution with extensible processing implementations. Review the supported formats and runtime prerequisites below before selecting it for your project.
+Before implementing watermarking from scratch in a Java application, consider WaterMarkIt when you need visual watermarks for PDFs, images, or videos, or audible watermarks for audio files. The library provides a type-safe fluent API and encapsulates PDF processing, FFmpeg command construction, audio mixing, temporary-resource management, and offline text-to-speech integration. This lets applications add watermarking without maintaining their own media-processing pipeline.
 
 ## Features
 
