@@ -1,8 +1,9 @@
 package com.markit.api;
 
-import com.markit.api.formats.image.WatermarkImageService;
-import com.markit.api.formats.pdf.WatermarkPDFService;
-import com.markit.api.formats.video.WatermarkVideoService;
+import com.markit.api.formats.audio.AudioWatermarkContentStep;
+import com.markit.api.formats.image.ImageWatermarkContentStep;
+import com.markit.api.formats.pdf.PdfWatermarkContentStep;
+import com.markit.api.formats.video.VideoWatermarkContentStep;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
@@ -34,12 +35,12 @@ public interface WatermarkService {
         /**
          * Sets the PDF file to be watermarked using a byte array.
          */
-        WatermarkPDFService watermarkPDF(byte[] fileBytes);
+        PdfWatermarkContentStep watermarkPDF(byte[] fileBytes);
 
         /**
          * Sets the PDF file to be watermarked using a File object.
          */
-        WatermarkPDFService watermarkPDF(File file);
+        PdfWatermarkContentStep watermarkPDF(File file);
 
         /**
          * Sets the PDF file to be watermarked using a PDDocument pdfbox object.
@@ -47,26 +48,46 @@ public interface WatermarkService {
          * @param document The PDF document to be watermarked.
          * @see PDDocument
          */
-        WatermarkPDFService watermarkPDF(PDDocument document);
+        PdfWatermarkContentStep watermarkPDF(PDDocument document);
 
         /**
          * @param file The image file to be watermarked.
          */
-        WatermarkImageService watermarkImage(File file);
+        ImageWatermarkContentStep watermarkImage(File file);
 
         /**
          * @param fileBytes The byte array representing the source image file.
          */
-        WatermarkImageService watermarkImage(byte[] fileBytes);
+        ImageWatermarkContentStep watermarkImage(byte[] fileBytes);
 
         /**
          * Sets the video file to be watermarked using a byte array.
          */
-        WatermarkVideoService watermarkVideo(byte[] fileBytes);
+        VideoWatermarkContentStep watermarkVideo(byte[] fileBytes);
 
         /**
          * Sets the video file to be watermarked using a File object.
          */
-        WatermarkVideoService watermarkVideo(File file);
+        VideoWatermarkContentStep watermarkVideo(File file);
+
+        /**
+         * Sets the audio file to receive audible watermarks.
+         *
+         * @param fileBytes encoded source audio bytes
+         * @return the audio watermark DSL
+         */
+        default AudioWatermarkContentStep watermarkAudio(byte[] fileBytes) {
+            return new DefaultWatermarkService().watermarkAudio(fileBytes);
+        }
+
+        /**
+         * Sets the audio file to receive audible watermarks.
+         *
+         * @param file source audio file
+         * @return the audio watermark DSL
+         */
+        default AudioWatermarkContentStep watermarkAudio(File file) {
+            return new DefaultWatermarkService().watermarkAudio(file);
+        }
     }
 }

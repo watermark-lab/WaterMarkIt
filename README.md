@@ -6,7 +6,19 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OlegCheban/WaterMarkIt/blob/master/LICENSE)
 # WaterMarkIt
 
-A lightweight, framework-agnostic Java library for adding watermarks to various file types, including PDFs and videos. The library was developed to address the challenge of creating watermarks that cannot be easily removed from PDF files. Many PDF editors allow users to edit even secured files, and when a watermark is added as a separate layer, it can be easily removed.  
+WaterMarkIt is a lightweight, framework-agnostic Java library for adding visual and audible watermarks to PDFs, images, videos, and audio files through a consistent fluent API.
+
+Add text or image overlays to visual content, mix audio clips or locally synthesized speech into audio tracks, and choose how PDF watermarks are applied - including rendering-based processing that makes them significantly harder to remove with standard PDF editors.
+
+WaterMarkIt is designed for easy embedding into any Java application, with pluggable processing engines and no dependency on a specific application framework.
+
+## Why use WaterMarkIt?
+
+Before implementing watermarking from scratch in a Java application, consider WaterMarkIt when you need visual watermarks for PDFs, images, or videos, or audible watermarks for audio files.
+
+The library provides a type-safe fluent API and encapsulates PDF processing, FFmpeg command construction, audio mixing, temporary-resource management, and offline text-to-speech integration. This lets applications add watermarking without maintaining their own media-processing pipeline.
+
+WaterMarkIt is a good fit when you want a lightweight, framework-independent Java solution with extensible processing implementations. Review the supported formats and runtime prerequisites below before selecting it for your project.
 
 ## Features
 
@@ -15,6 +27,7 @@ A lightweight, framework-agnostic Java library for adding watermarks to various 
 - **Types of Watermarks**:
   - Text-based watermarks
   - Image-based watermarks
+  - Audible audio and text-to-speech watermarks
 
 - **Customizable Watermarks**: Customize various aspects of your watermark, including:
   - Font
@@ -33,6 +46,7 @@ A lightweight, framework-agnostic Java library for adding watermarks to various 
   - PDF
   - Images (JPEG, PNG, etc.)
   - Videos (MP4, MOV, AVI, MKV, etc)
+  - Audio (WAV, MP3, FLAC, M4A/AAC, OGG, Opus, and AIFF)
   
 - **Drawn Watermarks**: The library provides the `WatermarkingMethod.DRAW` method to add watermarks to PDF files that can't be easily removed. This mode generates an image from a PDF page, applies watermarks to the image, and replaces all layers of the page with the modified image.
 
@@ -156,6 +170,65 @@ WatermarkService.create()
     .apply();
 ```
 
+### Audio Watermarking
+
+Audio watermarks are audible layers mixed into the original audio stream. FFmpeg must be
+installed and available on the system `PATH`.
+
+Mix an audio-file watermark at 25% of its original (unity) gain:
+
+```java
+byte[] result = WatermarkService.create()
+    .watermarkAudio(source)
+        .withAudio(watermark)
+        .volume(25)
+    .apply();
+```
+
+Generate an offline spoken watermark and start it after 15 seconds:
+
+```java
+import com.markit.audio.tts.FreeTtsVoice;
+
+byte[] result = WatermarkService.create()
+    .watermarkAudio(source)
+        .withText("WaterMarkIt")
+            .voice(FreeTtsVoice.KEVIN)
+            .end()
+        .volume(20)
+        .startAt(Duration.ofSeconds(15))
+    .apply();
+```
+
+Multiple watermark layers are mixed in one FFmpeg invocation:
+
+```java
+byte[] result = WatermarkService.create()
+    .watermarkAudio(source)
+        .withAudio(chime)
+        .volume(25)
+        .startAt(Duration.ofSeconds(3))
+    .and()
+        .withText("Property of WaterMarkIt")
+            .end()
+        .volume(15)
+        .startAt(Duration.ofSeconds(20))
+    .apply();
+```
+
+`volume` controls only watermark gain (`0` is silent, `100` is unity). Source gain is
+not normalized, so loud mixes may clip. Output duration matches the source and delayed
+watermarks are truncated at its end.
+
+File sources preserve WAV, MP3, FLAC, M4A/AAC, OGG, Opus, and AIFF containers.
+Unknown extensions and `byte[]` sources produce WAV output; FFmpeg detects input bytes
+by content.
+
+Text uses offline FreeTTS with the US-English `FreeTtsVoice.KEVIN_16` voice by default.
+Typed constants `KEVIN` (8 kHz) and `KEVIN_16` (16 kHz) prevent invalid voice names.
+Custom voices and engines are supported through the `TextToSpeechVoice` and
+`TextToSpeechEngine` SPI without network services.
+
 ## Extensibility and Customization
 
 The library uses Java's ServiceLoader mechanism to load implementations of various services. You can override the services that implement the `Prioritizable` interface.
@@ -204,7 +277,7 @@ When contributing to WaterMarkIt:
 ## Dependencies 
 - **Apache PDFBox**: [Apache PDFBox](https://pdfbox.apache.org/) - A Java library for working with PDF documents.
 - **JAI Image I/O**: [JAI Image I/O](https://github.com/jai-imageio/jai-imageio-core) - Image I/O library for Java, supporting various image formats.
-- **commons-logging**: [Apache Commons Logging](https://commons.apache.org/proper/commons-logging/) - A simple logging facade for Java.
+- **FreeTTS**: [JVoiceXML FreeTTS](https://github.com/JVoiceXML/FreeTTS) - Offline US-English speech synthesis for audible text watermarks.
 
 ## Contributing
 

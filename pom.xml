@@ -42,6 +42,7 @@
         <ai-imageio-core.version>1.4.0</ai-imageio-core.version>
         <jai-imageio-jpeg2000.version>1.4.0</jai-imageio-jpeg2000.version>
         <jbig2-imageio.version>3.0.5</jbig2-imageio.version>
+        <freetts.version>1.2.3</freetts.version>
         <junit.version>5.13.4</junit.version>
         <kotlin.version>2.4.10</kotlin.version>
         <jacoco.verson>0.8.15</jacoco.verson>
@@ -70,6 +71,26 @@
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>jbig2-imageio</artifactId>
             <version>${jbig2-imageio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jvoicexml</groupId>
+            <artifactId>freetts</artifactId>
+            <version>${freetts.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jvoicexml</groupId>
+            <artifactId>cmulex</artifactId>
+            <version>${freetts.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jvoicexml</groupId>
+            <artifactId>en_us</artifactId>
+            <version>${freetts.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jvoicexml</groupId>
+            <artifactId>cmu_us_kal</artifactId>
+            <version>${freetts.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -1,6 +1,4 @@
 /**
- * Fluent builders for configuring watermark attributes and steps.
+ * Public fluent DSL stages shared by watermark formats.
  */
 package com.markit.api.builders;
-
-
