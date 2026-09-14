@@ -1,12 +1,11 @@
 # WaterMarkIt
 
-[![Build](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml/badge.svg)](https://github.com/OlegCheban/WaterMarkIt/actions/workflows/mvn.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.watermark-lab/WaterMarkIt)](https://central.sonatype.com/artifact/io.github.watermark-lab/WaterMarkIt)
-[![Java](https://img.shields.io/badge/Java-11%2B-blue)](#requirements-and-installation)
 [![Javadoc](https://javadoc.io/badge2/io.github.watermark-lab/WaterMarkIt/javadoc.svg)](https://javadoc.io/doc/io.github.watermark-lab/WaterMarkIt)
-[![Code Coverage](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt/coverage.svg)](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt)
-[![Maintainability](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt/maintainability.svg)](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/OlegCheban/WaterMarkIt)
+[![Maintainability](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt/maintainability.svg)](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt)
+[![Code Coverage](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt/coverage.svg)](https://qlty.sh/gh/OlegCheban/projects/WaterMarkIt)
+[![Java](https://img.shields.io/badge/Java-11%2B-blue)](#requirements-and-installation)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Add watermarks to PDFs, images, videos, and audio from Java through a type-safe fluent API.
